@@ -1,0 +1,83 @@
+import { useState } from "react";
+import { Menu, X } from "lucide-react";
+import logoFull from "@/assets/logo-full.jpg.asset.json";
+import { Button } from "@/components/ui/button";
+
+const links = [
+  { href: "#produk", label: "Produk" },
+  { href: "#keunggulan", label: "Keunggulan" },
+  { href: "#faq", label: "FAQ" },
+  { href: "#kontak", label: "Kontak" },
+];
+
+export function Navbar() {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <header className="sticky top-0 z-50 border-b border-border/60 bg-background/80 backdrop-blur-md">
+      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
+        <a href="#top" className="flex items-center gap-2">
+          <img
+            src={logoFull.url}
+            alt="AplikasiAkuntansiExcel.com"
+            className="h-9 w-auto md:h-10"
+          />
+        </a>
+
+        <nav className="hidden items-center gap-8 md:flex">
+          {links.map((l) => (
+            <a
+              key={l.href}
+              href={l.href}
+              className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+            >
+              {l.label}
+            </a>
+          ))}
+        </nav>
+
+        <div className="hidden items-center gap-3 md:flex">
+          <Button variant="ghost" asChild>
+            <a href="#produk">Coba Gratis</a>
+          </Button>
+          <Button variant="brand" asChild>
+            <a href="#kontak">Beli Sekarang</a>
+          </Button>
+        </div>
+
+        <button
+          aria-label="Toggle menu"
+          className="rounded-full p-2 text-foreground md:hidden"
+          onClick={() => setOpen((v) => !v)}
+        >
+          {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+        </button>
+      </div>
+
+      {open && (
+        <div className="border-t border-border/60 bg-background md:hidden">
+          <div className="space-y-1 px-4 py-4">
+            {links.map((l) => (
+              <a
+                key={l.href}
+                href={l.href}
+                onClick={() => setOpen(false)}
+                className="block rounded-xl px-3 py-2 text-base font-medium text-foreground hover:bg-muted"
+              >
+                {l.label}
+              </a>
+            ))}
+            <div className="flex gap-2 pt-2">
+              <Button variant="outline" className="flex-1" asChild>
+                <a href="#produk">Coba Gratis</a>
+              </Button>
+              <Button variant="brand" className="flex-1" asChild>
+                <a href="#kontak">Beli</a>
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
+    </header>
+  );
+}
