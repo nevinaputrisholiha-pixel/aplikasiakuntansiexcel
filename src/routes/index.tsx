@@ -1,29 +1,48 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { Navbar } from "@/components/landing/Navbar";
+import { Hero } from "@/components/landing/Hero";
+import { TrustStrip } from "@/components/landing/TrustStrip";
+import { Products } from "@/components/landing/Products";
+import { Advantages } from "@/components/landing/Advantages";
+import { HowItWorks } from "@/components/landing/HowItWorks";
+import { FAQ } from "@/components/landing/FAQ";
+import { Contact } from "@/components/landing/Contact";
+import { Footer } from "@/components/landing/Footer";
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Your App" },
-      { name: "description", content: "Replace this with a one-sentence description of your app." },
-      { property: "og:title", content: "Your App" },
-      { property: "og:description", content: "Replace this with a one-sentence description of your app." },
+      { title: "AplikasiAkuntansiExcel.com — Laporan Keuangan Jadi Lebih Mudah" },
+      {
+        name: "description",
+        content:
+          "Program akuntansi Excel siap pakai untuk usaha jasa, dagang, manufaktur, stok & buku kas. Bayar 1x, pakai seumur hidup, tanpa biaya bulanan.",
+      },
+      { property: "og:title", content: "AplikasiAkuntansiExcel.com — Laporan Keuangan Jadi Lebih Mudah" },
+      {
+        property: "og:description",
+        content:
+          "Solusi akuntansi Excel untuk UMKM Indonesia. Lengkap dengan 16 bonus program bisnis gratis.",
+      },
     ],
   }),
   component: Index,
 });
 
-// IMPORTANT: Replace this placeholder. See ./README.md for routing conventions.
 function Index() {
   return (
-    <div
-      className="flex min-h-screen items-center justify-center"
-      style={{ backgroundColor: "#fcfbf8" }}
-    >
-      <img
-        data-lovable-blank-page-placeholder="REMOVE_THIS"
-        src="https://cdn.gpteng.co/blank-app-v1.svg"
-        alt="Your app will live here!"
-      />
+    <div className="min-h-screen bg-background">
+      <Navbar />
+      <main>
+        <Hero />
+        <TrustStrip />
+        <Products />
+        <Advantages />
+        <HowItWorks />
+        <FAQ />
+        <Contact />
+      </main>
+      <Footer />
     </div>
   );
 }
