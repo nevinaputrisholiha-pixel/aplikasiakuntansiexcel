@@ -80,13 +80,7 @@ export function Products() {
               </div>
 
               <Button variant="brand" size="pill" className="mt-8" asChild>
-                <a
-                  href="https://drive.google.com/drive/folders/1Wnd0e-1KDEUQaqxM1QsA9etYiLLSbfZh?usp=drive_link"
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  Coba Gratis Sekarang
-                </a>
+                <a href="#kontak">Coba Gratis Sekarang</a>
               </Button>
             </div>
 
