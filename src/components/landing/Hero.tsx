@@ -50,7 +50,13 @@ export function Hero() {
               <a href="#produk">Lihat Produk</a>
             </Button>
             <Button variant="brandOutline" size="xl" asChild>
-              <a href="#kontak">Coba Gratis</a>
+              <a
+                href="https://drive.google.com/drive/folders/1Wnd0e-1KDEUQaqxM1QsA9etYiLLSbfZh?usp=drive_link"
+                target="_blank"
+                rel="noreferrer"
+              >
+                Coba Gratis
+              </a>
             </Button>
           </div>
         </div>
