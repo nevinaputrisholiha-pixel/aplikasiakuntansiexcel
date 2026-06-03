@@ -38,7 +38,13 @@ export function Navbar() {
 
         <div className="hidden items-center gap-3 md:flex">
           <Button variant="ghost" asChild>
-            <a href="#produk">Coba Gratis</a>
+            <a
+              href="https://drive.google.com/drive/folders/1Wnd0e-1KDEUQaqxM1QsA9etYiLLSbfZh?usp=drive_link"
+              target="_blank"
+              rel="noreferrer"
+            >
+              Coba Gratis
+            </a>
           </Button>
           <Button variant="brand" asChild>
             <a href="#kontak">Beli Sekarang</a>
@@ -69,7 +75,13 @@ export function Navbar() {
             ))}
             <div className="flex gap-2 pt-2">
               <Button variant="outline" className="flex-1" asChild>
-                <a href="#produk">Coba Gratis</a>
+                <a
+                  href="https://drive.google.com/drive/folders/1Wnd0e-1KDEUQaqxM1QsA9etYiLLSbfZh?usp=drive_link"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  Coba Gratis
+                </a>
               </Button>
               <Button variant="brand" className="flex-1" asChild>
                 <a href="#kontak">Beli</a>
