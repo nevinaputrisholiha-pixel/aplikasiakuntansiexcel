@@ -1,4 +1,4 @@
-import logoFull from "@/assets/logo-full.jpg.asset.json";
+import logoIcon from "@/assets/logo-icon.png.asset.json";
 
 export function Footer() {
   return (
@@ -6,7 +6,16 @@ export function Footer() {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="grid gap-10 md:grid-cols-4">
           <div className="md:col-span-2">
-            <img src={logoFull.url} alt="AplikasiAkuntansiExcel.com" className="h-10 w-auto" />
+            <div className="flex items-center gap-2">
+              <img
+                src={logoIcon.url}
+                alt="AplikasiAkuntansiExcel.com"
+                className="h-10 w-10 object-contain"
+              />
+              <span className="text-base font-bold text-brand-navy">
+                AplikasiAkuntansiExcel<span className="text-brand-teal">.com</span>
+              </span>
+            </div>
             <p className="mt-4 max-w-sm text-sm leading-relaxed text-muted-foreground">
               Solusi program akuntansi berbasis Excel siap pakai untuk berbagai
               jenis usaha di Indonesia. Bayar sekali, pakai seumur hidup.

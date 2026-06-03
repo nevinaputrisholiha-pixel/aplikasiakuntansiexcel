@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
-import logoFull from "@/assets/logo-full.jpg.asset.json";
+import logoIcon from "@/assets/logo-icon.png.asset.json";
 import { Button } from "@/components/ui/button";
 
 const links = [
@@ -18,10 +18,13 @@ export function Navbar() {
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
         <a href="#top" className="flex items-center gap-2">
           <img
-            src={logoFull.url}
+            src={logoIcon.url}
             alt="AplikasiAkuntansiExcel.com"
-            className="h-9 w-auto md:h-10"
+            className="h-8 w-8 md:h-9 md:w-9 object-contain"
           />
+          <span className="text-sm font-bold text-brand-navy sm:text-base">
+            AplikasiAkuntansiExcel<span className="text-brand-teal">.com</span>
+          </span>
         </a>
 
         <nav className="hidden items-center gap-8 md:flex">
