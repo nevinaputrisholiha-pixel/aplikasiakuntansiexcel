@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Check, Sparkles } from "lucide-react";
-import logoMark from "@/assets/logo-mark.jpg.asset.json";
+import heroIllustration from "@/assets/hero-illustration.png.asset.json";
 
 const bullets = [
   "Bayar 1x, pakai seumur hidup",
@@ -57,61 +57,23 @@ export function Hero() {
 
         <div className="relative flex items-center justify-center">
           <div className="absolute inset-0 -z-10 rounded-[3rem] bg-gradient-brand opacity-20 blur-3xl" />
-          <DashboardMock logo={logoMark.url} />
+          <HeroIllustration src={heroIllustration.url} />
         </div>
       </div>
     </section>
   );
 }
 
-function DashboardMock({ logo }: { logo: string }) {
-  const rows = [
-    { label: "Pendapatan Jasa", value: "Rp 48.250.000", tone: "text-emerald-600" },
-    { label: "Beban Operasional", value: "Rp 12.840.000", tone: "text-rose-500" },
-    { label: "Laba Bersih", value: "Rp 35.410.000", tone: "text-brand-teal" },
-  ];
+function HeroIllustration({ src }: { src: string }) {
   return (
-    <div className="w-full max-w-md rotate-1 rounded-3xl bg-white p-5 shadow-card ring-1 ring-border md:max-w-lg md:p-6">
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <img src={logo} alt="" className="h-8 w-8 object-contain" />
-          <div>
-            <p className="text-xs text-muted-foreground">Laporan Bulanan</p>
-            <p className="text-sm font-semibold text-brand-navy">Laba Rugi · Mei 2026</p>
-          </div>
-        </div>
-        <span className="rounded-full bg-brand-mint/30 px-2.5 py-1 text-[10px] font-semibold text-brand-teal">
-          AUTO
-        </span>
-      </div>
-
-      <div className="mt-5 rounded-2xl bg-surface-soft p-4">
-        <div className="flex items-end justify-between gap-1.5">
-          {[40, 65, 50, 80, 55, 90, 72].map((h, i) => (
-            <div key={i} className="flex flex-1 flex-col items-center gap-1.5">
-              <div
-                className="w-full rounded-t-lg bg-gradient-brand"
-                style={{ height: `${h}px` }}
-              />
-              <span className="text-[9px] text-muted-foreground">
-                {["S", "S", "R", "K", "J", "S", "M"][i]}
-              </span>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      <div className="mt-4 space-y-2.5">
-        {rows.map((r) => (
-          <div
-            key={r.label}
-            className="flex items-center justify-between rounded-xl border border-border/70 bg-white px-4 py-3"
-          >
-            <span className="text-xs font-medium text-muted-foreground">{r.label}</span>
-            <span className={`text-sm font-bold ${r.tone}`}>{r.value}</span>
-          </div>
-        ))}
-      </div>
+    <div className="relative w-full max-w-md md:max-w-lg">
+      <img
+        src={src}
+        alt="Ilustrasi dokumen Excel dengan grafik keuangan, tabel angka, dan checklist hijau melayang"
+        width={1024}
+        height={1024}
+        className="h-auto w-full animate-fade-in object-contain drop-shadow-[0_30px_60px_oklch(0.16_0.09_280/0.18)]"
+      />
     </div>
   );
 }
