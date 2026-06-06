@@ -1,12 +1,30 @@
 import { useState } from "react";
 import { products } from "./data";
-import { Check } from "lucide-react";
+import { Check, X, Download, Sparkles, Gift, Infinity as InfinityIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
+
+type Tier = "lengkap" | "standar";
+
+const formatRp = (n: number) =>
+  "Rp " + n.toLocaleString("id-ID");
 
 export function Products() {
   const [active, setActive] = useState(products[0].id);
+  const [tier, setTier] = useState<Tier>("lengkap");
   const current = products.find((p) => p.id === active) ?? products[0];
   const Icon = current.icon;
+
+  // Buku Kas: only lengkap exists. Show lengkap data even on standar toggle.
+  const onlyLengkap = current.variants.standar === null;
+  const effectiveTier: Tier = onlyLengkap ? "lengkap" : tier;
+  const variant =
+    effectiveTier === "lengkap"
+      ? current.variants.lengkap
+      : current.variants.standar ?? current.variants.lengkap;
+
+  const discount = Math.round(
+    ((variant.originalPrice - variant.price) / variant.originalPrice) * 100,
+  );
 
   return (
     <section id="produk" className="py-20 md:py-28">
@@ -24,7 +42,39 @@ export function Products() {
           </p>
         </div>
 
-        <div className="mt-10 flex flex-wrap justify-center gap-2">
+        {/* Tier toggle (Sakelar) */}
+        <div className="mt-8 flex justify-center">
+          <div className="inline-flex items-center rounded-full bg-white p-1.5 shadow-card ring-1 ring-border">
+            {(["standar", "lengkap"] as Tier[]).map((t) => {
+              const isOn = tier === t;
+              return (
+                <button
+                  key={t}
+                  onClick={() => setTier(t)}
+                  className={`relative inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-semibold transition-all ${
+                    isOn
+                      ? "bg-gradient-brand text-white shadow-glow"
+                      : "text-brand-navy/70 hover:text-brand-navy"
+                  }`}
+                >
+                  {t === "lengkap" && <Sparkles className="h-4 w-4" />}
+                  Versi {t === "lengkap" ? "Lengkap" : "Standar"}
+                  {t === "lengkap" && (
+                    <span
+                      className={`rounded-full px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider ${
+                        isOn ? "bg-white/20 text-white" : "bg-brand-mint/40 text-brand-teal"
+                      }`}
+                    >
+                      Populer
+                    </span>
+                  )}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+        <div className="mt-8 flex flex-wrap justify-center gap-2">
           {products.map((p) => {
             const I = p.icon;
             const isActive = p.id === active;
@@ -63,7 +113,36 @@ export function Products() {
                 {current.description}
               </p>
 
-              <div className="mt-8">
+              {/* Pricing */}
+              <div className="mt-6 rounded-2xl bg-white/80 p-5 shadow-soft backdrop-blur">
+                {onlyLengkap && tier === "standar" && (
+                  <div className="mb-3 inline-flex items-center gap-1.5 rounded-full bg-brand-navy px-3 py-1 text-[11px] font-bold uppercase tracking-wider text-white">
+                    <Sparkles className="h-3 w-3" /> Hanya Tersedia Versi Lengkap
+                  </div>
+                )}
+                <div className="flex items-baseline gap-3">
+                  <span className="text-3xl font-extrabold text-brand-navy md:text-4xl">
+                    {formatRp(variant.price)}
+                  </span>
+                  <span className="text-sm text-muted-foreground line-through">
+                    {formatRp(variant.originalPrice)}
+                  </span>
+                </div>
+                <div className="mt-2 flex flex-wrap items-center gap-2">
+                  <span className="inline-flex items-center rounded-full bg-red-500 px-2.5 py-0.5 text-[11px] font-bold text-white">
+                    Promo {discount}%
+                  </span>
+                  <span className="inline-flex items-center gap-1 rounded-full bg-brand-mint/40 px-2.5 py-0.5 text-[11px] font-semibold text-brand-teal">
+                    <InfinityIcon className="h-3 w-3" /> Bayar 1x, Pakai Seumur Hidup
+                  </span>
+                </div>
+                <div className="mt-2 inline-flex items-center gap-1.5 text-xs font-medium text-brand-navy/80">
+                  <Gift className="h-3.5 w-3.5 text-brand-teal" />
+                  16 Bonus Senilai Rp 1.500.000 GRATIS
+                </div>
+              </div>
+
+              <div className="mt-6">
                 <p className="text-xs font-semibold uppercase tracking-wider text-brand-navy/70">
                   Cocok untuk
                 </p>
@@ -79,17 +158,43 @@ export function Products() {
                 </div>
               </div>
 
-              <Button variant="brand" size="pill" className="mt-8" asChild>
-                <a href="#kontak">Coba Gratis Sekarang</a>
-              </Button>
+              <div className="mt-6 flex flex-wrap gap-3">
+                <Button variant="brand" size="pill" asChild>
+                  <a
+                    href={variant.downloadFile}
+                    download
+                  >
+                    <Download className="h-4 w-4" />
+                    Coba Gratis
+                  </a>
+                </Button>
+                <Button variant="whatsapp" size="pill" asChild>
+                  <a
+                    href={`https://wa.me/6285213556300?text=${encodeURIComponent(
+                      `Halo, saya tertarik membeli ${current.name} Versi ${effectiveTier === "lengkap" ? "Lengkap" : "Standar"}.`,
+                    )}`}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    Beli via WhatsApp
+                  </a>
+                </Button>
+              </div>
             </div>
 
             <div className="border-t border-border bg-white p-8 lg:col-span-3 lg:border-l lg:border-t-0 lg:p-10">
-              <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-                Fitur Utama
-              </p>
+              <div className="flex items-center justify-between">
+                <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                  Fitur {effectiveTier === "lengkap" ? "Lengkap" : "Standar"}
+                </p>
+                <span className="text-xs font-medium text-muted-foreground">
+                  {current.baseFeatures.length +
+                    (effectiveTier === "lengkap" ? current.extraFeatures.length : 0)}{" "}
+                  fitur aktif
+                </span>
+              </div>
               <ul className="mt-5 grid gap-3 sm:grid-cols-2">
-                {current.features.map((f) => (
+                {current.baseFeatures.map((f) => (
                   <li
                     key={f}
                     className="flex items-start gap-2.5 rounded-xl border border-border/60 bg-surface-soft px-3.5 py-2.5"
@@ -100,6 +205,40 @@ export function Products() {
                     <span className="text-sm font-medium text-foreground">{f}</span>
                   </li>
                 ))}
+                {current.extraFeatures.map((f) => {
+                  const enabled = effectiveTier === "lengkap";
+                  return (
+                    <li
+                      key={f}
+                      className={`flex items-start gap-2.5 rounded-xl border px-3.5 py-2.5 transition-all ${
+                        enabled
+                          ? "border-border/60 bg-surface-soft"
+                          : "border-dashed border-border/60 bg-muted/40"
+                      }`}
+                    >
+                      <span
+                        className={`mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full ${
+                          enabled
+                            ? "bg-gradient-brand text-white"
+                            : "bg-muted text-muted-foreground"
+                        }`}
+                      >
+                        {enabled ? (
+                          <Check className="h-3 w-3" strokeWidth={3} />
+                        ) : (
+                          <X className="h-3 w-3" strokeWidth={3} />
+                        )}
+                      </span>
+                      <span
+                        className={`text-sm font-medium ${
+                          enabled ? "text-foreground" : "text-muted-foreground line-through"
+                        }`}
+                      >
+                        {f}
+                      </span>
+                    </li>
+                  );
+                })}
               </ul>
             </div>
           </div>
