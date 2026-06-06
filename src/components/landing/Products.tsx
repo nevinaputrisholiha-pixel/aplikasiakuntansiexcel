@@ -74,25 +74,27 @@ export function Products() {
           </div>
         </div>
 
-        <div className="mt-8 flex flex-wrap justify-center gap-2">
-          {products.map((p) => {
-            const I = p.icon;
-            const isActive = p.id === active;
-            return (
-              <button
-                key={p.id}
-                onClick={() => setActive(p.id)}
-                className={`group inline-flex items-center gap-2 rounded-full px-4 py-2.5 text-sm font-semibold transition-all ${
-                  isActive
-                    ? "bg-gradient-brand text-white shadow-glow"
-                    : "bg-white text-brand-navy ring-1 ring-border hover:ring-brand-teal/50"
-                }`}
-              >
-                <I className="h-4 w-4" />
-                {p.name.split(" / ")[0]}
-              </button>
-            );
-          })}
+        <div className="mt-8 -mx-4 overflow-x-auto px-4 sm:mx-0 sm:px-0 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+          <div className="flex w-max gap-2 sm:w-auto sm:flex-wrap sm:justify-center">
+            {products.map((p) => {
+              const I = p.icon;
+              const isActive = p.id === active;
+              return (
+                <button
+                  key={p.id}
+                  onClick={() => setActive(p.id)}
+                  className={`group inline-flex shrink-0 items-center gap-2 whitespace-nowrap rounded-full px-4 py-2.5 text-sm font-semibold transition-all ${
+                    isActive
+                      ? "bg-gradient-brand text-white shadow-glow"
+                      : "bg-white text-brand-navy ring-1 ring-border hover:ring-brand-teal/50"
+                  }`}
+                >
+                  <I className="h-4 w-4" />
+                  {p.name.replace("Akuntansi ", "")}
+                </button>
+              );
+            })}
+          </div>
         </div>
 
         <div className="mt-10 overflow-hidden rounded-[2rem] bg-white shadow-card ring-1 ring-border">
