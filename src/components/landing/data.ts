@@ -1,6 +1,5 @@
 import {
   Briefcase,
-  HardHat,
   ShoppingBag,
   Factory,
   Boxes,
@@ -33,10 +32,10 @@ export type ProductVariant = {
 export const products: Product[] = [
   {
     id: "jasa",
-    name: "Akuntansi Jasa",
+    name: "Akuntansi Jasa / Kontraktor",
     tagline: "Tanpa stok, tanpa HPP",
     description:
-      "Khusus untuk usaha jasa. Tidak memiliki stok barang dagangan dan tidak memerlukan perhitungan Harga Pokok Penjualan.",
+      "Khusus untuk usaha jasa & kontraktor. Tidak memiliki stok barang dagangan dan tidak memerlukan perhitungan Harga Pokok Penjualan.",
     baseFeatures: [
       "Home",
       "Kode Akun",
@@ -65,6 +64,7 @@ export const products: Product[] = [
     },
     targets: [
       "Salon",
+      "Kontraktor Jasa",
       "Warnet",
       "Cuci Mobil & Motor",
       "Bengkel",
@@ -82,49 +82,6 @@ export const products: Product[] = [
     ],
     icon: Briefcase,
     accent: "from-brand-mint/30 to-brand-teal/10",
-  },
-  {
-    id: "kontraktor",
-    name: "Akuntansi Kontraktor",
-    tagline: "Per proyek, tanpa stok",
-    description:
-      "Dirancang untuk kontraktor proyek — mengelola pemasukan termin, biaya material & upah per proyek, tanpa repot stok dagangan maupun perhitungan HPP barang.",
-    baseFeatures: [
-      "Home",
-      "Kode Akun",
-      "Ayat Jurnal Penyesuaian",
-      "Jurnal Umum per Proyek",
-      "Buku Besar",
-      "Neraca Lajur",
-      "Laba Rugi per Proyek",
-      "Neraca",
-    ],
-    extraFeatures: [
-      "Daftar Hutang Piutang Proyek",
-      "Penyusutan Aktiva Tetap",
-      "Jurnal Penyusutan Aktiva Tetap",
-      "Neraca Perbandingan Antar Proyek",
-      "Arus Kas Proyek",
-      "Buku Besar Hutang Piutang",
-      "Hutang Piutang Jatuh Tempo",
-      "Laporan Piutang Termin",
-      "Laporan Hutang Subkontraktor",
-      "Rekonsiliasi Bank",
-    ],
-    variants: {
-      lengkap: { price: 585000, originalPrice: 1170000, downloadFile: "/demos/demo-kontraktor-lengkap.xlsx" },
-      standar: { price: 385000, originalPrice: 770000, downloadFile: "/demos/demo-kontraktor-standar.xlsx" },
-    },
-    targets: [
-      "Kontraktor Bangunan",
-      "Kontraktor Interior",
-      "Kontraktor Sipil",
-      "Kontraktor Mekanikal & Elektrikal",
-      "Kontraktor Renovasi",
-      "Subkontraktor Proyek",
-    ],
-    icon: HardHat,
-    accent: "from-brand-cyan/20 to-brand-teal/10",
   },
   {
     id: "dagang",
