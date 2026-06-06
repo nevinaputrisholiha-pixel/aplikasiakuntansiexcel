@@ -12,10 +12,21 @@ export type Product = {
   name: string;
   tagline: string;
   description: string;
-  features: string[];
+  variants: {
+    lengkap: ProductVariant;
+    standar: ProductVariant | null; // null = only lengkap available
+  };
+  baseFeatures: string[]; // shown in both, with checks
+  extraFeatures: string[]; // shown only in lengkap (greyed out in standar)
   targets: string[];
   icon: LucideIcon;
   accent: string; // tailwind class for tinted accent
+};
+
+export type ProductVariant = {
+  price: number;
+  originalPrice: number;
+  downloadFile: string; // path under /demos/
 };
 
 export const products: Product[] = [
@@ -25,25 +36,32 @@ export const products: Product[] = [
     tagline: "Tanpa stok, tanpa HPP",
     description:
       "Khusus untuk usaha jasa & kontraktor. Tidak memiliki stok barang dagangan dan tidak memerlukan perhitungan Harga Pokok Penjualan.",
-    features: [
+    baseFeatures: [
+      "Home",
       "Kode Akun",
-      "Daftar Hutang Piutang",
-      "Penyusutan Aktiva Tetap",
-      "Jurnal Penyusutan Aktiva Tetap",
       "Ayat Jurnal Penyesuaian",
       "Jurnal Umum",
       "Buku Besar",
       "Neraca Lajur",
       "Laba Rugi",
       "Neraca",
+    ],
+    extraFeatures: [
+      "Daftar Hutang Piutang",
+      "Penyusutan Aktiva Tetap",
+      "Jurnal Penyusutan Aktiva Tetap",
       "Neraca Perbandingan",
       "Arus Kas",
       "Buku Besar Hutang Piutang",
-      "Jatuh Tempo Pembayaran",
+      "Hutang Piutang Jatuh Tempo",
       "Laporan Piutang",
       "Laporan Hutang",
       "Rekonsiliasi Bank",
     ],
+    variants: {
+      lengkap: { price: 585000, originalPrice: 1170000, downloadFile: "/demos/demo-jasa-lengkap.xlsx" },
+      standar: { price: 385000, originalPrice: 770000, downloadFile: "/demos/demo-jasa-standar.xlsx" },
+    },
     targets: [
       "Salon",
       "Kontraktor Jasa",
@@ -71,11 +89,9 @@ export const products: Product[] = [
     tagline: "Lengkap dengan HPP",
     description:
       "Dirancang untuk usaha jual beli. Mengelola stok barang dagangan, transaksi pembelian–penjualan, lengkap dengan perhitungan HPP otomatis.",
-    features: [
+    baseFeatures: [
+      "Home",
       "Kode Akun",
-      "Daftar Hutang Piutang",
-      "Penyusutan Aktiva Tetap",
-      "Jurnal Penyusutan Aktiva Tetap",
       "Ayat Jurnal Penyesuaian",
       "Jurnal Umum",
       "Buku Besar",
@@ -83,14 +99,23 @@ export const products: Product[] = [
       "Neraca Lajur",
       "Laba Rugi",
       "Neraca",
+    ],
+    extraFeatures: [
+      "Daftar Hutang Piutang",
+      "Penyusutan Aktiva Tetap",
+      "Jurnal Penyusutan Aktiva Tetap",
       "Neraca Perbandingan",
       "Arus Kas",
       "Buku Besar Hutang Piutang",
-      "Jatuh Tempo Pembayaran",
+      "Hutang Piutang Jatuh Tempo",
       "Laporan Piutang",
       "Laporan Hutang",
       "Rekonsiliasi Bank",
     ],
+    variants: {
+      lengkap: { price: 585000, originalPrice: 1170000, downloadFile: "/demos/demo-dagang-lengkap.xlsx" },
+      standar: { price: 385000, originalPrice: 770000, downloadFile: "/demos/demo-dagang-standar.xlsx" },
+    },
     targets: [
       "Toko Tas",
       "Toko Buku",
@@ -109,27 +134,34 @@ export const products: Product[] = [
     tagline: "HPP Produksi + HPP Penjualan",
     description:
       "Untuk usaha produksi. Mengelola stok bahan baku, barang dalam proses, dan barang jadi, plus perhitungan Harga Pokok Produksi & Harga Pokok Penjualan.",
-    features: [
+    baseFeatures: [
+      "Home",
       "Kode Akun",
-      "Daftar Hutang Piutang",
-      "Penyusutan Aktiva Tetap",
-      "Jurnal Penyusutan Aktiva Tetap",
       "Ayat Jurnal Penyesuaian",
       "Jurnal Umum",
       "Buku Besar",
-      "Harga Pokok Produksi",
       "Harga Pokok Penjualan (HPP)",
+      "Harga Pokok Produksi",
       "Neraca Lajur",
       "Laba Rugi",
       "Neraca",
+    ],
+    extraFeatures: [
+      "Daftar Hutang Piutang",
+      "Penyusutan Aktiva Tetap",
+      "Jurnal Penyusutan Aktiva Tetap",
       "Neraca Perbandingan",
       "Arus Kas",
       "Buku Besar Hutang Piutang",
-      "Jatuh Tempo Pembayaran",
+      "Hutang Piutang Jatuh Tempo",
       "Laporan Piutang",
       "Laporan Hutang",
       "Rekonsiliasi Bank",
     ],
+    variants: {
+      lengkap: { price: 585000, originalPrice: 1170000, downloadFile: "/demos/demo-manufaktur-lengkap.xlsx" },
+      standar: { price: 385000, originalPrice: 770000, downloadFile: "/demos/demo-manufaktur-standar.xlsx" },
+    },
     targets: [
       "Restoran",
       "Cafe",
@@ -151,16 +183,26 @@ export const products: Product[] = [
     tagline: "Persediaan & penjualan",
     description:
       "Aplikasi persediaan & penjualan untuk usaha dengan stok barang fisik, baik bahan baku maupun barang siap jual.",
-    features: [
+    baseFeatures: [
+      "Home",
       "Daftar Produk",
-      "Daftar Agen, Reseller, Retailer",
       "Jurnal",
-      "Kartu Stok Otomatis",
-      "Laporan Sisa Stok Otomatis (level minimum)",
-      "Invoice Penjualan",
-      "Laporan Pembelian Produk",
-      "Laporan Penjualan per produk / agen / reseller / salesman",
+      "Laporan Kartu Stok Otomatis",
+      "Laporan Sisa Stok Otomatis",
+      "Laporan Penjualan Produk",
     ],
+    extraFeatures: [
+      "Daftar Agen / Reseller / Retailer",
+      "Invoice & Surat Jalan Otomatis",
+      "Laporan Pembelian Produk",
+      "Laporan Penjualan per Agen",
+      "Laporan Penjualan per Reseller",
+      "Laporan Penjualan per Retailer",
+    ],
+    variants: {
+      lengkap: { price: 385000, originalPrice: 770000, downloadFile: "/demos/demo-stok-lengkap.xlsx" },
+      standar: { price: 185000, originalPrice: 370000, downloadFile: "/demos/demo-stok-standar.xlsx" },
+    },
     targets: ["Usaha perdagangan dengan stok barang fisik"],
     icon: Boxes,
     accent: "from-brand-mint/30 to-brand-cyan/10",
@@ -171,7 +213,12 @@ export const products: Product[] = [
     tagline: "Sederhana untuk yayasan & pribadi",
     description:
       "Buku kas untuk yayasan non-profit, usaha rintisan, atau pengelolaan keuangan pribadi & keluarga.",
-    features: ["Menu Home", "Buku Besar", "Jurnal (ribuan baris transaksi)"],
+    baseFeatures: ["Home", "Kode Akun", "Jurnal Umum", "Buku Besar"],
+    extraFeatures: [],
+    variants: {
+      lengkap: { price: 185000, originalPrice: 370000, downloadFile: "/demos/demo-bukukas-lengkap.xlsx" },
+      standar: null,
+    },
     targets: ["Yayasan non-profit", "Usaha rintisan", "Individu", "Keluarga"],
     icon: Wallet,
     accent: "from-brand-cyan/30 to-brand-mint/10",
