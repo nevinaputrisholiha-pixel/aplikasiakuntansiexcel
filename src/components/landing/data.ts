@@ -4,6 +4,7 @@ import {
   Factory,
   Boxes,
   Wallet,
+  HardHat,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 
@@ -32,10 +33,10 @@ export type ProductVariant = {
 export const products: Product[] = [
   {
     id: "jasa",
-    name: "Akuntansi Jasa / Kontraktor",
+    name: "Akuntansi Jasa",
     tagline: "Tanpa stok, tanpa HPP",
     description:
-      "Khusus untuk usaha jasa & kontraktor. Tidak memiliki stok barang dagangan dan tidak memerlukan perhitungan Harga Pokok Penjualan.",
+      "Khusus untuk usaha jasa. Tidak memiliki stok barang dagangan dan tidak memerlukan perhitungan Harga Pokok Penjualan.",
     baseFeatures: [
       "Home",
       "Kode Akun",
@@ -64,7 +65,6 @@ export const products: Product[] = [
     },
     targets: [
       "Salon",
-      "Kontraktor Jasa",
       "Warnet",
       "Cuci Mobil & Motor",
       "Bengkel",
@@ -82,6 +82,51 @@ export const products: Product[] = [
     ],
     icon: Briefcase,
     accent: "from-brand-mint/30 to-brand-teal/10",
+  },
+  {
+    id: "kontraktor",
+    name: "Akuntansi Kontraktor",
+    tagline: "Pemisahan biaya per proyek",
+    description:
+      "Khusus untuk usaha kontraktor & jasa konstruksi. Mengelola pemisahan biaya per proyek, daftar proyek, hingga laporan proyek dalam proses.",
+    baseFeatures: [
+      "Home",
+      "Kode Akun",
+      "Daftar Proyek",
+      "Ayat Jurnal Penyesuaian",
+      "Jurnal Umum",
+      "Buku Besar",
+      "Proyek Dalam Proses",
+      "Neraca Lajur",
+      "Laba Rugi",
+      "Neraca",
+    ],
+    extraFeatures: [
+      "Daftar Hutang Piutang",
+      "Penyusutan Aktiva Tetap",
+      "Jurnal Penyusutan Aktiva Tetap",
+      "Neraca Perbandingan",
+      "Arus Kas",
+      "Buku Besar Hutang Piutang",
+      "Hutang Piutang Jatuh Tempo",
+      "Laporan Piutang",
+      "Laporan Hutang",
+      "Rekonsiliasi Bank",
+    ],
+    variants: {
+      lengkap: { price: 585000, originalPrice: 1170000, downloadFile: "/demos/demo-kontraktor-lengkap.xlsx" },
+      standar: null,
+    },
+    targets: [
+      "Kontraktor Bangunan",
+      "Jasa Konstruksi",
+      "Jasa Renovasi",
+      "Kontraktor Interior",
+      "Developer Properti",
+      "Jasa Instalasi",
+    ],
+    icon: HardHat,
+    accent: "from-brand-teal/30 to-brand-mint/10",
   },
   {
     id: "dagang",
