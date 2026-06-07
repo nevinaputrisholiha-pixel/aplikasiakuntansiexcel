@@ -169,6 +169,37 @@ export function Products() {
                 </div>
               </div>
 
+              {hasSubVariants && (
+                <div className="mt-6">
+                  <p className="text-xs font-semibold uppercase tracking-wider text-brand-navy/70">
+                    Pilih Sub-Varian Lengkap
+                  </p>
+                  <div className="mt-3 inline-flex flex-wrap gap-2 rounded-2xl bg-white/70 p-1.5 shadow-soft backdrop-blur ring-1 ring-border/60">
+                    {current.subVariants!.map((sv) => {
+                      const isOn = activeSub?.id === sv.id;
+                      return (
+                        <button
+                          key={sv.id}
+                          onClick={() => setSubVariantId(sv.id)}
+                          className={`rounded-xl px-3.5 py-2 text-xs font-semibold transition-all ${
+                            isOn
+                              ? "bg-gradient-brand text-white shadow-glow"
+                              : "text-brand-navy/70 hover:text-brand-navy"
+                          }`}
+                        >
+                          {sv.name}
+                        </button>
+                      );
+                    })}
+                  </div>
+                  {activeSub && (
+                    <p className="mt-2 text-xs leading-relaxed text-brand-navy/70">
+                      {activeSub.highlight}
+                    </p>
+                  )}
+                </div>
+              )}
+
               <div className="mt-6 flex flex-wrap gap-3">
                 <Button variant="brand" size="pill" asChild>
                   <a
