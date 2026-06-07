@@ -228,15 +228,21 @@ export function Products() {
               <div className="flex items-center justify-between">
                 <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
                   Fitur {effectiveTier === "lengkap" ? "Lengkap" : "Standar"}
+                  {hasSubVariants && activeSub ? ` — ${activeSub.name}` : ""}
                 </p>
                 <span className="text-xs font-medium text-muted-foreground">
-                  {current.baseFeatures.length +
-                    (effectiveTier === "lengkap" ? current.extraFeatures.length : 0)}{" "}
+                  {hasSubVariants && activeSub
+                    ? activeSub.features.length
+                    : current.baseFeatures.length +
+                      (effectiveTier === "lengkap" ? current.extraFeatures.length : 0)}{" "}
                   fitur aktif
                 </span>
               </div>
               <ul className="mt-5 grid gap-3 sm:grid-cols-2">
-                {current.baseFeatures.map((f) => (
+                {(hasSubVariants && activeSub
+                  ? activeSub.features
+                  : current.baseFeatures
+                ).map((f) => (
                   <li
                     key={f}
                     className="flex items-start gap-2.5 rounded-xl border border-border/60 bg-surface-soft px-3.5 py-2.5"
@@ -247,7 +253,7 @@ export function Products() {
                     <span className="text-sm font-medium text-foreground">{f}</span>
                   </li>
                 ))}
-                {current.extraFeatures.map((f) => {
+                {!hasSubVariants && current.extraFeatures.map((f) => {
                   const enabled = effectiveTier === "lengkap";
                   return (
                     <li
