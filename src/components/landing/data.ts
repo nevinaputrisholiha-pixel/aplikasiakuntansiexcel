@@ -22,6 +22,7 @@ export type Product = {
   targets: string[];
   icon: LucideIcon;
   accent: string; // tailwind class for tinted accent
+  subVariants?: SubVariant[];
 };
 
 export type ProductVariant = {
