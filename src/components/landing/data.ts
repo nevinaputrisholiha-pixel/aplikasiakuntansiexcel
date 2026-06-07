@@ -22,12 +22,24 @@ export type Product = {
   targets: string[];
   icon: LucideIcon;
   accent: string; // tailwind class for tinted accent
+  // Optional: when present, the Lengkap mode renders a sub-selector
+  // (e.g. Stok Barang -> Agen/Reseller/Retailer vs Sales/Reseller).
+  // Each sub-variant overrides the feature checklist and the download file.
+  lengkapSubVariants?: LengkapSubVariant[];
 };
 
 export type ProductVariant = {
   price: number;
   originalPrice: number;
   downloadFile: string; // path under /demos/
+};
+
+export type LengkapSubVariant = {
+  id: string;
+  name: string;
+  highlight: string;
+  features: string[];
+  downloadFile: string;
 };
 
 export const products: Product[] = [
