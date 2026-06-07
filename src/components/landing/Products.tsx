@@ -11,6 +11,7 @@ const formatRp = (n: number) =>
 export function Products() {
   const [active, setActive] = useState(products[0].id);
   const [tier, setTier] = useState<Tier>("lengkap");
+  const [subVariantId, setSubVariantId] = useState<string | null>(null);
   const current = products.find((p) => p.id === active) ?? products[0];
   const Icon = current.icon;
 
@@ -21,6 +22,14 @@ export function Products() {
     effectiveTier === "lengkap"
       ? current.variants.lengkap
       : current.variants.standar ?? current.variants.lengkap;
+
+  const hasSubVariants =
+    effectiveTier === "lengkap" && !!current.subVariants?.length;
+  const activeSub = hasSubVariants
+    ? current.subVariants!.find((s) => s.id === subVariantId) ??
+      current.subVariants![0]
+    : null;
+  const downloadHref = activeSub?.downloadFile ?? variant.downloadFile;
 
   const discount = Math.round(
     ((variant.originalPrice - variant.price) / variant.originalPrice) * 100,
@@ -160,10 +169,41 @@ export function Products() {
                 </div>
               </div>
 
+              {hasSubVariants && (
+                <div className="mt-6">
+                  <p className="text-xs font-semibold uppercase tracking-wider text-brand-navy/70">
+                    Pilih Sub-Varian Lengkap
+                  </p>
+                  <div className="mt-3 inline-flex flex-wrap gap-2 rounded-2xl bg-white/70 p-1.5 shadow-soft backdrop-blur ring-1 ring-border/60">
+                    {current.subVariants!.map((sv) => {
+                      const isOn = activeSub?.id === sv.id;
+                      return (
+                        <button
+                          key={sv.id}
+                          onClick={() => setSubVariantId(sv.id)}
+                          className={`rounded-xl px-3.5 py-2 text-xs font-semibold transition-all ${
+                            isOn
+                              ? "bg-gradient-brand text-white shadow-glow"
+                              : "text-brand-navy/70 hover:text-brand-navy"
+                          }`}
+                        >
+                          {sv.name}
+                        </button>
+                      );
+                    })}
+                  </div>
+                  {activeSub && (
+                    <p className="mt-2 text-xs leading-relaxed text-brand-navy/70">
+                      {activeSub.highlight}
+                    </p>
+                  )}
+                </div>
+              )}
+
               <div className="mt-6 flex flex-wrap gap-3">
                 <Button variant="brand" size="pill" asChild>
                   <a
-                    href={variant.downloadFile}
+                    href={downloadHref}
                     download
                   >
                     <Download className="h-4 w-4" />
@@ -188,15 +228,21 @@ export function Products() {
               <div className="flex items-center justify-between">
                 <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
                   Fitur {effectiveTier === "lengkap" ? "Lengkap" : "Standar"}
+                  {hasSubVariants && activeSub ? ` — ${activeSub.name}` : ""}
                 </p>
                 <span className="text-xs font-medium text-muted-foreground">
-                  {current.baseFeatures.length +
-                    (effectiveTier === "lengkap" ? current.extraFeatures.length : 0)}{" "}
+                  {hasSubVariants && activeSub
+                    ? activeSub.features.length
+                    : current.baseFeatures.length +
+                      (effectiveTier === "lengkap" ? current.extraFeatures.length : 0)}{" "}
                   fitur aktif
                 </span>
               </div>
               <ul className="mt-5 grid gap-3 sm:grid-cols-2">
-                {current.baseFeatures.map((f) => (
+                {(hasSubVariants && activeSub
+                  ? activeSub.features
+                  : current.baseFeatures
+                ).map((f) => (
                   <li
                     key={f}
                     className="flex items-start gap-2.5 rounded-xl border border-border/60 bg-surface-soft px-3.5 py-2.5"
@@ -207,7 +253,7 @@ export function Products() {
                     <span className="text-sm font-medium text-foreground">{f}</span>
                   </li>
                 ))}
-                {current.extraFeatures.map((f) => {
+                {!hasSubVariants && current.extraFeatures.map((f) => {
                   const enabled = effectiveTier === "lengkap";
                   return (
                     <li
