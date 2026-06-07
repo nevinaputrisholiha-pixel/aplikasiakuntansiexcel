@@ -11,6 +11,7 @@ const formatRp = (n: number) =>
 export function Products() {
   const [active, setActive] = useState(products[0].id);
   const [tier, setTier] = useState<Tier>("lengkap");
+  const [subVariantId, setSubVariantId] = useState<string | null>(null);
   const current = products.find((p) => p.id === active) ?? products[0];
   const Icon = current.icon;
 
@@ -21,6 +22,14 @@ export function Products() {
     effectiveTier === "lengkap"
       ? current.variants.lengkap
       : current.variants.standar ?? current.variants.lengkap;
+
+  const hasSubVariants =
+    effectiveTier === "lengkap" && !!current.subVariants?.length;
+  const activeSub = hasSubVariants
+    ? current.subVariants!.find((s) => s.id === subVariantId) ??
+      current.subVariants![0]
+    : null;
+  const downloadHref = activeSub?.downloadFile ?? variant.downloadFile;
 
   const discount = Math.round(
     ((variant.originalPrice - variant.price) / variant.originalPrice) * 100,
