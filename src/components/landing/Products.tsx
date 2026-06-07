@@ -11,6 +11,7 @@ const formatRp = (n: number) =>
 export function Products() {
   const [active, setActive] = useState(products[0].id);
   const [tier, setTier] = useState<Tier>("lengkap");
+  const [subVariantId, setSubVariantId] = useState<string | null>(null);
   const current = products.find((p) => p.id === active) ?? products[0];
   const Icon = current.icon;
 
@@ -21,6 +22,14 @@ export function Products() {
     effectiveTier === "lengkap"
       ? current.variants.lengkap
       : current.variants.standar ?? current.variants.lengkap;
+
+  // Sub-variants only apply in Lengkap mode for products that define them
+  // (currently Stok Barang). Default to the first sub-variant.
+  const subVariants =
+    effectiveTier === "lengkap" ? current.lengkapSubVariants ?? null : null;
+  const activeSubVariant =
+    subVariants?.find((s) => s.id === subVariantId) ?? subVariants?.[0] ?? null;
+  const downloadHref = activeSubVariant?.downloadFile ?? variant.downloadFile;
 
   const discount = Math.round(
     ((variant.originalPrice - variant.price) / variant.originalPrice) * 100,
@@ -163,7 +172,7 @@ export function Products() {
               <div className="mt-6 flex flex-wrap gap-3">
                 <Button variant="brand" size="pill" asChild>
                   <a
-                    href={variant.downloadFile}
+                    href={downloadHref}
                     download
                   >
                     <Download className="h-4 w-4" />
@@ -190,11 +199,61 @@ export function Products() {
                   Fitur {effectiveTier === "lengkap" ? "Lengkap" : "Standar"}
                 </p>
                 <span className="text-xs font-medium text-muted-foreground">
-                  {current.baseFeatures.length +
-                    (effectiveTier === "lengkap" ? current.extraFeatures.length : 0)}{" "}
+                  {(activeSubVariant
+                    ? activeSubVariant.features.length
+                    : current.baseFeatures.length +
+                      (effectiveTier === "lengkap" ? current.extraFeatures.length : 0))}{" "}
                   fitur aktif
                 </span>
               </div>
+
+              {subVariants && (
+                <div className="mt-5">
+                  <p className="text-xs font-semibold uppercase tracking-wider text-brand-teal">
+                    Pilih Varian Lengkap
+                  </p>
+                  <div className="mt-3 flex flex-wrap gap-2">
+                    {subVariants.map((s) => {
+                      const isOn = (activeSubVariant?.id ?? subVariants[0].id) === s.id;
+                      return (
+                        <button
+                          key={s.id}
+                          onClick={() => setSubVariantId(s.id)}
+                          className={`rounded-full px-4 py-2 text-xs font-semibold transition-all ${
+                            isOn
+                              ? "bg-gradient-brand text-white shadow-glow"
+                              : "bg-surface-soft text-brand-navy ring-1 ring-border hover:ring-brand-teal/50"
+                          }`}
+                        >
+                          {s.name}
+                        </button>
+                      );
+                    })}
+                  </div>
+                  {activeSubVariant && (
+                    <p className="mt-3 rounded-xl bg-brand-mint/20 px-3.5 py-2.5 text-xs font-medium text-brand-navy/80">
+                      <Sparkles className="mr-1.5 inline h-3.5 w-3.5 text-brand-teal" />
+                      {activeSubVariant.highlight}
+                    </p>
+                  )}
+                </div>
+              )}
+
+              {activeSubVariant ? (
+                <ul className="mt-5 grid gap-3 sm:grid-cols-2">
+                  {activeSubVariant.features.map((f) => (
+                    <li
+                      key={f}
+                      className="flex items-start gap-2.5 rounded-xl border border-border/60 bg-surface-soft px-3.5 py-2.5"
+                    >
+                      <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-gradient-brand text-white">
+                        <Check className="h-3 w-3" strokeWidth={3} />
+                      </span>
+                      <span className="text-sm font-medium text-foreground">{f}</span>
+                    </li>
+                  ))}
+                </ul>
+              ) : (
               <ul className="mt-5 grid gap-3 sm:grid-cols-2">
                 {current.baseFeatures.map((f) => (
                   <li
@@ -242,6 +301,7 @@ export function Products() {
                   );
                 })}
               </ul>
+              )}
             </div>
           </div>
         </div>
