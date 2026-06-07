@@ -172,7 +172,7 @@ export function Products() {
               <div className="mt-6 flex flex-wrap gap-3">
                 <Button variant="brand" size="pill" asChild>
                   <a
-                    href={variant.downloadFile}
+                    href={downloadHref}
                     download
                   >
                     <Download className="h-4 w-4" />
