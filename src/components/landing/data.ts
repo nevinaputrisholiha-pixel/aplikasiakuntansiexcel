@@ -30,6 +30,14 @@ export type ProductVariant = {
   downloadFile: string; // path under /demos/
 };
 
+export type SubVariant = {
+  id: string;
+  name: string;
+  highlight: string;
+  features: string[];
+  downloadFile: string;
+};
+
 export const products: Product[] = [
   {
     id: "jasa",
