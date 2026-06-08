@@ -42,6 +42,7 @@ function Index() {
         <Bundling />
         <Advantages />
         <HowItWorks />
+        <Testimonials />
         <FAQ />
         <Contact />
       </main>
