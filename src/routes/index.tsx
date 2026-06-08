@@ -6,6 +6,7 @@ import { Products } from "@/components/landing/Products";
 import { Bundling } from "@/components/landing/Bundling";
 import { Advantages } from "@/components/landing/Advantages";
 import { HowItWorks } from "@/components/landing/HowItWorks";
+import { Testimonials } from "@/components/landing/Testimonials";
 import { FAQ } from "@/components/landing/FAQ";
 import { Contact } from "@/components/landing/Contact";
 import { Footer } from "@/components/landing/Footer";
