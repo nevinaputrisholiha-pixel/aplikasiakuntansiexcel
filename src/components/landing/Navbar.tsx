@@ -5,9 +5,10 @@ import { Button } from "@/components/ui/button";
 
 const links = [
   { href: "#produk", label: "Produk" },
-  { href: "#keunggulan", label: "Keunggulan" },
+  { href: "#bundling", label: "Paket Hemat" },
+  { href: "#bonuses", label: "Bonus" },
+  { href: "#testimonials", label: "Testimoni" },
   { href: "#faq", label: "FAQ" },
-  { href: "#kontak", label: "Kontak" },
 ];
 
 export function Navbar() {
