@@ -134,7 +134,7 @@ export function Testimonials() {
               >
                 {/* Stars */}
                 <div className="mb-3 flex items-center gap-0.5">
-                  {Array.from({ length: 5 }).map((_, i) => (
+                  {Array.from({ length: 6 }).map((_, i) => (
                     <Star
                       key={i}
                       className="h-4 w-4 fill-amber-400 text-amber-400"
