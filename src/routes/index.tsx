@@ -4,6 +4,7 @@ import { Hero } from "@/components/landing/Hero";
 import { TrustStrip } from "@/components/landing/TrustStrip";
 import { Products } from "@/components/landing/Products";
 import { Bundling } from "@/components/landing/Bundling";
+import { Bonuses } from "@/components/landing/Bonuses";
 import { Advantages } from "@/components/landing/Advantages";
 import { HowItWorks } from "@/components/landing/HowItWorks";
 import { Testimonials } from "@/components/landing/Testimonials";
@@ -40,6 +41,7 @@ function Index() {
         <TrustStrip />
         <Products />
         <Bundling />
+        <Bonuses />
         <Advantages />
         <HowItWorks />
         <Testimonials />
