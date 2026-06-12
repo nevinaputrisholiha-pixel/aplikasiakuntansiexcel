@@ -1,5 +1,5 @@
 const stats = [
-  { value: "5", label: "Produk Akuntansi" },
+  { value: "6", label: "Produk Akuntansi" },
   { value: "16", label: "Bonus Program Gratis" },
   { value: "0", label: "Biaya Bulanan" },
   { value: "∞", label: "Pakai Seumur Hidup" },
