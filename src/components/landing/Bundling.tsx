@@ -124,6 +124,27 @@ export function Bundling() {
                     ⭐ BEST SELLER
                   </div>
                 )}
+                <div className="mb-4 flex items-end justify-center gap-1 h-[150px] overflow-hidden">
+                  {b.items.slice(0, 3).map((item, idx) => {
+                    const p = parseItem(item);
+                    return (
+                      <div
+                        key={item}
+                        style={{
+                          transform: `translateY(${idx * 2}px) rotate(${(idx - (b.items.length - 1) / 2) * 4}deg)`,
+                          zIndex: 10 - idx,
+                        }}
+                      >
+                        <SoftwareBox
+                          productId={p.productId}
+                          productName={p.productName}
+                          tier={p.tier}
+                          size="sm"
+                        />
+                      </div>
+                    );
+                  })}
+                </div>
                 <div className="flex items-center gap-2 text-brand-teal mb-3">
                   <Package className="w-5 h-5" />
                   <span className="text-xs font-semibold uppercase tracking-wider">Bundle</span>
