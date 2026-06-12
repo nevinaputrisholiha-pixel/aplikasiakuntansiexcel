@@ -358,7 +358,7 @@ export const commonFeatures = [
 
 export const faqs = [
   {
-    q: "Apa itu ProgramExcel.id?",
+    q: "Apa itu AplikasiAkuntansiExcel.com?",
     a: "Website yang menyediakan program akuntansi berbasis Excel siap pakai untuk berbagai jenis usaha.",
   },
   {
@@ -375,7 +375,7 @@ export const faqs = [
   },
   {
     q: "Apa saja yang saya dapat saat membeli lisensi?",
-    a: "Program Excel Full Version seumur hidup + 16 bonus program bisnis berbasis Excel + update versi terbaru gratis + dukungan purna jual.",
+    a: "Aplikasi Akuntansi Excel Full Version seumur hidup + 16 bonus program bisnis berbasis Excel + update versi terbaru gratis + dukungan purna jual.",
   },
   {
     q: "Berapa lama bisa dipakai?",
