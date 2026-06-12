@@ -1,6 +1,21 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Sparkles, Package } from "lucide-react";
+import { SoftwareBox } from "./SoftwareBox";
+
+function parseItem(item: string): { productId: string; productName: string; tier: "lengkap" | "standar" } {
+  const lower = item.toLowerCase();
+  const tier: "lengkap" | "standar" = lower.includes("standar") ? "standar" : "lengkap";
+  let productId = "jasa";
+  let productName = "Akuntansi Jasa";
+  if (lower.includes("dagang")) { productId = "dagang"; productName = "Akuntansi Dagang"; }
+  else if (lower.includes("manufaktur")) { productId = "manufaktur"; productName = "Akuntansi Manufaktur"; }
+  else if (lower.includes("stok")) { productId = "stok"; productName = "Stok Barang"; }
+  else if (lower.includes("buku kas") || lower.includes("kas")) { productId = "bukukas"; productName = "Buku Kas"; }
+  else if (lower.includes("jasa")) { productId = "jasa"; productName = "Akuntansi Jasa"; }
+  else if (lower.includes("kontraktor")) { productId = "kontraktor"; productName = "Akuntansi Kontraktor"; }
+  return { productId, productName, tier };
+}
 
 type CategoryId = "kombidagang" | "kombimanufaktur" | "kombikasstok" | "mega";
 
