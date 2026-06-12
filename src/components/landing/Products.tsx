@@ -2,6 +2,7 @@ import { useState } from "react";
 import { products } from "./data";
 import { Check, X, Download, Sparkles, Gift, Infinity as InfinityIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { SoftwareBox } from "./SoftwareBox";
 
 type Tier = "lengkap" | "standar";
 
@@ -111,8 +112,15 @@ export function Products() {
             <div
               className={`relative bg-gradient-to-br ${current.accent} p-8 lg:col-span-2 lg:p-10`}
             >
-              <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-white shadow-soft">
-                <Icon className="h-7 w-7 text-brand-teal" />
+              <div className="flex justify-center lg:justify-start">
+                <SoftwareBox
+                  productId={current.id}
+                  productName={current.name}
+                  subtitle={current.tagline}
+                  tier={effectiveTier}
+                  size="md"
+                  icon={Icon}
+                />
               </div>
               <p className="mt-6 text-sm font-semibold uppercase tracking-wider text-brand-teal">
                 {current.tagline}

@@ -1,6 +1,21 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Sparkles, Package } from "lucide-react";
+import { SoftwareBox } from "./SoftwareBox";
+
+function parseItem(item: string): { productId: string; productName: string; tier: "lengkap" | "standar" } {
+  const lower = item.toLowerCase();
+  const tier: "lengkap" | "standar" = lower.includes("standar") ? "standar" : "lengkap";
+  let productId = "jasa";
+  let productName = "Akuntansi Jasa";
+  if (lower.includes("dagang")) { productId = "dagang"; productName = "Akuntansi Dagang"; }
+  else if (lower.includes("manufaktur")) { productId = "manufaktur"; productName = "Akuntansi Manufaktur"; }
+  else if (lower.includes("stok")) { productId = "stok"; productName = "Stok Barang"; }
+  else if (lower.includes("buku kas") || lower.includes("kas")) { productId = "bukukas"; productName = "Buku Kas"; }
+  else if (lower.includes("jasa")) { productId = "jasa"; productName = "Akuntansi Jasa"; }
+  else if (lower.includes("kontraktor")) { productId = "kontraktor"; productName = "Akuntansi Kontraktor"; }
+  return { productId, productName, tier };
+}
 
 type CategoryId = "kombidagang" | "kombimanufaktur" | "kombikasstok" | "mega";
 
@@ -109,6 +124,27 @@ export function Bundling() {
                     ⭐ BEST SELLER
                   </div>
                 )}
+                <div className="mb-4 flex items-end justify-center gap-1 h-[150px] overflow-hidden">
+                  {b.items.slice(0, 3).map((item, idx) => {
+                    const p = parseItem(item);
+                    return (
+                      <div
+                        key={item}
+                        style={{
+                          transform: `translateY(${idx * 2}px) rotate(${(idx - (b.items.length - 1) / 2) * 4}deg)`,
+                          zIndex: 10 - idx,
+                        }}
+                      >
+                        <SoftwareBox
+                          productId={p.productId}
+                          productName={p.productName}
+                          tier={p.tier}
+                          size="sm"
+                        />
+                      </div>
+                    );
+                  })}
+                </div>
                 <div className="flex items-center gap-2 text-brand-teal mb-3">
                   <Package className="w-5 h-5" />
                   <span className="text-xs font-semibold uppercase tracking-wider">Bundle</span>
