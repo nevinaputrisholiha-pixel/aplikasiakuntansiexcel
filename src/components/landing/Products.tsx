@@ -138,10 +138,7 @@ export function Products() {
           </div>
         </div>
 
-        <div className="mt-10 overflow-hidden rounded-[2rem] bg-white shadow-card ring-1 ring-border">
-          {/* Quick comparison table — dynamic per active product */}
-        </div>
-
+        {/* Quick comparison table — dynamic per active product */}
         <div className="mx-auto mt-8 max-w-3xl">
           <div className="overflow-hidden rounded-2xl bg-white shadow-card ring-1 ring-border">
             <div className="grid grid-cols-[1.2fr_1fr_1.1fr] text-[11px] sm:text-xs font-semibold uppercase tracking-wider">
