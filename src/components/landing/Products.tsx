@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { products } from "./data";
-import { Check, X, Download, Sparkles, Gift, Infinity as InfinityIcon, Lightbulb } from "lucide-react";
+import { Check, X, Download, Sparkles, Gift, Infinity as InfinityIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 type Tier = "lengkap" | "standar";
@@ -34,38 +34,6 @@ export function Products() {
   const discount = Math.round(
     ((variant.originalPrice - variant.price) / variant.originalPrice) * 100,
   );
-
-  // Comparison table rows — dynamic per active product
-  const onlyLengkapProduct = onlyLengkap; // kontraktor & bukukas
-  const isStok = current.id === "stok";
-  const compareRows: { label: string; standar: string; lengkap: string }[] = isStok
-    ? [
-        { label: "Fitur Utama", standar: "Fitur Dasar", lengkap: "Fitur Agen/Sales Komplit" },
-        { label: "Cetak Invoice & Surat Jalan", standar: "❌ Manual", lengkap: "✅ Otomatis" },
-        { label: "Analisis Per Agen / Salesman", standar: "❌ Tidak Ada", lengkap: "✅ Ada" },
-        { label: "Harga", standar: "Rp 185.000", lengkap: "Rp 385.000" },
-      ]
-    : onlyLengkapProduct
-      ? [
-          {
-            label: "Fitur Utama",
-            standar: "❌ Tidak Tersedia untuk Produk Ini",
-            lengkap: "Fitur Komplit + Otomatis",
-          },
-          { label: "Rekonsiliasi Bank", standar: "—", lengkap: "✅ Ada" },
-          { label: "Laporan Grafik & Analisis", standar: "—", lengkap: "✅ Ada" },
-          {
-            label: "Harga",
-            standar: "—",
-            lengkap: formatRp(current.variants.lengkap.price),
-          },
-        ]
-      : [
-          { label: "Fitur Utama", standar: "Fitur Dasar", lengkap: "Fitur Komplit + Otomatis" },
-          { label: "Rekonsiliasi Bank", standar: "❌ Tidak Ada", lengkap: "✅ Ada" },
-          { label: "Laporan Grafik & Analisis", standar: "❌ Tidak Ada", lengkap: "✅ Ada" },
-          { label: "Harga", standar: "Rp 385.000", lengkap: "Rp 585.000" },
-        ];
 
   return (
     <section id="produk" className="py-20 md:py-28">
@@ -136,59 +104,6 @@ export function Products() {
               );
             })}
           </div>
-        </div>
-
-        {/* Quick comparison table — dynamic per active product */}
-        <div className="mx-auto mt-8 max-w-3xl">
-          <div className="overflow-hidden rounded-2xl bg-white shadow-card ring-1 ring-border">
-            <div className="grid grid-cols-[1.2fr_1fr_1.1fr] text-[11px] sm:text-xs font-semibold uppercase tracking-wider">
-              <div className="bg-surface-soft px-3 py-3 text-brand-navy/70">Perbandingan</div>
-              <div className="bg-surface-soft px-3 py-3 text-center text-brand-navy/70">Standar</div>
-              <div className="relative bg-brand-mint/30 px-3 py-3 text-center text-brand-teal ring-1 ring-brand-teal/30">
-                Lengkap
-                <span className="ml-1 hidden rounded-full bg-brand-teal px-1.5 py-0.5 text-[9px] text-white sm:inline">
-                  Populer
-                </span>
-              </div>
-            </div>
-            {compareRows.map((row, i) => {
-              const isLast = i === compareRows.length - 1;
-              const isPrice = row.label === "Harga";
-              return (
-                <div
-                  key={row.label}
-                  className={`grid grid-cols-[1.2fr_1fr_1.1fr] text-xs sm:text-sm ${
-                    isLast ? "" : "border-t border-border/60"
-                  }`}
-                >
-                  <div className="px-3 py-3 font-medium text-brand-navy">{row.label}</div>
-                  <div
-                    className={`px-3 py-3 text-center ${
-                      onlyLengkapProduct
-                        ? "text-muted-foreground/60"
-                        : "text-foreground/80"
-                    } ${isPrice ? "font-semibold" : ""}`}
-                  >
-                    {row.standar}
-                  </div>
-                  <div
-                    className={`bg-brand-mint/20 px-3 py-3 text-center text-brand-navy ring-1 ring-brand-teal/20 ${
-                      isPrice ? "font-bold text-brand-teal" : "font-medium"
-                    }`}
-                  >
-                    {row.lengkap}
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-          <p className="mt-3 flex items-start justify-center gap-2 text-center text-xs text-muted-foreground sm:text-sm">
-            <Lightbulb className="mt-0.5 h-4 w-4 shrink-0 text-amber-500" />
-            <span>
-              Baru mulai usaha? <strong className="text-brand-navy">Versi Standar</strong> sudah cukup. Butuh laporan lebih lengkap &amp; otomatis? Pilih{" "}
-              <strong className="text-brand-teal">Versi Lengkap</strong>.
-            </span>
-          </p>
         </div>
 
         <div className="mt-10 overflow-hidden rounded-[2rem] bg-white shadow-card ring-1 ring-border">
