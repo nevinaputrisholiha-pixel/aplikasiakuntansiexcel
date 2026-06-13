@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { products } from "./data";
-import { Check, X, Download, Sparkles, Gift, Infinity as InfinityIcon } from "lucide-react";
+import { Check, X, Download, Sparkles, Gift, Infinity as InfinityIcon, Lightbulb } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 type Tier = "lengkap" | "standar";
@@ -34,6 +34,38 @@ export function Products() {
   const discount = Math.round(
     ((variant.originalPrice - variant.price) / variant.originalPrice) * 100,
   );
+
+  // Comparison table rows — dynamic per active product
+  const onlyLengkapProduct = onlyLengkap; // kontraktor & bukukas
+  const isStok = current.id === "stok";
+  const compareRows: { label: string; standar: string; lengkap: string }[] = isStok
+    ? [
+        { label: "Fitur Utama", standar: "Fitur Dasar", lengkap: "Fitur Agen/Sales Komplit" },
+        { label: "Cetak Invoice & Surat Jalan", standar: "❌ Manual", lengkap: "✅ Otomatis" },
+        { label: "Analisis Per Agen / Salesman", standar: "❌ Tidak Ada", lengkap: "✅ Ada" },
+        { label: "Harga", standar: "Rp 185.000", lengkap: "Rp 385.000" },
+      ]
+    : onlyLengkapProduct
+      ? [
+          {
+            label: "Fitur Utama",
+            standar: "❌ Tidak Tersedia untuk Produk Ini",
+            lengkap: "Fitur Komplit + Otomatis",
+          },
+          { label: "Rekonsiliasi Bank", standar: "—", lengkap: "✅ Ada" },
+          { label: "Laporan Grafik & Analisis", standar: "—", lengkap: "✅ Ada" },
+          {
+            label: "Harga",
+            standar: "—",
+            lengkap: formatRp(current.variants.lengkap.price),
+          },
+        ]
+      : [
+          { label: "Fitur Utama", standar: "Fitur Dasar", lengkap: "Fitur Komplit + Otomatis" },
+          { label: "Rekonsiliasi Bank", standar: "❌ Tidak Ada", lengkap: "✅ Ada" },
+          { label: "Laporan Grafik & Analisis", standar: "❌ Tidak Ada", lengkap: "✅ Ada" },
+          { label: "Harga", standar: "Rp 385.000", lengkap: "Rp 585.000" },
+        ];
 
   return (
     <section id="produk" className="py-20 md:py-28">
