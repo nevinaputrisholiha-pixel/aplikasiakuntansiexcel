@@ -83,11 +83,6 @@ export function Products() {
           </div>
         </div>
 
-        {/* Recommendation hint */}
-        <p className="mx-auto mt-4 max-w-2xl text-center text-sm leading-relaxed text-brand-navy/70">
-          💡 Baru mulai usaha? <span className="font-semibold text-brand-navy">Versi Standar</span> sudah cukup. Butuh laporan lebih mendalam & otomatisasi penuh? Pilih <span className="font-semibold text-brand-navy">Versi Lengkap</span>.
-        </p>
-
         <div className="mt-8 -mx-4 overflow-x-auto px-4 sm:mx-0 sm:px-0 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
           <div className="flex w-max gap-2 sm:w-auto sm:flex-wrap sm:justify-center">
             {products.map((p) => {
@@ -230,43 +225,6 @@ export function Products() {
             </div>
 
             <div className="border-t border-border bg-white p-8 lg:col-span-3 lg:border-l lg:border-t-0 lg:p-10">
-              {/* Mini comparison matrix */}
-              <div className="mb-6 overflow-hidden rounded-2xl bg-brand-mint/20 ring-1 ring-brand-teal/20">
-                <div className="grid grid-cols-3 gap-px bg-brand-teal/10 text-xs sm:text-sm">
-                  <div className="bg-brand-mint/30 px-3 py-2.5 text-left font-semibold text-brand-navy">
-                    Perbandingan
-                  </div>
-                  <div className="bg-brand-mint/30 px-3 py-2.5 text-center font-semibold text-brand-navy">
-                    Standar
-                  </div>
-                  <div className="bg-brand-mint/30 px-3 py-2.5 text-center font-semibold text-brand-teal">
-                    Lengkap
-                  </div>
-
-                  <div className="bg-white px-3 py-2.5 font-medium text-brand-navy/80">Jumlah Fitur</div>
-                  <div className="bg-white px-3 py-2.5 text-center text-brand-navy/70">Lebih Ringkas</div>
-                  <div className="bg-white px-3 py-2.5 text-center font-semibold text-brand-navy">Lebih Banyak & Detail</div>
-
-                  <div className="bg-white px-3 py-2.5 font-medium text-brand-navy/80">Rekonsiliasi Bank</div>
-                  <div className="bg-white px-3 py-2.5 text-center text-red-500">❌</div>
-                  <div className="bg-white px-3 py-2.5 text-center text-emerald-600">✅</div>
-
-                  <div className="bg-white px-3 py-2.5 font-medium text-brand-navy/80">Arus Kas Otomatis</div>
-                  <div className="bg-white px-3 py-2.5 text-center text-red-500">❌</div>
-                  <div className="bg-white px-3 py-2.5 text-center text-emerald-600">✅</div>
-
-                  <div className="bg-white px-3 py-2.5 font-medium text-brand-navy/80">Harga</div>
-                  <div className="bg-white px-3 py-2.5 text-center font-bold text-brand-navy">
-                    {current.variants.standar
-                      ? formatRp(current.variants.standar.price)
-                      : "—"}
-                  </div>
-                  <div className="bg-white px-3 py-2.5 text-center font-bold text-brand-teal">
-                    {formatRp(current.variants.lengkap.price)}
-                  </div>
-                </div>
-              </div>
-
               <div className="flex items-center justify-between">
                 <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
                   Fitur {effectiveTier === "lengkap" ? "Lengkap" : "Standar"}
