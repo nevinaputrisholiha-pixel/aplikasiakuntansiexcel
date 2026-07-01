@@ -39,12 +39,12 @@ function Index() {
       <main>
         <Hero />
         <TrustStrip />
+        <Testimonials />
         <Products />
         <Bundling />
         <Bonuses />
         <Advantages />
         <HowItWorks />
-        <Testimonials />
         <FAQ />
         <Contact />
       </main>
