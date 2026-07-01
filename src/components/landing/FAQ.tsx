@@ -22,7 +22,11 @@ export function FAQ() {
           </p>
         </div>
 
-        <Accordion type="single" collapsible className="mt-10 space-y-3">
+        <Accordion
+          type="multiple"
+          defaultValue={["item-0", "item-1", "item-2"]}
+          className="mt-10 space-y-3"
+        >
           {faqs.map((f, i) => (
             <AccordionItem
               key={i}

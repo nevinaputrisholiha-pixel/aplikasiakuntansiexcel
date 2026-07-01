@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Check, Sparkles } from "lucide-react";
-import heroIllustration from "@/assets/hero-illustration.png.asset.json";
+import heroScreenshot from "@/assets/hero-screenshot.jpg";
 
 const bullets = [
   "Bayar 1x, pakai seumur hidup",
@@ -50,30 +50,41 @@ export function Hero() {
               <a href="#produk">Lihat Produk</a>
             </Button>
             <Button variant="brandOutline" size="xl" asChild>
-              <a href="#kontak">Coba Gratis</a>
+              <a href="#bundling">Paket Hemat</a>
             </Button>
           </div>
         </div>
 
         <div className="relative flex items-center justify-center">
           <div className="absolute inset-0 -z-10 rounded-[3rem] bg-gradient-brand opacity-20 blur-3xl" />
-          <HeroIllustration src={heroIllustration.url} />
+          <HeroMockup src={heroScreenshot} />
         </div>
       </div>
     </section>
   );
 }
 
-function HeroIllustration({ src }: { src: string }) {
+function HeroMockup({ src }: { src: string }) {
   return (
-    <div className="relative w-full max-w-md md:max-w-lg">
-      <img
-        src={src}
-        alt="Ilustrasi dokumen Excel dengan grafik keuangan, tabel angka, dan checklist hijau melayang"
-        width={1024}
-        height={1024}
-        className="h-auto w-full animate-fade-in object-contain drop-shadow-[0_30px_60px_oklch(0.16_0.09_280/0.18)]"
-      />
+    <div className="relative w-full max-w-xl animate-fade-in">
+      <div className="overflow-hidden rounded-2xl bg-white shadow-[0_30px_80px_-20px_oklch(0.16_0.09_280/0.35)] ring-1 ring-black/5">
+        {/* Browser chrome */}
+        <div className="flex items-center gap-1.5 border-b border-border/70 bg-surface-soft px-4 py-2.5">
+          <span className="h-2.5 w-2.5 rounded-full bg-red-400" />
+          <span className="h-2.5 w-2.5 rounded-full bg-yellow-400" />
+          <span className="h-2.5 w-2.5 rounded-full bg-green-400" />
+          <span className="mx-auto rounded-md bg-white px-3 py-0.5 text-[10px] font-medium text-muted-foreground ring-1 ring-border">
+            aplikasiakuntansiexcel.com
+          </span>
+        </div>
+        <img
+          src={src}
+          alt="Tampilan aplikasi akuntansi Excel — dashboard laporan keuangan dengan grafik dan tabel transaksi"
+          width={1280}
+          height={896}
+          className="h-auto w-full object-cover"
+        />
+      </div>
     </div>
   );
 }

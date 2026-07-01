@@ -62,7 +62,7 @@ html {
   --color-surface-soft: var(--surface-soft);
   --color-surface-mint: var(--surface-mint);
   --font-display: "Plus Jakarta Sans", "Inter", ui-sans-serif, system-ui, sans-serif;
-  --font-sans: "Plus Jakarta Sans", "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Inter", "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
 }
 
 :root {
