@@ -1,17 +1,79 @@
 import { useState } from "react";
 import { products } from "./data";
-import { Check, X, Download, Sparkles, Gift, Infinity as InfinityIcon } from "lucide-react";
+import {
+  Download,
+  Sparkles,
+  Gift,
+  Infinity as InfinityIcon,
+  Wallet,
+  Receipt,
+  BarChart3,
+  Package,
+  FileSpreadsheet,
+  Landmark,
+  Users,
+  TrendingUp,
+  BookOpen,
+  ClipboardList,
+  ArrowLeftRight,
+  Building2,
+  Home as HomeIcon,
+  Layers,
+  Truck,
+  ShoppingCart,
+  CalendarClock,
+} from "lucide-react";
+import type { LucideIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { ComparisonTable } from "./ComparisonTable";
+import { DemoDownloadModal } from "./DemoDownloadModal";
 
 type Tier = "lengkap" | "standar";
 
 const formatRp = (n: number) =>
   "Rp " + n.toLocaleString("id-ID");
 
+function getFeatureMeta(name: string): { icon: LucideIcon; desc: string } {
+  const n = name.toLowerCase();
+  if (n.includes("home")) return { icon: HomeIcon, desc: "Halaman utama dengan navigasi cepat." };
+  if (n.includes("kode akun")) return { icon: BookOpen, desc: "Daftar akun (chart of accounts) siap pakai." };
+  if (n.includes("penyesuaian")) return { icon: ClipboardList, desc: "Catat jurnal penyesuaian akhir periode." };
+  if (n.includes("jurnal umum") || n === "jurnal") return { icon: FileSpreadsheet, desc: "Input transaksi harian secara terpusat." };
+  if (n.includes("buku besar")) return { icon: BookOpen, desc: "Rincian mutasi tiap akun otomatis." };
+  if (n.includes("neraca lajur")) return { icon: Layers, desc: "Worksheet penyusunan laporan keuangan." };
+  if (n.includes("laba rugi")) return { icon: TrendingUp, desc: "Laporan laba/rugi periode berjalan otomatis." };
+  if (n.includes("neraca perbandingan")) return { icon: ArrowLeftRight, desc: "Bandingkan neraca antar-periode." };
+  if (n === "neraca") return { icon: Landmark, desc: "Posisi aset, hutang, dan modal terupdate otomatis." };
+  if (n.includes("arus kas")) return { icon: Wallet, desc: "Laporan arus kas masuk & keluar." };
+  if (n.includes("hutang piutang jatuh")) return { icon: CalendarClock, desc: "Peringatan tagihan mendekati jatuh tempo." };
+  if (n.includes("buku besar hutang")) return { icon: BookOpen, desc: "Detail mutasi hutang & piutang per pihak." };
+  if (n.includes("daftar hutang")) return { icon: Receipt, desc: "Rekap hutang & piutang aktif." };
+  if (n.includes("laporan hutang")) return { icon: Receipt, desc: "Ringkasan posisi hutang usaha." };
+  if (n.includes("laporan piutang")) return { icon: Receipt, desc: "Ringkasan posisi piutang usaha." };
+  if (n.includes("penyusutan")) return { icon: BarChart3, desc: "Hitung penyusutan aktiva tetap otomatis." };
+  if (n.includes("rekonsiliasi")) return { icon: ArrowLeftRight, desc: "Cocokkan saldo buku dengan rekening bank." };
+  if (n.includes("harga pokok produksi")) return { icon: Building2, desc: "Perhitungan HPP produksi otomatis." };
+  if (n.includes("harga pokok penjualan") || n.includes("hpp")) return { icon: Building2, desc: "Perhitungan HPP penjualan otomatis." };
+  if (n.includes("daftar proyek")) return { icon: Building2, desc: "Kelola daftar proyek aktif Anda." };
+  if (n.includes("proyek dalam proses")) return { icon: BarChart3, desc: "Pantau progres & biaya proyek berjalan." };
+  if (n.includes("daftar produk")) return { icon: Package, desc: "Master data produk & harga." };
+  if (n.includes("kartu stok")) return { icon: Layers, desc: "Riwayat mutasi stok tiap produk otomatis." };
+  if (n.includes("sisa stok")) return { icon: Package, desc: "Monitor sisa stok real-time." };
+  if (n.includes("invoice")) return { icon: FileSpreadsheet, desc: "Cetak invoice & surat jalan otomatis." };
+  if (n.includes("pembelian")) return { icon: ShoppingCart, desc: "Laporan pembelian produk terperinci." };
+  if (n.includes("penjualan produk")) return { icon: TrendingUp, desc: "Laporan penjualan per produk." };
+  if (n.includes("agen") || n.includes("reseller") || n.includes("retailer") || n.includes("salesman")) {
+    return { icon: Users, desc: "Analisis penjualan per mitra distribusi." };
+  }
+  if (n.includes("surat jalan")) return { icon: Truck, desc: "Cetak surat jalan pengiriman." };
+  return { icon: Sparkles, desc: "Tersedia otomatis di aplikasi." };
+}
+
 export function Products() {
   const [active, setActive] = useState(products[0].id);
   const [tier, setTier] = useState<Tier>("lengkap");
   const [subVariantId, setSubVariantId] = useState<string | null>(null);
+  const [demoOpen, setDemoOpen] = useState(false);
   const current = products.find((p) => p.id === active) ?? products[0];
   const Icon = current.icon;
 
@@ -34,6 +96,13 @@ export function Products() {
   const discount = Math.round(
     ((variant.originalPrice - variant.price) / variant.originalPrice) * 100,
   );
+
+  const featureList: string[] = hasSubVariants && activeSub
+    ? activeSub.features
+    : [
+        ...current.baseFeatures,
+        ...(effectiveTier === "lengkap" ? current.extraFeatures : []),
+      ];
 
   return (
     <section id="produk" className="py-20 md:py-28">
@@ -83,6 +152,7 @@ export function Products() {
           </div>
         </div>
 
+        {/* Product sub-tabs */}
         <div className="mt-8 -mx-4 overflow-x-auto px-4 sm:mx-0 sm:px-0 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
           <div className="flex w-max gap-2 sm:w-auto sm:flex-wrap sm:justify-center">
             {products.map((p) => {
@@ -105,6 +175,9 @@ export function Products() {
             })}
           </div>
         </div>
+
+        {/* Comparison table (dynamic per active product) */}
+        <ComparisonTable product={current} />
 
         <div className="mt-10 overflow-hidden rounded-[2rem] bg-white shadow-card ring-1 ring-border">
           <div className="grid gap-0 lg:grid-cols-5">
@@ -201,14 +274,13 @@ export function Products() {
               )}
 
               <div className="mt-6 flex flex-wrap gap-3">
-                <Button variant="brand" size="pill" asChild>
-                  <a
-                    href={downloadHref}
-                    download
-                  >
-                    <Download className="h-4 w-4" />
-                    Coba Gratis
-                  </a>
+                <Button
+                  variant="brand"
+                  size="pill"
+                  onClick={() => setDemoOpen(true)}
+                >
+                  <Download className="h-4 w-4" />
+                  Unduh Demo Sekarang
                 </Button>
                 <Button variant="whatsapp" size="pill" asChild>
                   <a
@@ -231,59 +303,24 @@ export function Products() {
                   {hasSubVariants && activeSub ? ` — ${activeSub.name}` : ""}
                 </p>
                 <span className="text-xs font-medium text-muted-foreground">
-                  {hasSubVariants && activeSub
-                    ? activeSub.features.length
-                    : current.baseFeatures.length +
-                      (effectiveTier === "lengkap" ? current.extraFeatures.length : 0)}{" "}
-                  fitur aktif
+                  {featureList.length} fitur aktif
                 </span>
               </div>
               <ul className="mt-5 grid gap-3 sm:grid-cols-2">
-                {(hasSubVariants && activeSub
-                  ? activeSub.features
-                  : current.baseFeatures
-                ).map((f) => (
-                  <li
-                    key={f}
-                    className="flex items-start gap-2.5 rounded-xl border border-border/60 bg-surface-soft px-3.5 py-2.5"
-                  >
-                    <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-gradient-brand text-white">
-                      <Check className="h-3 w-3" strokeWidth={3} />
-                    </span>
-                    <span className="text-sm font-medium text-foreground">{f}</span>
-                  </li>
-                ))}
-                {!hasSubVariants && current.extraFeatures.map((f) => {
-                  const enabled = effectiveTier === "lengkap";
+                {featureList.map((f) => {
+                  const { icon: FIcon, desc } = getFeatureMeta(f);
                   return (
                     <li
                       key={f}
-                      className={`flex items-start gap-2.5 rounded-xl border px-3.5 py-2.5 transition-all ${
-                        enabled
-                          ? "border-border/60 bg-surface-soft"
-                          : "border-dashed border-border/60 bg-muted/40"
-                      }`}
+                      className="group flex items-start gap-3 rounded-xl border border-border/60 bg-surface-soft px-3.5 py-3 transition-all hover:border-brand-teal/60 hover:bg-white"
                     >
-                      <span
-                        className={`mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full ${
-                          enabled
-                            ? "bg-gradient-brand text-white"
-                            : "bg-muted text-muted-foreground"
-                        }`}
-                      >
-                        {enabled ? (
-                          <Check className="h-3 w-3" strokeWidth={3} />
-                        ) : (
-                          <X className="h-3 w-3" strokeWidth={3} />
-                        )}
+                      <span className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-gradient-brand text-white shadow-soft">
+                        <FIcon className="h-4 w-4" strokeWidth={2.2} />
                       </span>
-                      <span
-                        className={`text-sm font-medium ${
-                          enabled ? "text-foreground" : "text-muted-foreground line-through"
-                        }`}
-                      >
-                        {f}
-                      </span>
+                      <div className="min-w-0">
+                        <p className="text-sm font-semibold text-brand-navy">{f}</p>
+                        <p className="mt-0.5 text-xs leading-relaxed text-muted-foreground">{desc}</p>
+                      </div>
                     </li>
                   );
                 })}
@@ -291,6 +328,14 @@ export function Products() {
             </div>
           </div>
         </div>
+
+        <DemoDownloadModal
+          open={demoOpen}
+          onOpenChange={setDemoOpen}
+          productName={current.name}
+          tierLabel={effectiveTier === "lengkap" ? "Lengkap" : "Standar"}
+          downloadHref={downloadHref}
+        />
       </div>
     </section>
   );
