@@ -77,18 +77,18 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "AplikasiAkuntansiExcel.com — Laporan Keuangan Jadi Lebih Mudah" },
+      { title: "Aplikasi Akuntansi Excel untuk Laporan Keuangan Siap Pakai" },
       { name: "description", content: "Program akuntansi berbasis Excel siap pakai untuk usaha jasa, dagang, manufaktur, stok barang & buku kas. Beli 1x, pakai seumur hidup, tanpa biaya bulanan." },
       { name: "author", content: "AplikasiAkuntansiExcel.com" },
-      { property: "og:title", content: "AplikasiAkuntansiExcel.com — Laporan Keuangan Jadi Lebih Mudah" },
+      { property: "og:title", content: "Aplikasi Akuntansi Excel untuk Laporan Keuangan Siap Pakai" },
       { property: "og:description", content: "Program akuntansi berbasis Excel siap pakai untuk usaha jasa, dagang, manufaktur, stok barang & buku kas. Beli 1x, pakai seumur hidup, tanpa biaya bulanan." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
       { name: "twitter:site", content: "@Lovable" },
-      { name: "twitter:title", content: "AplikasiAkuntansiExcel.com — Laporan Keuangan Jadi Lebih Mudah" },
+      { name: "twitter:title", content: "Aplikasi Akuntansi Excel untuk Laporan Keuangan Siap Pakai" },
       { name: "twitter:description", content: "Program akuntansi berbasis Excel siap pakai untuk usaha jasa, dagang, manufaktur, stok barang & buku kas. Beli 1x, pakai seumur hidup, tanpa biaya bulanan." },
-      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/24e61ac9-28c4-4999-86e3-c3735d469faa/id-preview-d78c39c2--62ff9e6b-b7aa-42d5-8e83-edc52e6e3570.lovable.app-1780403708773.png" },
-      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/24e61ac9-28c4-4999-86e3-c3735d469faa/id-preview-d78c39c2--62ff9e6b-b7aa-42d5-8e83-edc52e6e3570.lovable.app-1780403708773.png" },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/a15a1a75-0de3-4dcc-8c72-480436782f7e/id-preview-e2611946--62ff9e6b-b7aa-42d5-8e83-edc52e6e3570.lovable.app-1782865859667.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/a15a1a75-0de3-4dcc-8c72-480436782f7e/id-preview-e2611946--62ff9e6b-b7aa-42d5-8e83-edc52e6e3570.lovable.app-1782865859667.png" },
     ],
     links: [
       {
