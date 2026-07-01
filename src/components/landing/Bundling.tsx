@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Sparkles, Package } from "lucide-react";
+import { Sparkles, Package, Info } from "lucide-react";
 
 type CategoryId = "kombidagang" | "kombimanufaktur" | "kombikasstok" | "mega";
 
@@ -116,7 +116,7 @@ export function Bundling() {
                 <h3 className="text-xl font-bold text-brand-navy">{b.name}</h3>
                 <div className="mt-3 space-y-1.5">
                   {b.items.map((item) => (
-                    <div key={item} className="flex items-start gap-2 text-sm text-muted-foreground">
+                    <div key={item} className="flex items-start gap-2 text-sm font-medium text-brand-navy/85">
                       <span className="mt-1 w-1.5 h-1.5 rounded-full bg-brand-teal shrink-0" />
                       <span>{item}</span>
                     </div>
@@ -124,8 +124,12 @@ export function Bundling() {
                 </div>
                 <div className="mt-5 pt-5 border-t border-brand-mint/40">
                   <div className="text-3xl font-extrabold text-brand-navy">{formatRp(b.price)}</div>
-                  <div className="mt-1 inline-flex items-center gap-1 px-2 py-1 rounded-md bg-brand-mint/30 text-brand-teal text-xs font-semibold">
+                  <div
+                    className="mt-1 inline-flex items-center gap-1 px-2.5 py-1 rounded-md bg-brand-teal text-white text-xs font-bold shadow-soft"
+                    title="Dihitung dari selisih total harga satuan produk dalam paket dibanding harga bundling."
+                  >
                     Anda Hemat: {formatRp(b.saving)}
+                    <Info className="w-3 h-3 opacity-80" />
                   </div>
                 </div>
                 <Button variant="whatsapp" size="pill" asChild className="mt-5 w-full">
@@ -141,6 +145,12 @@ export function Bundling() {
             );
           })}
         </div>
+
+        <p className="mt-8 text-center text-xs text-brand-navy/60 max-w-2xl mx-auto">
+          * Nilai <strong>&quot;Anda Hemat&quot;</strong> dihitung dari selisih total harga satuan
+          setiap produk dalam paket dibanding harga bundling. Harga satuan mengacu pada harga
+          normal (sebelum diskon) yang tercantum di halaman Produk.
+        </p>
       </div>
     </section>
   );

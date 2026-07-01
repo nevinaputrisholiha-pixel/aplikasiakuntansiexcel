@@ -358,6 +358,18 @@ export const commonFeatures = [
 
 export const faqs = [
   {
+    q: "Apakah cukup bayar sekali, atau ada biaya bulanan?",
+    a: "Cukup bayar SATU KALI. Setelah itu Anda memiliki lisensi seumur hidup — tanpa biaya bulanan, tanpa masa berlaku, dan tetap mendapat update versi terbaru secara gratis.",
+  },
+  {
+    q: "Apakah sulit digunakan? Perlu keahlian akuntansi?",
+    a: "Tidak. Aplikasi didesain sederhana — cukup input transaksi harian dan laporan keuangan (Neraca, Laba Rugi, Arus Kas) muncul otomatis. Tidak butuh keahlian akuntansi khusus atau rumus Excel yang rumit. Tersedia video panduan step-by-step.",
+  },
+  {
+    q: "Apa saja yang saya dapat setelah membeli lisensi?",
+    a: "Aplikasi Akuntansi Excel Full Version seumur hidup + 16 bonus program bisnis berbasis Excel (senilai Rp 1.500.000) + update versi terbaru gratis + dukungan purna jual via WhatsApp.",
+  },
+  {
     q: "Apa itu AplikasiAkuntansiExcel.com?",
     a: "Website yang menyediakan program akuntansi berbasis Excel siap pakai untuk berbagai jenis usaha.",
   },
@@ -366,16 +378,8 @@ export const faqs = [
     a: "Seluruh program menggunakan Bahasa Indonesia dengan mata uang Rupiah (Rp).",
   },
   {
-    q: "Apakah sulit digunakan? Perlu keahlian akuntansi?",
-    a: "Tidak. Didesain sederhana, tidak memerlukan keahlian akuntansi khusus atau rumus Excel yang rumit. Tersedia video panduan step-by-step.",
-  },
-  {
     q: "Apakah ada versi trial?",
-    a: "Ya, tersedia versi COBA GRATIS untuk setiap produk sebelum Anda memutuskan membeli.",
-  },
-  {
-    q: "Apa saja yang saya dapat saat membeli lisensi?",
-    a: "Aplikasi Akuntansi Excel Full Version seumur hidup + 16 bonus program bisnis berbasis Excel + update versi terbaru gratis + dukungan purna jual.",
+    a: "Ya, tersedia versi COBA GRATIS (demo) untuk setiap produk sebelum Anda memutuskan membeli.",
   },
   {
     q: "Berapa lama bisa dipakai?",
