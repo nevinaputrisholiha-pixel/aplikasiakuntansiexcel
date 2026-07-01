@@ -15,13 +15,13 @@ import { Footer } from "@/components/landing/Footer";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "AplikasiAkuntansiExcel.com — Laporan Keuangan Jadi Lebih Mudah" },
+      { title: "Aplikasi Akuntansi Excel untuk Laporan Keuangan Siap Pakai" },
       {
         name: "description",
         content:
           "Program akuntansi Excel siap pakai untuk usaha jasa, dagang, manufaktur, stok & buku kas. Bayar 1x, pakai seumur hidup, tanpa biaya bulanan.",
       },
-      { property: "og:title", content: "AplikasiAkuntansiExcel.com — Laporan Keuangan Jadi Lebih Mudah" },
+      { property: "og:title", content: "Aplikasi Akuntansi Excel untuk Laporan Keuangan Siap Pakai" },
       {
         property: "og:description",
         content:
