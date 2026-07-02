@@ -69,6 +69,63 @@ function getFeatureMeta(name: string): { icon: LucideIcon; desc: string } {
   return { icon: Sparkles, desc: "Tersedia otomatis di aplikasi." };
 }
 
+type FeatureGroupId = "transaksi" | "laporan" | "otomatis" | "lainnya";
+const GROUP_LABELS: Record<FeatureGroupId, string> = {
+  transaksi: "Modul Transaksi",
+  laporan: "Modul Laporan",
+  otomatis: "Fitur Otomatis",
+  lainnya: "Lainnya",
+};
+
+function classifyFeature(name: string): FeatureGroupId {
+  const n = name.toLowerCase();
+  // Otomatis (highest priority: HPP, penyusutan, rekonsiliasi, jatuh tempo, proyek dalam proses)
+  if (
+    n.includes("hpp") ||
+    n.includes("harga pokok") ||
+    n.includes("penyusutan") ||
+    n.includes("rekonsiliasi") ||
+    n.includes("jatuh tempo") ||
+    n.includes("proyek dalam proses") ||
+    n.includes("buku besar hutang")
+  ) return "otomatis";
+  // Laporan
+  if (
+    n.includes("buku besar") ||
+    n.includes("neraca") ||
+    n.includes("laba rugi") ||
+    n.includes("arus kas") ||
+    n.includes("laporan") ||
+    n.includes("kartu stok") ||
+    n.includes("sisa stok")
+  ) return "laporan";
+  // Transaksi
+  if (
+    n.includes("home") ||
+    n.includes("kode akun") ||
+    n.includes("jurnal") ||
+    n.includes("penyesuaian") ||
+    n.includes("daftar produk") ||
+    n.includes("daftar proyek") ||
+    n.includes("daftar hutang") ||
+    n.includes("daftar agen") ||
+    n.includes("daftar reseller") ||
+    n.includes("daftar retailer") ||
+    n.includes("daftar salesman") ||
+    n.includes("invoice") ||
+    n.includes("surat jalan")
+  ) return "transaksi";
+  return "lainnya";
+}
+
+function groupFeatures(list: string[]): { id: FeatureGroupId; items: string[] }[] {
+  const groups: Record<FeatureGroupId, string[]> = { transaksi: [], laporan: [], otomatis: [], lainnya: [] };
+  for (const f of list) groups[classifyFeature(f)].push(f);
+  return (["transaksi", "laporan", "otomatis", "lainnya"] as FeatureGroupId[])
+    .filter((g) => groups[g].length > 0)
+    .map((g) => ({ id: g, items: groups[g] }));
+}
+
 export function Products() {
   const [active, setActive] = useState(products[0].id);
   const [tier, setTier] = useState<Tier>("lengkap");
@@ -93,10 +150,6 @@ export function Products() {
     : null;
   const downloadHref = activeSub?.downloadFile ?? variant.downloadFile;
 
-  const discount = Math.round(
-    ((variant.originalPrice - variant.price) / variant.originalPrice) * 100,
-  );
-
   const featureList: string[] = hasSubVariants && activeSub
     ? activeSub.features
     : [
@@ -114,7 +167,7 @@ export function Products() {
           <h2 className="mt-4 text-3xl font-extrabold text-brand-navy md:text-4xl">
             Satu solusi untuk setiap jenis usaha
           </h2>
-          <p className="mt-4 text-base text-muted-foreground">
+          <p className="mt-4 text-base text-brand-navy/80">
             Pilih program akuntansi Excel yang paling sesuai dengan model bisnis
             Anda — dari jasa, dagang, manufaktur, hingga buku kas pribadi.
           </p>
@@ -193,7 +246,7 @@ export function Products() {
               <h3 className="mt-2 text-2xl font-extrabold text-brand-navy md:text-3xl">
                 {current.name}
               </h3>
-              <p className="mt-4 text-sm leading-relaxed text-brand-navy/80">
+              <p className="mt-4 text-sm leading-relaxed text-brand-navy/90">
                 {current.description}
               </p>
 
@@ -204,23 +257,20 @@ export function Products() {
                     <Sparkles className="h-3 w-3" /> Hanya Tersedia Versi Lengkap
                   </div>
                 )}
-                <div className="flex items-baseline gap-3">
+                <p className="text-[11px] font-bold uppercase tracking-wider text-brand-teal">
+                  Harga Versi {effectiveTier === "lengkap" ? "Lengkap" : "Standar"}
+                </p>
+                <div className="mt-1 flex items-baseline gap-3">
                   <span className="text-3xl font-extrabold text-brand-navy md:text-4xl">
                     {formatRp(variant.price)}
                   </span>
-                  <span className="text-sm text-muted-foreground line-through">
-                    {formatRp(variant.originalPrice)}
-                  </span>
                 </div>
                 <div className="mt-2 flex flex-wrap items-center gap-2">
-                  <span className="inline-flex items-center rounded-full bg-red-500 px-2.5 py-0.5 text-[11px] font-bold text-white">
-                    Promo {discount}%
-                  </span>
                   <span className="inline-flex items-center gap-1 rounded-full bg-brand-mint/40 px-2.5 py-0.5 text-[11px] font-semibold text-brand-teal">
                     <InfinityIcon className="h-3 w-3" /> Bayar 1x, Pakai Seumur Hidup
                   </span>
                 </div>
-                <div className="mt-2 inline-flex items-center gap-1.5 text-xs font-medium text-brand-navy/80">
+                <div className="mt-2 inline-flex items-center gap-1.5 text-xs font-semibold text-brand-navy">
                   <Gift className="h-3.5 w-3.5 text-brand-teal" />
                   16 Bonus Senilai Rp 1.500.000 GRATIS
                 </div>
@@ -234,7 +284,7 @@ export function Products() {
                   {current.targets.map((t) => (
                     <span
                       key={t}
-                      className="rounded-full bg-white/80 px-3 py-1 text-xs font-medium text-brand-navy shadow-soft backdrop-blur"
+                      className="rounded-full bg-white px-3 py-1 text-xs font-semibold text-brand-navy shadow-soft ring-1 ring-brand-navy/10"
                     >
                       {t}
                     </span>
@@ -273,7 +323,7 @@ export function Products() {
                 </div>
               )}
 
-              <div className="mt-6 flex flex-wrap gap-3">
+              <div id="unduh-demo" className="mt-6 flex flex-wrap gap-3 scroll-mt-24">
                 <Button
                   variant="brand"
                   size="pill"
@@ -298,33 +348,47 @@ export function Products() {
 
             <div className="border-t border-border bg-white p-8 lg:col-span-3 lg:border-l lg:border-t-0 lg:p-10">
               <div className="flex items-center justify-between">
-                <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                <p className="text-xs font-semibold uppercase tracking-wider text-brand-navy/70">
                   Fitur {effectiveTier === "lengkap" ? "Lengkap" : "Standar"}
                   {hasSubVariants && activeSub ? ` — ${activeSub.name}` : ""}
                 </p>
-                <span className="text-xs font-medium text-muted-foreground">
+                <span className="text-xs font-semibold text-brand-navy/70">
                   {featureList.length} fitur aktif
                 </span>
               </div>
-              <ul className="mt-5 grid gap-3 sm:grid-cols-2">
-                {featureList.map((f) => {
-                  const { icon: FIcon, desc } = getFeatureMeta(f);
-                  return (
-                    <li
-                      key={f}
-                      className="group flex items-start gap-3 rounded-xl border border-border/60 bg-surface-soft px-3.5 py-3 transition-all hover:border-brand-teal/60 hover:bg-white"
-                    >
-                      <span className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-gradient-brand text-white shadow-soft">
-                        <FIcon className="h-4 w-4" strokeWidth={2.2} />
+              <div className="mt-5 space-y-6">
+                {groupFeatures(featureList).map((grp) => (
+                  <div key={grp.id}>
+                    <div className="flex items-center gap-2">
+                      <span className="h-1.5 w-6 rounded-full bg-gradient-brand" />
+                      <h4 className="text-[11px] font-bold uppercase tracking-wider text-brand-teal">
+                        {GROUP_LABELS[grp.id]}
+                      </h4>
+                      <span className="text-[11px] font-semibold text-brand-navy/60">
+                        ({grp.items.length})
                       </span>
-                      <div className="min-w-0">
-                        <p className="text-sm font-semibold text-brand-navy">{f}</p>
-                        <p className="mt-0.5 text-xs leading-relaxed text-muted-foreground">{desc}</p>
-                      </div>
-                    </li>
-                  );
-                })}
-              </ul>
+                    </div>
+                    <ul className="mt-3 grid gap-2 grid-cols-2 lg:grid-cols-3">
+                      {grp.items.map((f) => {
+                        const { icon: FIcon } = getFeatureMeta(f);
+                        return (
+                          <li
+                            key={f}
+                            className="flex items-center gap-2 rounded-lg border border-border/60 bg-surface-soft px-2.5 py-2 transition-all hover:border-brand-teal/60 hover:bg-white"
+                          >
+                            <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md bg-brand-mint/40 text-brand-teal">
+                              <FIcon className="h-3.5 w-3.5" strokeWidth={2.4} />
+                            </span>
+                            <span className="min-w-0 truncate text-xs font-semibold text-brand-navy" title={f}>
+                              {f}
+                            </span>
+                          </li>
+                        );
+                      })}
+                    </ul>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </div>

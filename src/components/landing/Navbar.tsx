@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 
 const links = [
   { href: "#produk", label: "Produk" },
-  { href: "#bundling", label: "Paket Hemat" },
+  { href: "#bundling", label: "Paket Bundling" },
   { href: "#bonuses", label: "Bonus" },
   { href: "#testimonials", label: "Testimoni" },
   { href: "#faq", label: "FAQ" },
@@ -42,7 +42,7 @@ export function Navbar() {
 
         <div className="hidden items-center gap-3 md:flex">
           <Button variant="ghost" asChild>
-            <a href="#produk">Coba Gratis</a>
+            <a href="#unduh-demo">Unduh Demo</a>
           </Button>
           <Button variant="brand" asChild>
             <a href="#kontak">Beli Sekarang</a>
@@ -73,7 +73,7 @@ export function Navbar() {
             ))}
             <div className="flex gap-2 pt-2">
               <Button variant="outline" className="flex-1" asChild>
-                <a href="#produk">Coba Gratis</a>
+                <a href="#unduh-demo">Unduh Demo</a>
               </Button>
               <Button variant="brand" className="flex-1" asChild>
                 <a href="#kontak">Beli</a>
