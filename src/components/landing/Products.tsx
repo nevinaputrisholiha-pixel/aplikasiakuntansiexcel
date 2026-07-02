@@ -150,10 +150,6 @@ export function Products() {
     : null;
   const downloadHref = activeSub?.downloadFile ?? variant.downloadFile;
 
-  const discount = Math.round(
-    ((variant.originalPrice - variant.price) / variant.originalPrice) * 100,
-  );
-
   const featureList: string[] = hasSubVariants && activeSub
     ? activeSub.features
     : [
