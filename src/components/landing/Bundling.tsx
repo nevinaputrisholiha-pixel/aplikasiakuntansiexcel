@@ -17,36 +17,36 @@ const categories: { id: CategoryId; label: string; bundles: Bundle[] }[] = [
     id: "kombidagang",
     label: "KOMBIDAGANG",
     bundles: [
-      { name: "Paket Nanas", items: ["Dagang Lengkap", "Stok Barang Lengkap"], price: 870000, saving: 1600000, bestSeller: true },
-      { name: "Paket Strawberry", items: ["Dagang Lengkap", "Stok Barang Standar"], price: 670000, saving: 1600000 },
-      { name: "Paket Jeruk", items: ["Dagang Standar", "Stok Barang Lengkap"], price: 670000, saving: 1600000 },
-      { name: "Paket Kiwi", items: ["Dagang Standar", "Stok Barang Standar"], price: 470000, saving: 1600000 },
+      { name: "Paket Nanas", items: ["Dagang Lengkap", "Stok Barang Lengkap"], price: 870000, saving: 100000, bestSeller: true },
+      { name: "Paket Strawberry", items: ["Dagang Lengkap", "Stok Barang Standar"], price: 670000, saving: 100000 },
+      { name: "Paket Jeruk", items: ["Dagang Standar", "Stok Barang Lengkap"], price: 670000, saving: 100000 },
+      { name: "Paket Kiwi", items: ["Dagang Standar", "Stok Barang Standar"], price: 470000, saving: 100000 },
     ],
   },
   {
     id: "kombimanufaktur",
     label: "KOMBIMANUFAKTUR",
     bundles: [
-      { name: "Paket Jambu", items: ["Manufaktur Lengkap", "Stok Barang Lengkap"], price: 870000, saving: 1600000 },
-      { name: "Paket Melon", items: ["Manufaktur Lengkap", "Stok Barang Standar"], price: 670000, saving: 1600000 },
-      { name: "Paket Mangga", items: ["Manufaktur Standar", "Stok Barang Lengkap"], price: 670000, saving: 1600000 },
-      { name: "Paket Semangka", items: ["Manufaktur Standar", "Stok Barang Standar"], price: 470000, saving: 1600000 },
+      { name: "Paket Jambu", items: ["Manufaktur Lengkap", "Stok Barang Lengkap"], price: 870000, saving: 100000 },
+      { name: "Paket Melon", items: ["Manufaktur Lengkap", "Stok Barang Standar"], price: 670000, saving: 100000 },
+      { name: "Paket Mangga", items: ["Manufaktur Standar", "Stok Barang Lengkap"], price: 670000, saving: 100000 },
+      { name: "Paket Semangka", items: ["Manufaktur Standar", "Stok Barang Standar"], price: 470000, saving: 100000 },
     ],
   },
   {
     id: "kombikasstok",
     label: "KOMBIKAS/STOK",
     bundles: [
-      { name: "Paket Apel", items: ["Stok Barang Lengkap", "Buku Kas"], price: 470000, saving: 1600000 },
-      { name: "Paket Alpukat", items: ["Stok Barang Standar", "Buku Kas"], price: 270000, saving: 1600000 },
+      { name: "Paket Apel", items: ["Stok Barang Lengkap", "Buku Kas"], price: 470000, saving: 100000 },
+      { name: "Paket Alpukat", items: ["Stok Barang Standar", "Buku Kas"], price: 270000, saving: 100000 },
     ],
   },
   {
     id: "mega",
     label: "MEGA BUNDLING",
     bundles: [
-      { name: "Paket Anggur", items: ["Jasa Lengkap", "Dagang Lengkap", "Manufaktur Lengkap"], price: 1455000, saving: 1800000, bestSeller: true },
-      { name: "Paket Cherry", items: ["Jasa Standar", "Dagang Standar", "Manufaktur Standar"], price: 855000, saving: 1800000 },
+      { name: "Paket Anggur", items: ["Jasa Lengkap", "Dagang Lengkap", "Manufaktur Lengkap"], price: 1455000, saving: 300000, bestSeller: true },
+      { name: "Paket Cherry", items: ["Jasa Standar", "Dagang Standar", "Manufaktur Standar"], price: 855000, saving: 300000 },
     ],
   },
 ];
@@ -67,7 +67,7 @@ export function Bundling() {
           <h2 className="text-3xl md:text-4xl font-bold text-brand-navy">
             Paket Bundling Lebih Hemat 💡
           </h2>
-          <p className="text-muted-foreground mt-3 max-w-2xl mx-auto">
+          <p className="text-brand-navy/80 mt-3 max-w-2xl mx-auto">
             Kombinasi produk pilihan dengan harga spesial. Pilih kategori yang sesuai dengan kebutuhan usaha Anda.
           </p>
         </div>
@@ -116,7 +116,7 @@ export function Bundling() {
                 <h3 className="text-xl font-bold text-brand-navy">{b.name}</h3>
                 <div className="mt-3 space-y-1.5">
                   {b.items.map((item) => (
-                    <div key={item} className="flex items-start gap-2 text-sm font-medium text-brand-navy/85">
+                    <div key={item} className="flex items-start gap-2 text-sm font-semibold text-brand-navy">
                       <span className="mt-1 w-1.5 h-1.5 rounded-full bg-brand-teal shrink-0" />
                       <span>{item}</span>
                     </div>
@@ -125,7 +125,7 @@ export function Bundling() {
                 <div className="mt-5 pt-5 border-t border-brand-mint/40">
                   <div className="text-3xl font-extrabold text-brand-navy">{formatRp(b.price)}</div>
                   <div
-                    className="mt-1 inline-flex items-center gap-1 px-2.5 py-1 rounded-md bg-brand-teal text-white text-xs font-bold shadow-soft"
+                    className="mt-1 inline-flex items-center gap-1 px-2.5 py-1 rounded-md bg-emerald-600 text-white text-xs font-bold shadow-soft"
                     title="Dihitung dari selisih total harga satuan produk dalam paket dibanding harga bundling."
                   >
                     Anda Hemat: {formatRp(b.saving)}
