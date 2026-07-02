@@ -1,6 +1,8 @@
 import { Button } from "@/components/ui/button";
 import { Check, Sparkles } from "lucide-react";
-import heroScreenshot from "@/assets/hero-screenshot.jpg";
+import heroScreenshotAsset from "@/assets/buku-besar.gif.asset.json";
+
+const heroScreenshot = heroScreenshotAsset.url;
 
 const bullets = [
   "Bayar 1x, pakai seumur hidup",
@@ -66,8 +68,8 @@ export function Hero() {
 
 function HeroMockup({ src }: { src: string }) {
   return (
-    <div className="relative w-full max-w-xl animate-fade-in">
-      <div className="overflow-hidden rounded-2xl bg-white shadow-[0_30px_80px_-20px_oklch(0.16_0.09_280/0.35)] ring-1 ring-black/5">
+    <div className="group relative w-full max-w-xl animate-fade-in">
+      <div className="overflow-hidden rounded-2xl bg-white shadow-[0_30px_80px_-20px_oklch(0.16_0.09_280/0.35)] ring-1 ring-black/5 transition-all duration-500 ease-out group-hover:-translate-y-2 group-hover:shadow-[0_40px_100px_-20px_oklch(0.16_0.09_280/0.45)]">
         {/* Browser chrome */}
         <div className="flex items-center gap-1.5 border-b border-border/70 bg-surface-soft px-4 py-2.5">
           <span className="h-2.5 w-2.5 rounded-full bg-red-400" />
@@ -77,13 +79,14 @@ function HeroMockup({ src }: { src: string }) {
             aplikasiakuntansiexcel.com
           </span>
         </div>
-        <img
-          src={src}
-          alt="Tampilan aplikasi akuntansi Excel — dashboard laporan keuangan dengan grafik dan tabel transaksi"
-          width={1280}
-          height={896}
-          className="h-auto w-full object-cover"
-        />
+        <div className="aspect-[600/370] w-full bg-white">
+          <img
+            src={src}
+            alt="Tampilan aplikasi akuntansi Excel — Buku Besar dengan saldo, debet, kredit, dan riwayat transaksi"
+            loading="lazy"
+            className="h-full w-full object-contain"
+          />
+        </div>
       </div>
     </div>
   );
