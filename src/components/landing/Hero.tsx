@@ -49,10 +49,10 @@ export function Hero() {
 
           <div className="mt-8 flex flex-wrap gap-3">
             <Button variant="brand" size="xl" asChild>
-              <a href="#produk">Lihat Produk</a>
+              <a href="#unduh-demo">Unduh Demo</a>
             </Button>
             <Button variant="brandOutline" size="xl" asChild>
-              <a href="#bundling">Paket Hemat</a>
+              <a href="#bundling">Lihat Paket Bundling</a>
             </Button>
           </div>
         </div>
