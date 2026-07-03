@@ -1,3 +1,4 @@
+import { Fragment } from "react";
 import { Check, X, Sparkles, Gift } from "lucide-react";
 
 type Row = {
@@ -121,8 +122,8 @@ export function GlobalComparisonTable() {
             </thead>
             <tbody>
               {categories.map((cat) => (
-                <>
-                  <tr key={`${cat.title}-h`}>
+                <Fragment key={cat.title}>
+                  <tr>
                     <td
                       colSpan={4}
                       className="border-t border-border border-l-4 border-l-brand-teal bg-surface-soft/60 px-4 py-2.5 text-[11px] font-extrabold uppercase tracking-wider text-brand-teal"
@@ -146,7 +147,7 @@ export function GlobalComparisonTable() {
                       </td>
                     </tr>
                   ))}
-                </>
+                </Fragment>
               ))}
             </tbody>
           </table>
