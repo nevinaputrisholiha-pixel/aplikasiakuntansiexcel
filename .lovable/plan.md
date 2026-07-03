@@ -1,58 +1,64 @@
-## Rencana Perbaikan Detail & Optimasi
+## Rombak Section Produk — Card Ringkas + Tabel Perbandingan Global
 
-### 1. Konsistensi Harga & Transparansi
+### Tujuan
+Percepat konversi: card produk hanya menampilkan info ringkas + CTA di paruh atas, lalu satu tabel perbandingan komprehensif berbasis kategori di paruh bawah.
 
-**`src/components/landing/Products.tsx` (card produk):**
-- Hapus badge "Promo 50%" dan harga coret `Rp 1.170.000` di dalam pricing box card produk agar tidak duplikasi dengan tabel perbandingan di atasnya.
-- Sisakan hanya: harga aktif (dinamis mengikuti toggle Standar/Lengkap yang sudah ada), plus badge "Bayar 1x, Pakai Seumur Hidup" & "16 Bonus Gratis".
-- Tambahkan label kecil "Versi Standar" / "Versi Lengkap" di atas harga agar jelas harga apa yang ditampilkan.
+---
 
-**`src/components/landing/Bundling.tsx` (data `categories`):**
-- Kombinasi 2 produk (kombidagang, kombimanufaktur, kombikasstok): `saving: 100000`.
-- Mega Bundling (Paket Anggur, Paket Cherry): `saving: 300000`.
-- Perbarui footnote agar selaras dengan angka baru.
+### 1. `src/components/landing/Products.tsx` — Ringkas Card + Reorder
 
-### 2. Alur Navigasi & Penamaan Tombol
+- **Hapus** section daftar fitur panjang (kolom kanan `lg:col-span-3` yang menampilkan `groupFeatures(featureList)`).
+- **Hapus** pemanggilan `<ComparisonTable product={current} />` yang saat ini berada di atas card (akan dipindah ke bawah, dan diganti komponen baru).
+- **Ubah** grid card dari `lg:grid-cols-5` jadi layout tunggal / `lg:grid-cols-2`:
+  - Kolom kiri: Icon, tagline, nama produk, deskripsi singkat, pricing box, chip "Cocok untuk", sub-varian selector (untuk Stok).
+  - Kolom kanan: **3–5 poin keunggulan utama** produk (highlight) dalam bentuk daftar ikon + label singkat, diambil dari `baseFeatures` (max 5 item pertama) atau highlight kurasi per-produk. Untuk versi Standar tampilkan 3–4 highlight dari baseFeatures; untuk Lengkap tampilkan 5 highlight (mencampur base + extra teratas). Sub-varian Stok pakai 5 fitur unggulan dari `activeSub.features`.
+  - Di bawah kolom kanan (atau full-width di bawah pricing box), CTA `[Unduh Demo Sekarang]` + `[Beli via WhatsApp]` — tetap `id="unduh-demo"` dan `scroll-mt-24`.
+- **Tambah** heading section baru di bawah card: `## Tabel Perbandingan Fitur Standar vs Lengkap` sebelum `<GlobalComparisonTable />`.
+- Pertahankan tab produk + toggle tier + sub-varian sepenuhnya (tidak berubah logikanya).
 
-**`src/components/landing/Navbar.tsx`:**
-- Rename item nav "Paket Hemat" → "Paket Bundling".
-- Ubah tombol "Coba Gratis" (desktop + mobile drawer) → "Unduh Demo", `href="#unduh-demo"`.
+Helper baru `pickHighlights(product, tier, activeSub)` — pilih 3–5 fitur representatif; pakai `getFeatureMeta` untuk ikon.
 
-**`src/components/landing/Hero.tsx`:**
-- Ubah CTA "Lihat Produk" → tetap, dan tambahkan/ubah tombol sekunder agar salah satu berlabel "Unduh Demo" dengan `href="#unduh-demo"`. (Pertahankan tombol "Paket Bundling" sebagai variant outline.)
-- Rekomendasi final: primary "Unduh Demo" (→ `#unduh-demo`), secondary "Lihat Paket Bundling" (→ `#bundling`).
+### 2. Komponen baru `src/components/landing/GlobalComparisonTable.tsx`
 
-**`src/components/landing/Products.tsx`:**
-- Tambahkan `id="unduh-demo"` di wrapper tombol "Unduh Demo Sekarang" agar scroll anchor mendarat tepat di CTA download, bukan di atas section produk.
-- Tambahkan `scroll-margin-top` via class (`scroll-mt-24`) supaya tidak tertutup navbar sticky.
+Tabel statis global (tidak lagi dinamis per-produk) dengan 4 kategori sesuai brief:
 
-### 3. Optimasi Daftar Fitur Lengkap
+| Kategori | Baris |
+|---|---|
+| Informasi Dasar | Harga (Rp 385.000 / Rp 585.000), Update Gratis (✓/✓), Bonus Program (16/16) |
+| Modul Transaksi | Jurnal Umum, Kode Akun, Jurnal Penyesuaian, Daftar Hutang Piutang (semua ✓/✓) |
+| Modul Laporan | Laporan Keuangan Dasar (✓/✓), Neraca Lajur (✓/✓), Neraca Perbandingan (✗/✓), Arus Kas & Grafik (✗/✓) |
+| Fitur Otomatis | Hutang Piutang Jatuh Tempo (✗/✓), Rekonsiliasi Bank (✗/✓), Penyusutan Aktiva Tetap (✗/✓) |
 
-**`src/components/landing/Products.tsx`:**
-- Kelompokkan `featureList` menjadi 3 sub-kategori dengan helper `groupFeatures(list)`:
-  - **Modul Transaksi** — Home, Kode Akun, Jurnal Umum, AJP, Daftar Produk, Daftar Proyek, Daftar Agen/Reseller/Retailer, Invoice & Surat Jalan.
-  - **Modul Laporan** — Buku Besar, Neraca Lajur, Laba Rugi, Neraca, Neraca Perbandingan, Arus Kas, Kartu Stok, Sisa Stok, Laporan Penjualan/Pembelian/Hutang/Piutang.
-  - **Fitur Otomatis** — HPP, HPP Produksi, Penyusutan Aktiva Tetap, Jurnal Penyusutan, Hutang Piutang Jatuh Tempo, Rekonsiliasi Bank, Buku Besar Hutang Piutang, Proyek Dalam Proses.
-- Render tiap grup dalam heading kecil + grid ikon: `grid-cols-2 lg:grid-cols-3`, kartu ringkas (ikon + nama fitur; deskripsi disederhanakan/dihapus untuk hemat ruang), meniru estetika section Bonus.
-- Fallback: fitur yang tidak masuk grup manapun ditempatkan di grup "Lainnya" agar tidak hilang.
+Struktur data:
+```ts
+type Row = { name: string; desc: string; standar: boolean | string; lengkap: boolean | string };
+type Category = { title: string; rows: Row[] };
+```
 
-### 4. Kontras Warna & Aksesibilitas
+Rendering:
+- Wrapper `overflow-x-auto` dengan `min-w-[720px]` di dalam agar mobile bisa scroll horizontal rapi.
+- Header sticky-ish: 4 kolom `[Fitur | Deskripsi | Standar | Lengkap]`.
+- Kolom **Lengkap** highlighted: `bg-brand-mint/20`, border kiri `border-brand-teal`, badge kecil di atas header `"Direkomendasikan"` (pakai `Sparkles`).
+- Setiap kategori punya baris judul (colspan) dengan `bg-surface-soft`, aksen `border-l-4 border-brand-teal`, dan label uppercase kecil.
+- Cell centang: `Check` hijau di lingkaran gradient-brand (✓).
+- Cell silang: `X` merah lembut (`text-destructive` atau `bg-red-50 text-red-500`) — atau alternatif teks abu-abu "Tidak Tersedia" jika mobile sempit. Gunakan ikon `X` merah untuk konsistensi visual, plus tooltip/aria-label "Tidak Tersedia".
+- Baris Harga: tampilkan angka teks di kedua kolom (bukan ✓/✗).
+- Baris Bonus Program: tampilkan angka `16` di kedua kolom dengan ikon `Gift`.
 
-**`src/components/landing/Products.tsx`:**
-- Deskripsi produk: `text-brand-navy/80` → `text-brand-navy/90` (lebih gelap).
-- Sub-teks harga & muted labels: `text-muted-foreground` → `text-brand-navy/70` untuk lebih tajam di atas gradient mint.
-- Chip "Cocok untuk": `bg-white/80` → `bg-white`, `text-brand-navy` (sudah), tambah `ring-1 ring-brand-navy/10`.
-- Deskripsi utama section (`"Pilih program akuntansi..."`): `text-muted-foreground` → `text-brand-navy/80`.
+### 3. Hapus / arsipkan `ComparisonTable.tsx` lama
 
-**`src/components/landing/Bundling.tsx`:**
-- Isi bundle items: `text-brand-navy/85` → `text-brand-navy` bold-500.
-- Deskripsi section: `text-muted-foreground` → `text-brand-navy/80`.
-- Badge "Anda Hemat": pastikan `bg-brand-teal text-white` (sudah) — verifikasi kontras minimum WCAG AA; jika kurang, gunakan `bg-emerald-600 text-white`.
+- Tidak dipakai lagi setelah perubahan; hapus file `src/components/landing/ComparisonTable.tsx` untuk menghindari dead code.
 
-### File yang Diubah
-- `src/components/landing/Products.tsx` — hapus harga tumpang tindih, id anchor + scroll-margin, grouping fitur, kontras teks.
-- `src/components/landing/Bundling.tsx` — angka `saving` realistis, kontras teks.
-- `src/components/landing/Navbar.tsx` — label "Paket Bundling" & "Unduh Demo" + anchor `#unduh-demo`.
-- `src/components/landing/Hero.tsx` — CTA "Unduh Demo" mengarah ke `#unduh-demo`.
+### 4. Responsif
 
-Tidak ada file baru; tidak ada perubahan pada data logic selain angka `saving` bundling.
+- Card produk tetap responsif seperti sekarang.
+- Tabel global: pada mobile, wrapper `-mx-4 sm:mx-0` + `overflow-x-auto` + `min-w-[720px]` supaya bisa digulir horizontal tanpa memotong teks. Sisipkan hint kecil di mobile: `"← Geser untuk melihat semua fitur →"` (`text-[11px] text-brand-navy/60`, hanya tampil `sm:hidden`).
+
+---
+
+### File yang berubah
+- **Ubah**: `src/components/landing/Products.tsx` — hapus grid fitur panjang, ganti kolom kanan jadi 3–5 highlight ringkas, pindahkan CTA, panggil `<GlobalComparisonTable />` di bawah card dengan heading section.
+- **Baru**: `src/components/landing/GlobalComparisonTable.tsx` — tabel perbandingan statis 4 kategori sesuai data brief, kolom Lengkap ditonjolkan, mobile horizontal scroll.
+- **Hapus**: `src/components/landing/ComparisonTable.tsx`.
+
+Tidak ada perubahan data logic di `data.ts` maupun di komponen lain.
