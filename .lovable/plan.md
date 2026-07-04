@@ -1,64 +1,50 @@
-## Rombak Section Produk — Card Ringkas + Tabel Perbandingan Global
+# Tabel Perbandingan Dinamis (Sinkron Tab + Toggle)
 
-### Tujuan
-Percepat konversi: card produk hanya menampilkan info ringkas + CTA di paruh atas, lalu satu tabel perbandingan komprehensif berbasis kategori di paruh bawah.
+## Tujuan
+Tabel perbandingan di bawah section Produk otomatis berganti isi mengikuti tab produk aktif (Jasa/Kontraktor/Dagang/Manufaktur/Stok/Buku Kas) dan menyorot kolom yang sesuai dengan toggle versi (Standar/Lengkap) di card produk.
 
----
+## 1. Sumber Data (ekstraksi dari 5 gambar)
+Buat file baru `src/components/landing/comparisonData.ts` yang mengekspor `productComparison: Record<productId, ComparisonSpec>`.
 
-### 1. `src/components/landing/Products.tsx` — Ringkas Card + Reorder
+Setiap `ComparisonSpec` berisi:
+- `hasStandar: boolean` (Kontraktor & Buku Kas = false → kolom Standar diberi tanda "–")
+- `priceRow: { standar: string; lengkap: string }`
+- `categories: { title: string; rows: { name: string; desc: string; standar: boolean; lengkap: boolean }[] }[]`
 
-- **Hapus** section daftar fitur panjang (kolom kanan `lg:col-span-3` yang menampilkan `groupFeatures(featureList)`).
-- **Hapus** pemanggilan `<ComparisonTable product={current} />` yang saat ini berada di atas card (akan dipindah ke bawah, dan diganti komponen baru).
-- **Ubah** grid card dari `lg:grid-cols-5` jadi layout tunggal / `lg:grid-cols-2`:
-  - Kolom kiri: Icon, tagline, nama produk, deskripsi singkat, pricing box, chip "Cocok untuk", sub-varian selector (untuk Stok).
-  - Kolom kanan: **3–5 poin keunggulan utama** produk (highlight) dalam bentuk daftar ikon + label singkat, diambil dari `baseFeatures` (max 5 item pertama) atau highlight kurasi per-produk. Untuk versi Standar tampilkan 3–4 highlight dari baseFeatures; untuk Lengkap tampilkan 5 highlight (mencampur base + extra teratas). Sub-varian Stok pakai 5 fitur unggulan dari `activeSub.features`.
-  - Di bawah kolom kanan (atau full-width di bawah pricing box), CTA `[Unduh Demo Sekarang]` + `[Beli via WhatsApp]` — tetap `id="unduh-demo"` dan `scroll-mt-24`.
-- **Tambah** heading section baru di bawah card: `## Tabel Perbandingan Fitur Standar vs Lengkap` sebelum `<GlobalComparisonTable />`.
-- Pertahankan tab produk + toggle tier + sub-varian sepenuhnya (tidak berubah logikanya).
+Kategori mengikuti gambar, dikelompokkan menjadi:
+- **Modul Dasar** — Home, Kode Akun, Daftar Produk/Proyek (khusus Stok/Kontraktor)
+- **Modul Transaksi** — Jurnal Umum, AJP, Jurnal Penyusutan, Daftar Hutang Piutang
+- **Modul Laporan** — Buku Besar, HPP, HPP Produksi, Neraca Lajur, Laba Rugi, Neraca, Neraca Perbandingan, Arus Kas, Buku Besar Hutang Piutang, Laporan Piutang, Laporan Hutang
+- **Fitur Otomatis** — Penyusutan Aktiva Tetap, Hutang Piutang Jatuh Tempo, Rekonsiliasi Bank
+- Untuk **Stok Barang** kategori berbeda: **Master Data** (Daftar Produk/Agen/Reseller/Retailer), **Transaksi & Stok** (Jurnal, Kartu Stok, Sisa Stok, Invoice & Surat Jalan), **Laporan Penjualan** (Pembelian, Penjualan Produk + varian per Agen/Reseller/Retailer).
 
-Helper baru `pickHighlights(product, tier, activeSub)` — pilih 3–5 fitur representatif; pakai `getFeatureMeta` untuk ikon.
+Data ✓/✗ diambil persis dari kolom "ADA" / "–" di 5 gambar. **Kontraktor** = clone data Jasa + tambah baris "Daftar Proyek" (Modul Dasar) & "Proyek Dalam Proses" (Modul Laporan), kolom Standar semua "–" dan `hasStandar=false`.
 
-### 2. Komponen baru `src/components/landing/GlobalComparisonTable.tsx`
+## 2. Refactor Komponen
 
-Tabel statis global (tidak lagi dinamis per-produk) dengan 4 kategori sesuai brief:
+### `GlobalComparisonTable.tsx`
+- Ubah menjadi menerima props: `productId: string`, `activeTier: "standar" | "lengkap"`.
+- Baca `productComparison[productId]` untuk kategori & harga.
+- Jika `hasStandar=false`: kolom Standar tetap ditampilkan tapi semua sel = tanda "–" abu-abu dan label header "Tidak Tersedia".
+- Highlight kolom aktif berdasarkan `activeTier`:
+  - Kolom aktif: `bg-brand-mint/25`, border kiri `border-brand-teal` tebal, badge "Pilihan Anda" di header.
+  - Kolom non-aktif: styling netral (tanpa mint, tanpa badge Direkomendasikan berpindah).
+- Judul section ikut nama produk: "Tabel Perbandingan Fitur — {product.name}".
+- Sub-heading & deskripsi tetap.
+- Mobile: pertahankan `overflow-x-auto` + `min-w-[720px]` + hint scroll.
 
-| Kategori | Baris |
-|---|---|
-| Informasi Dasar | Harga (Rp 385.000 / Rp 585.000), Update Gratis (✓/✓), Bonus Program (16/16) |
-| Modul Transaksi | Jurnal Umum, Kode Akun, Jurnal Penyesuaian, Daftar Hutang Piutang (semua ✓/✓) |
-| Modul Laporan | Laporan Keuangan Dasar (✓/✓), Neraca Lajur (✓/✓), Neraca Perbandingan (✗/✓), Arus Kas & Grafik (✗/✓) |
-| Fitur Otomatis | Hutang Piutang Jatuh Tempo (✗/✓), Rekonsiliasi Bank (✗/✓), Penyusutan Aktiva Tetap (✗/✓) |
+### `Products.tsx`
+- Angkat state `activeProductId` & `activeTier` (sudah ada) agar tabel di-render setelah panel produk dengan props ini.
+- Pindahkan `<GlobalComparisonTable />` keluar dari tempat sekarang bila perlu, tapi tetap di dalam section `#produk`, di bawah grid produk. Lewatkan `productId={activeProductId}` dan `activeTier={activeTier}`.
+- Untuk produk tanpa Standar (Kontraktor/Buku Kas), paksa `activeTier="lengkap"` saat merender tabel agar highlight konsisten.
 
-Struktur data:
-```ts
-type Row = { name: string; desc: string; standar: boolean | string; lengkap: boolean | string };
-type Category = { title: string; rows: Row[] };
-```
+## 3. Detail Teknis
+- Tidak ada perubahan pada `data.ts`, Hero, Bundling, dsb.
+- Tetap gunakan token warna brand yang ada (`brand-teal`, `brand-mint`, `brand-navy`, `gradient-brand`).
+- Aksesibilitas: sel ✗ pakai `aria-label="Tidak Tersedia"`; header kolom aktif tambahkan `aria-current="true"`.
+- Transisi highlight halus: `transition-colors duration-300` pada `<th>` & `<td>` kolom versi.
 
-Rendering:
-- Wrapper `overflow-x-auto` dengan `min-w-[720px]` di dalam agar mobile bisa scroll horizontal rapi.
-- Header sticky-ish: 4 kolom `[Fitur | Deskripsi | Standar | Lengkap]`.
-- Kolom **Lengkap** highlighted: `bg-brand-mint/20`, border kiri `border-brand-teal`, badge kecil di atas header `"Direkomendasikan"` (pakai `Sparkles`).
-- Setiap kategori punya baris judul (colspan) dengan `bg-surface-soft`, aksen `border-l-4 border-brand-teal`, dan label uppercase kecil.
-- Cell centang: `Check` hijau di lingkaran gradient-brand (✓).
-- Cell silang: `X` merah lembut (`text-destructive` atau `bg-red-50 text-red-500`) — atau alternatif teks abu-abu "Tidak Tersedia" jika mobile sempit. Gunakan ikon `X` merah untuk konsistensi visual, plus tooltip/aria-label "Tidak Tersedia".
-- Baris Harga: tampilkan angka teks di kedua kolom (bukan ✓/✗).
-- Baris Bonus Program: tampilkan angka `16` di kedua kolom dengan ikon `Gift`.
-
-### 3. Hapus / arsipkan `ComparisonTable.tsx` lama
-
-- Tidak dipakai lagi setelah perubahan; hapus file `src/components/landing/ComparisonTable.tsx` untuk menghindari dead code.
-
-### 4. Responsif
-
-- Card produk tetap responsif seperti sekarang.
-- Tabel global: pada mobile, wrapper `-mx-4 sm:mx-0` + `overflow-x-auto` + `min-w-[720px]` supaya bisa digulir horizontal tanpa memotong teks. Sisipkan hint kecil di mobile: `"← Geser untuk melihat semua fitur →"` (`text-[11px] text-brand-navy/60`, hanya tampil `sm:hidden`).
-
----
-
-### File yang berubah
-- **Ubah**: `src/components/landing/Products.tsx` — hapus grid fitur panjang, ganti kolom kanan jadi 3–5 highlight ringkas, pindahkan CTA, panggil `<GlobalComparisonTable />` di bawah card dengan heading section.
-- **Baru**: `src/components/landing/GlobalComparisonTable.tsx` — tabel perbandingan statis 4 kategori sesuai data brief, kolom Lengkap ditonjolkan, mobile horizontal scroll.
-- **Hapus**: `src/components/landing/ComparisonTable.tsx`.
-
-Tidak ada perubahan data logic di `data.ts` maupun di komponen lain.
+## 4. File yang Diubah/Dibuat
+- **Baru**: `src/components/landing/comparisonData.ts`
+- **Ubah**: `src/components/landing/GlobalComparisonTable.tsx` (menerima props, styling dinamis)
+- **Ubah**: `src/components/landing/Products.tsx` (teruskan `activeProductId` + `activeTier` ke tabel)
