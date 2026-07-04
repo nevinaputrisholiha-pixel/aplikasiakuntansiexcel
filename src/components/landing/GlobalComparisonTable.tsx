@@ -1,72 +1,23 @@
 import { Fragment } from "react";
-import { Check, X, Sparkles, Gift } from "lucide-react";
+import { Check, X, Sparkles } from "lucide-react";
+import { productComparison } from "./comparisonData";
 
-type Row = {
-  name: string;
-  desc: string;
-  standar: boolean | string;
-  lengkap: boolean | string;
+type Props = {
+  productId: string;
+  productName: string;
+  activeTier: "standar" | "lengkap";
 };
 
-type Category = { title: string; rows: Row[] };
-
-const categories: Category[] = [
-  {
-    title: "Informasi Dasar",
-    rows: [
-      { name: "Harga", desc: "Pembayaran sekali untuk seumur hidup", standar: "Rp 385.000", lengkap: "Rp 585.000" },
-      { name: "Update Gratis", desc: "Pembaruan versi terbaru tanpa biaya tambahan", standar: true, lengkap: true },
-      { name: "Bonus Program", desc: "Mendapatkan 16 bonus program bisnis gratis", standar: "16 Bonus", lengkap: "16 Bonus" },
-    ],
-  },
-  {
-    title: "Modul Transaksi",
-    rows: [
-      { name: "Jurnal Umum", desc: "Tempat pencatatan transaksi harian terpusat", standar: true, lengkap: true },
-      { name: "Kode Akun", desc: "Daftar akun (Chart of Accounts) siap pakai", standar: true, lengkap: true },
-      { name: "Jurnal Penyesuaian", desc: "Mencatat penyesuaian di akhir periode", standar: true, lengkap: true },
-      { name: "Daftar Hutang Piutang", desc: "Rekapitulasi saldo hutang & piutang aktif", standar: true, lengkap: true },
-    ],
-  },
-  {
-    title: "Modul Laporan",
-    rows: [
-      { name: "Laporan Keuangan Dasar", desc: "Otomatis menghasilkan Buku Besar, Neraca, Laba Rugi", standar: true, lengkap: true },
-      { name: "Neraca Lajur", desc: "Worksheet otomatis untuk penyusunan laporan", standar: true, lengkap: true },
-      { name: "Neraca Perbandingan", desc: "Membandingkan posisi keuangan antar-periode", standar: false, lengkap: true },
-      { name: "Arus Kas & Grafik", desc: "Laporan cash flow dan dashboard grafik visual", standar: false, lengkap: true },
-    ],
-  },
-  {
-    title: "Fitur Otomatis",
-    rows: [
-      { name: "Hutang Piutang Jatuh Tempo", desc: "Pengingat otomatis tagihan yang mendekati jatuh tempo", standar: false, lengkap: true },
-      { name: "Rekonsiliasi Bank", desc: "Mencocokkan saldo buku dengan rekening bank", standar: false, lengkap: true },
-      { name: "Penyusutan Aktiva Tetap", desc: "Menghitung depresiasi aset secara otomatis", standar: false, lengkap: true },
-    ],
-  },
-];
-
-function Cell({ v, isLengkap = false }: { v: boolean | string; isLengkap?: boolean }) {
-  if (typeof v === "string") {
-    if (v.includes("Bonus")) {
-      return (
-        <span className="inline-flex items-center gap-1.5 rounded-full bg-brand-mint/40 px-2.5 py-1 text-xs font-bold text-brand-teal">
-          <Gift className="h-3.5 w-3.5" /> {v}
-        </span>
-      );
-    }
-    return (
-      <span className={`text-sm font-extrabold ${isLengkap ? "text-brand-teal" : "text-brand-navy"}`}>
-        {v}
-      </span>
-    );
-  }
-  return v ? (
+function CheckCell() {
+  return (
     <span className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-gradient-brand text-white shadow-soft">
       <Check className="h-4 w-4" strokeWidth={3} />
     </span>
-  ) : (
+  );
+}
+
+function CrossCell() {
+  return (
     <span
       className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-red-50 text-red-500 ring-1 ring-red-100"
       aria-label="Tidak Tersedia"
@@ -77,7 +28,31 @@ function Cell({ v, isLengkap = false }: { v: boolean | string; isLengkap?: boole
   );
 }
 
-export function GlobalComparisonTable() {
+function DashCell() {
+  return (
+    <span
+      className="inline-flex h-7 min-w-7 items-center justify-center rounded-full bg-muted px-2 text-xs font-bold text-brand-navy/50"
+      aria-label="Tidak Tersedia"
+      title="Tidak Tersedia"
+    >
+      –
+    </span>
+  );
+}
+
+export function GlobalComparisonTable({ productId, productName, activeTier }: Props) {
+  const spec = productComparison[productId];
+  if (!spec) return null;
+
+  const standarActive = spec.hasStandar && activeTier === "standar";
+  const lengkapActive = !spec.hasStandar || activeTier === "lengkap";
+
+  const colHeadBase = "px-4 py-4 text-center transition-colors duration-300";
+  const activeHeadClass = "bg-brand-mint/25 border-l-2 border-brand-teal";
+  const inactiveHeadClass = "border-l border-border";
+  const colBodyActive = "bg-brand-mint/10 border-l-2 border-brand-teal";
+  const colBodyInactive = "border-l border-border";
+
   return (
     <section id="perbandingan" className="mt-16 scroll-mt-24">
       <div className="mx-auto max-w-3xl text-center">
@@ -85,10 +60,12 @@ export function GlobalComparisonTable() {
           Panduan Detail
         </span>
         <h3 className="mt-4 text-2xl font-extrabold text-brand-navy md:text-3xl">
-          Tabel Perbandingan Fitur Standar vs Lengkap
+          Tabel Perbandingan Fitur — {productName}
         </h3>
         <p className="mt-3 text-sm text-brand-navy/80 md:text-base">
-          Lihat perbedaan lengkap antara kedua versi agar Anda bisa memilih paket yang paling sesuai dengan kebutuhan bisnis.
+          {spec.hasStandar
+            ? "Tabel ini otomatis mengikuti tab produk & sakelar versi di atas. Kolom versi yang aktif disorot agar mudah dibandingkan."
+            : "Produk ini hanya tersedia dalam Versi Lengkap. Kolom Standar ditampilkan sebagai referensi."}
         </p>
       </div>
 
@@ -107,21 +84,70 @@ export function GlobalComparisonTable() {
                 <th className="w-[42%] px-4 py-4 text-xs font-bold uppercase tracking-wider text-brand-navy/70">
                   Deskripsi
                 </th>
-                <th className="w-[18%] border-l border-border px-4 py-4 text-center text-xs font-bold uppercase tracking-wider text-brand-navy/70">
-                  Versi Standar
+                <th
+                  aria-current={standarActive ? "true" : undefined}
+                  className={`relative w-[18%] ${colHeadBase} ${standarActive ? activeHeadClass : inactiveHeadClass}`}
+                >
+                  {standarActive && (
+                    <div className="absolute -top-3 left-1/2 inline-flex -translate-x-1/2 items-center gap-1 whitespace-nowrap rounded-full bg-brand-navy px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-white shadow-soft">
+                      Pilihan Anda
+                    </div>
+                  )}
+                  <span
+                    className={`text-xs font-bold uppercase tracking-wider ${standarActive ? "text-brand-teal" : "text-brand-navy/70"}`}
+                  >
+                    Versi Standar
+                  </span>
+                  {!spec.hasStandar && (
+                    <div className="mt-1 text-[10px] font-semibold text-brand-navy/50">
+                      Tidak Tersedia
+                    </div>
+                  )}
                 </th>
-                <th className="relative w-[18%] border-l-2 border-brand-teal bg-brand-mint/20 px-4 py-4 text-center">
-                  <div className="absolute -top-3 left-1/2 inline-flex -translate-x-1/2 items-center gap-1 whitespace-nowrap rounded-full bg-gradient-brand px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-white shadow-glow">
-                    <Sparkles className="h-3 w-3" /> Direkomendasikan
-                  </div>
-                  <span className="text-xs font-bold uppercase tracking-wider text-brand-teal">
+                <th
+                  aria-current={lengkapActive ? "true" : undefined}
+                  className={`relative w-[18%] ${colHeadBase} ${lengkapActive ? activeHeadClass : inactiveHeadClass}`}
+                >
+                  {lengkapActive && (
+                    <div className="absolute -top-3 left-1/2 inline-flex -translate-x-1/2 items-center gap-1 whitespace-nowrap rounded-full bg-gradient-brand px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-white shadow-glow">
+                      <Sparkles className="h-3 w-3" /> Pilihan Anda
+                    </div>
+                  )}
+                  <span
+                    className={`text-xs font-bold uppercase tracking-wider ${lengkapActive ? "text-brand-teal" : "text-brand-navy/70"}`}
+                  >
                     Versi Lengkap
                   </span>
                 </th>
               </tr>
             </thead>
             <tbody>
-              {categories.map((cat) => (
+              <tr className="border-t border-border">
+                <td className="px-4 py-3.5 text-sm font-bold text-brand-navy">Harga Program</td>
+                <td className="px-4 py-3.5 text-sm text-brand-navy/75">
+                  Bayar sekali, lisensi seumur hidup.
+                </td>
+                <td
+                  className={`px-4 py-3.5 text-center align-middle transition-colors duration-300 ${standarActive ? colBodyActive : colBodyInactive}`}
+                >
+                  <span
+                    className={`text-sm font-extrabold ${spec.hasStandar ? (standarActive ? "text-brand-teal" : "text-brand-navy") : "text-brand-navy/40"}`}
+                  >
+                    {spec.priceRow.standar}
+                  </span>
+                </td>
+                <td
+                  className={`px-4 py-3.5 text-center align-middle transition-colors duration-300 ${lengkapActive ? colBodyActive : colBodyInactive}`}
+                >
+                  <span
+                    className={`text-sm font-extrabold ${lengkapActive ? "text-brand-teal" : "text-brand-navy"}`}
+                  >
+                    {spec.priceRow.lengkap}
+                  </span>
+                </td>
+              </tr>
+
+              {spec.categories.map((cat) => (
                 <Fragment key={cat.title}>
                   <tr>
                     <td
@@ -135,14 +161,18 @@ export function GlobalComparisonTable() {
                     <tr key={`${cat.title}-${r.name}`} className="border-t border-border">
                       <td className="px-4 py-3.5 text-sm font-semibold text-brand-navy">{r.name}</td>
                       <td className="px-4 py-3.5 text-sm text-brand-navy/75">{r.desc}</td>
-                      <td className="border-l border-border px-4 py-3.5 text-center align-middle">
+                      <td
+                        className={`px-4 py-3.5 text-center align-middle transition-colors duration-300 ${standarActive ? colBodyActive : colBodyInactive}`}
+                      >
                         <div className="flex items-center justify-center">
-                          <Cell v={r.standar} />
+                          {spec.hasStandar ? (r.standar ? <CheckCell /> : <CrossCell />) : <DashCell />}
                         </div>
                       </td>
-                      <td className="border-l-2 border-brand-teal bg-brand-mint/10 px-4 py-3.5 text-center align-middle">
+                      <td
+                        className={`px-4 py-3.5 text-center align-middle transition-colors duration-300 ${lengkapActive ? colBodyActive : colBodyInactive}`}
+                      >
                         <div className="flex items-center justify-center">
-                          <Cell v={r.lengkap} isLengkap />
+                          {r.lengkap ? <CheckCell /> : <CrossCell />}
                         </div>
                       </td>
                     </tr>

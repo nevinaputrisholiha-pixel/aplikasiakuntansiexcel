@@ -392,7 +392,11 @@ export function Products() {
           </div>
         </div>
 
-        <GlobalComparisonTable />
+        <GlobalComparisonTable
+          productId={current.id}
+          productName={current.name}
+          activeTier={effectiveTier}
+        />
 
         <DemoDownloadModal
           open={demoOpen}
