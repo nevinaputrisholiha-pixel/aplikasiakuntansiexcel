@@ -47,6 +47,8 @@ export const products: Product[] = [
     tagline: "Tanpa stok, tanpa HPP",
     description:
       "Khusus untuk usaha jasa. Tidak memiliki stok barang dagangan dan tidak memerlukan perhitungan Harga Pokok Penjualan.",
+    businessFit:
+      "Cocok untuk usaha tanpa stok barang & tanpa HPP. Contoh: Salon, Warnet, Bengkel, Persewaan, Konsultan, Freelancer, dll.",
     baseFeatures: [
       "Home",
       "Kode Akun",
@@ -99,6 +101,8 @@ export const products: Product[] = [
     tagline: "Pemisahan biaya per proyek",
     description:
       "Khusus untuk usaha kontraktor & jasa konstruksi. Mengelola pemisahan biaya per proyek, daftar proyek, hingga laporan proyek dalam proses.",
+    businessFit:
+      "Cocok untuk usaha jasa proyek/konstruksi tanpa stok barang. Contoh: Kontraktor Bangunan, Jasa Renovasi, Interior, Developer, Instalasi, dll.",
     baseFeatures: [
       "Home",
       "Kode Akun",
@@ -144,6 +148,8 @@ export const products: Product[] = [
     tagline: "Lengkap dengan HPP",
     description:
       "Dirancang untuk usaha jual beli. Mengelola stok barang dagangan, transaksi pembelian–penjualan, lengkap dengan perhitungan HPP otomatis.",
+    businessFit:
+      "Cocok untuk usaha yang memiliki stok barang dagangan dengan transaksi jual-beli & perlu hitung HPP. Contoh: Toko Tas, Toko Buku, Toko Pakaian, Toko Sembako, dll.",
     baseFeatures: [
       "Home",
       "Kode Akun",
@@ -189,6 +195,8 @@ export const products: Product[] = [
     tagline: "HPP Produksi + HPP Penjualan",
     description:
       "Untuk usaha produksi. Mengelola stok bahan baku, barang dalam proses, dan barang jadi, plus perhitungan Harga Pokok Produksi & Harga Pokok Penjualan.",
+    businessFit:
+      "Cocok untuk usaha yang mengolah bahan baku menjadi barang jadi & butuh hitung Harga Pokok Produksi. Contoh: Restoran, Cafe, Garmen, Percetakan, Katering, dll.",
     baseFeatures: [
       "Home",
       "Kode Akun",
@@ -238,6 +246,8 @@ export const products: Product[] = [
     tagline: "Persediaan & penjualan",
     description:
       "Aplikasi persediaan & penjualan untuk usaha dengan stok barang fisik, baik bahan baku maupun barang siap jual.",
+    businessFit:
+      "Cocok untuk usaha retail/distributor yang fokus pada manajemen stok, kinerja agen/reseller/retailer, dan komisi salesman.",
     baseFeatures: [
       "Home",
       "Daftar Produk",
@@ -250,6 +260,8 @@ export const products: Product[] = [
       "Daftar Agen / Reseller / Retailer",
       "Invoice & Surat Jalan Otomatis",
       "Laporan Pembelian Produk",
+      "Laporan Penjualan Per Agen/Reseller/Retailer",
+      "Laporan Penjualan Per Salesman",
       "Laporan Penjualan per Agen",
       "Laporan Penjualan per Reseller",
       "Laporan Penjualan per Retailer",
@@ -322,6 +334,8 @@ export const products: Product[] = [
     tagline: "Sederhana untuk yayasan & pribadi",
     description:
       "Buku kas untuk yayasan non-profit, usaha rintisan, atau pengelolaan keuangan pribadi & keluarga.",
+    businessFit:
+      "Cocok untuk pencatatan kas masuk/keluar sederhana — yayasan, usaha rintisan, atau pengelolaan keuangan pribadi & keluarga.",
     baseFeatures: ["Home", "Kode Akun", "Jurnal Umum", "Buku Besar"],
     extraFeatures: [],
     variants: {
