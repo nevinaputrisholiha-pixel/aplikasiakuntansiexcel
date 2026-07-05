@@ -13,6 +13,7 @@ export type Product = {
   name: string;
   tagline: string;
   description: string;
+  businessFit: string;
   variants: {
     lengkap: ProductVariant;
     standar: ProductVariant | null; // null = only lengkap available
