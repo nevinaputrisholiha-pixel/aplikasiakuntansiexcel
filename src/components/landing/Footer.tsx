@@ -53,9 +53,21 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="mt-10 flex flex-col items-start justify-between gap-3 border-t border-border pt-6 text-xs text-muted-foreground md:flex-row md:items-center">
-          <p>© {new Date().getFullYear()} AplikasiAkuntansiExcel.com — Laporan Keuangan Jadi Lebih Mudah.</p>
-          <p>Jakasampurna, Bekasi Barat · Indonesia</p>
+        <div className="mt-10 border-t border-border pt-6">
+          <nav
+            aria-label="Legal"
+            className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-muted-foreground"
+          >
+            <a href="#" className="hover:text-brand-teal">EULA</a>
+            <span aria-hidden="true">·</span>
+            <a href="#" className="hover:text-brand-teal">Syarat &amp; Ketentuan</a>
+            <span aria-hidden="true">·</span>
+            <a href="#" className="hover:text-brand-teal">Kebijakan Privasi</a>
+          </nav>
+          <div className="mt-3 flex flex-col items-start justify-between gap-2 text-xs text-muted-foreground md:flex-row md:items-center">
+            <p>© {new Date().getFullYear()} AplikasiAkuntansiExcel.com — Laporan Keuangan Jadi Lebih Mudah.</p>
+            <p>Jakasampurna, Bekasi Barat · Indonesia</p>
+          </div>
         </div>
       </div>
     </footer>
