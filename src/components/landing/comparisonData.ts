@@ -228,6 +228,18 @@ function stokCategories(): ComparisonCategory[] {
       rows: [
         row("Laporan Pembelian Produk", D.lapPembelian),
         row("Laporan Penjualan Produk", D.lapPenjualanProduk),
+        {
+          name: "Laporan Penjualan Per Agen/Reseller/Retailer",
+          desc: "Laporan terperinci penjualan berdasarkan performa mitra bisnis Anda.",
+          standar: false,
+          lengkap: true,
+        },
+        {
+          name: "Laporan Penjualan Per Salesman",
+          desc: "Mempermudah perhitungan bonus/komisi salesman secara otomatis.",
+          standar: false,
+          lengkap: true,
+        },
         row("Laporan Penjualan Agen", D.lapPenjAgen),
         row("Laporan Penjualan Produk Per Agen", D.lapPenjProdukPerAgen),
         row("Laporan Penjualan Agen Per Produk", D.lapPenjAgenPerProduk),
