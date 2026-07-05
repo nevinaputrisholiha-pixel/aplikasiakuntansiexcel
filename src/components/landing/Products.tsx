@@ -393,6 +393,12 @@ export function Products() {
                   <Download className="h-4 w-4" />
                   Unduh Demo Sekarang
                 </Button>
+                <Button variant="outline" size="pill" asChild>
+                  <a href="#" aria-label="Lihat Video Tutorial">
+                    <PlayCircle className="h-4 w-4" />
+                    Lihat Video Tutorial
+                  </a>
+                </Button>
                 <Button variant="whatsapp" size="pill" asChild>
                   <a
                     href={`https://wa.me/6285213556300?text=${encodeURIComponent(
