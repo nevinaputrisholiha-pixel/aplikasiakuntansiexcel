@@ -1,4 +1,5 @@
 import logoIcon from "@/assets/logo-icon.png.asset.json";
+import { Link } from "@tanstack/react-router";
 
 export function Footer() {
   return (
@@ -58,11 +59,11 @@ export function Footer() {
             aria-label="Legal"
             className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-muted-foreground"
           >
-            <a href="#" className="hover:text-brand-teal">EULA</a>
+            <Link to="/eula" className="hover:text-brand-teal">EULA</Link>
             <span aria-hidden="true">·</span>
-            <a href="#" className="hover:text-brand-teal">Syarat &amp; Ketentuan</a>
+            <Link to="/syarat-ketentuan" className="hover:text-brand-teal">Syarat &amp; Ketentuan</Link>
             <span aria-hidden="true">·</span>
-            <a href="#" className="hover:text-brand-teal">Kebijakan Privasi</a>
+            <Link to="/kebijakan-privasi" className="hover:text-brand-teal">Kebijakan Privasi</Link>
           </nav>
           <div className="mt-3 flex flex-col items-start justify-between gap-2 text-xs text-muted-foreground md:flex-row md:items-center">
             <p>© {new Date().getFullYear()} AplikasiAkuntansiExcel.com — Laporan Keuangan Jadi Lebih Mudah.</p>

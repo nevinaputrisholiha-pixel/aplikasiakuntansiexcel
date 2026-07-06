@@ -1,58 +1,71 @@
+## 1. Modal Video Tutorial di Card Produk
 
-## 1. Edukasi Jenis Usaha di Setiap Tab Produk
-Di `src/components/landing/data.ts`, tambahkan field baru `businessFit: string` per produk:
-- **jasa**: "Cocok untuk usaha tanpa stok barang & tanpa HPP. Contoh: Salon, Warnet, Bengkel, Persewaan, Konsultan, Freelancer, dll."
-- **kontraktor**: sama seperti jasa (kontraktor termasuk jasa proyek).
-- **dagang**: "Cocok untuk usaha yang memiliki stok barang dagangan dengan transaksi jual-beli & perlu hitung HPP. Contoh: Toko Tas, Toko Buku, Toko Pakaian, Toko Sembako, dll."
-- **manufaktur**: "Cocok untuk usaha yang mengolah bahan baku menjadi barang jadi & butuh hitung Harga Pokok Produksi. Contoh: Restoran, Cafe, Garmen, Percetakan, Katering, dll."
-- **stok**: "Cocok untuk usaha retail/distributor yang fokus pada manajemen stok, agen/reseller, dan komisi salesman."
-- **bukukas**: "Cocok untuk pencatatan kas masuk/keluar sederhana — usaha kecil atau keperluan pribadi."
+Buat komponen baru `src/components/landing/VideoTutorialModal.tsx`:
+- Menggunakan `Dialog` dari `@/components/ui/dialog` (sudah punya tombol X built-in di pojok kanan atas).
+- Konten: `<iframe>` YouTube embed dengan aspect-ratio 16:9 (`aspect-video w-full rounded-lg`), `allowFullScreen`, `allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"`.
+- Placeholder URL: `https://www.youtube.com/embed/dQw4w9WgXcQ` (video bebas, bisa diganti nanti).
+- Props: `open`, `onOpenChange`, `productName` (untuk judul modal "Video Tutorial — {productName}").
+- `DialogContent` diperlebar (`sm:max-w-3xl`) agar video terlihat nyaman.
 
-Di `Products.tsx`, render `businessFit` sebagai info-card kecil (ikon Info + background `bg-brand-mint/25`, border teal) di dalam kolom kiri Card Produk — tepat di bawah `description`, sebelum bagian Pricing. Selalu tampil dan berganti otomatis saat tab produk berubah.
+Di `src/components/landing/Products.tsx`:
+- Tambah `useState` untuk `videoOpen`.
+- Ubah tombol "Lihat Video Tutorial" dari `<a href="#">` menjadi `<Button onClick={() => setVideoOpen(true)}>` (hapus `asChild`).
+- Render `<VideoTutorialModal open={videoOpen} onOpenChange={setVideoOpen} productName={current.name} />`.
 
-## 2. Section Manfaat Emosional (Kualitas Hidup)
-Buat komponen baru `src/components/landing/LifeQuality.tsx`:
-- Section dengan 2 kartu berdampingan (grid 1 kol mobile, 2 kol desktop).
-- **Kartu 1 — "Lebih Banyak Waktu Berharga"** (ikon `Clock`/`Heart`): "Miliki lebih banyak waktu luang untuk memikirkan strategi naik kelas bisnis, berkumpul bersama keluarga tercinta, atau menikmati hobi ('me time') Anda."
-- **Kartu 2 — "Tenang, Tanpa Salah Hitung"** (ikon `ShieldCheck`): "Bebas dari pusing salah hitung atau stres akibat 'human error'. Laporan keuangan Anda otomatis tersusun rapi dan akurat."
-- Judul section: "Bukan Sekadar Aplikasi — Ini Kualitas Hidup Anda", eyebrow: "Lebih dari Angka".
-- Gunakan token brand yang sudah ada (`bg-gradient-brand`, `brand-navy`, `brand-teal`, `brand-mint`).
-- Sisipkan di `src/routes/index.tsx` (atau tempat Hero dirender) tepat **setelah Hero, sebelum TrustStrip/Advantages**.
+## 2. Halaman Legal (3 Rute Baru)
 
-## 3. Baris Fitur Salesman/Agen di Tab Stok Barang
-Di `src/components/landing/comparisonData.ts` pada blok `stok`:
-- Kategori "Laporan Penjualan" (versi Lengkap) tambahkan 2 baris:
-  - "Laporan Penjualan Per Agen/Reseller/Retailer" — deskripsi: "Laporan terperinci penjualan berdasarkan performa mitra bisnis Anda."
-  - "Laporan Penjualan Per Salesman" — deskripsi: "Mempermudah perhitungan bonus/komisi salesman secara otomatis."
-- Standar: "–" (tidak tersedia).
+Buat 3 route file baru di `src/routes/`:
+- `eula.tsx` → `/eula`
+- `syarat-ketentuan.tsx` → `/syarat-ketentuan`
+- `kebijakan-privasi.tsx` → `/kebijakan-privasi`
 
-Di `src/components/landing/data.ts` pada produk `stok`, tambahkan kedua fitur ini ke `extraFeatures` (versi Lengkap) agar juga muncul di highlight card & tabel.
+Setiap route:
+- `createFileRoute` dengan `head()` unik (title + description + og:title + og:description dalam bahasa Indonesia, tanpa og:image).
+- Layout minimalis konsisten dengan brand: `<Navbar />` di atas, `<Footer />` di bawah, konten di `<main className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 py-16">` dengan `<article className="prose prose-slate max-w-none">`.
+- Judul H1 + tanggal berlaku + bagian-bagian bernomor (H2) + paragraf.
+- Tombol/link "← Kembali ke Beranda" di atas judul menggunakan `<Link to="/">`.
 
-## 4. Tombol "Lihat Video Tutorial" di Card Produk
-Di `Products.tsx`, dalam grup tombol CTA (di samping `Unduh Demo Sekarang` dan tombol WhatsApp), tambahkan tombol sekunder:
-```
-<Button variant="outline" size="pill" asChild>
-  <a href="#" aria-label="Lihat Video Tutorial">
-    <PlayCircle className="h-4 w-4" /> Lihat Video Tutorial
-  </a>
-</Button>
-```
-Icon `PlayCircle` dari lucide-react. Placeholder `href="#"`. Menyesuaikan style outline minimalis dengan border brand-teal.
+Draft konten (bahasa Indonesia formal, standar industri software, ~6-8 pasal per halaman):
 
-## 5. Legal Links di Footer
+**`/eula` — Perjanjian Lisensi Pengguna Akhir:**
+1. Definisi (Program, Lisensi, Pengguna, Pemberi Lisensi).
+2. Pemberian Lisensi — non-eksklusif, tidak dapat dialihkan, seumur hidup, untuk penggunaan pribadi atau internal perusahaan pembeli.
+3. Larangan — dilarang menggandakan/menjual kembali/menyewakan/mendistribusikan ulang, dilarang membongkar formula terproteksi, dilarang menggunakan sebagai template komersial pihak ketiga.
+4. Hak Kekayaan Intelektual tetap milik pemberi lisensi.
+5. Batasan Tanggung Jawab (as-is, no warranty terhadap konsekuensi bisnis).
+6. Pengakhiran Lisensi jika melanggar.
+7. Hukum yang Berlaku — Republik Indonesia.
+
+**`/syarat-ketentuan`:**
+1. Pembelian & Pembayaran — sekali bayar, tanpa biaya bulanan/tahunan.
+2. Lisensi Seumur Hidup — untuk satu pembeli/perusahaan.
+3. Update Gratis — pembeli berhak menerima update minor selamanya via WhatsApp/email support.
+4. Kebijakan Refund — refund hanya berlaku jika file benar-benar rusak/tidak bisa dibuka dan bukti dikirim dalam 7 hari; refund tidak berlaku karena perubahan kebutuhan bisnis/ketidakcocokan versi Office.
+5. Dukungan Teknis via WhatsApp jam kerja.
+6. Kompatibilitas — Excel 2016+, Microsoft 365, WPS Office.
+7. Larangan penyalahgunaan dan penjualan kembali.
+8. Perubahan Syarat sewaktu-waktu.
+
+**`/kebijakan-privasi`:**
+1. Komitmen Privasi — 100% lokal.
+2. Data yang Kami Kumpulkan (hanya data pembelian: nama, WA, email untuk pengiriman file dan support).
+3. Data yang Tidak Kami Kumpulkan — semua data transaksi/keuangan yang diinput ke file Excel tersimpan sepenuhnya di perangkat lokal pengguna; tidak ada telemetry, tidak ada koneksi cloud, tidak ada auto-upload.
+4. Penyimpanan Data Pembelian & retention (selama diperlukan untuk support).
+5. Berbagi Data dengan Pihak Ketiga — tidak, kecuali diwajibkan hukum.
+6. Keamanan file (bebas malware, aman dibuka offline).
+7. Hak Pengguna (minta hapus data pembelian).
+8. Kontak — email/WhatsApp.
+
+## 3. Update Footer Links
+
 Di `src/components/landing/Footer.tsx`:
-- Tambahkan baris menu kecil di bagian bawah (di dalam `div` copyright bar, atau baris terpisah di atasnya) berisi 3 link inline:
-  - "EULA" → `#`
-  - "Syarat & Ketentuan" → `#`
-  - "Kebijakan Privasi" → `#`
-- Style: `text-xs text-muted-foreground hover:text-brand-teal`, dipisah oleh `·`. Layout: flex-wrap agar rapi di mobile, sejajar dengan copyright.
+- Ganti 3 `<a href="#">` menjadi `<Link to="/eula" />`, `<Link to="/syarat-ketentuan" />`, `<Link to="/kebijakan-privasi" />`.
+- Import `Link` dari `@tanstack/react-router`.
 
 ## Files Touched
-- `src/components/landing/data.ts` — tambah `businessFit` per produk + 2 fitur extra untuk `stok`.
-- `src/components/landing/comparisonData.ts` — tambah 2 baris laporan agen & salesman untuk `stok`.
-- `src/components/landing/Products.tsx` — render info `businessFit` + tombol video tutorial.
-- `src/components/landing/LifeQuality.tsx` — **baru**, section manfaat emosional.
-- `src/routes/index.tsx` — sisipkan `<LifeQuality />` setelah Hero.
-- `src/components/landing/Footer.tsx` — 3 link legal.
 
-Tidak mengubah struktur layout / tabel / logic tier toggle yang sudah ada.
+- **Baru:** `src/components/landing/VideoTutorialModal.tsx`, `src/routes/eula.tsx`, `src/routes/syarat-ketentuan.tsx`, `src/routes/kebijakan-privasi.tsx`.
+- **Edit:** `src/components/landing/Products.tsx` (state + modal render + onClick), `src/components/landing/Footer.tsx` (Link).
+- `src/routeTree.gen.ts` otomatis regenerate oleh plugin — tidak diedit manual.
+
+Tidak mengubah layout, tabel perbandingan, atau logic tier toggle yang sudah ada.

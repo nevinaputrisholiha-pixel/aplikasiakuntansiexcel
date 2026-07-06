@@ -29,6 +29,7 @@ import type { LucideIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { GlobalComparisonTable } from "./GlobalComparisonTable";
 import { DemoDownloadModal } from "./DemoDownloadModal";
+import { VideoTutorialModal } from "./VideoTutorialModal";
 
 type Tier = "lengkap" | "standar";
 
@@ -144,6 +145,7 @@ export function Products() {
   const [tier, setTier] = useState<Tier>("lengkap");
   const [subVariantId, setSubVariantId] = useState<string | null>(null);
   const [demoOpen, setDemoOpen] = useState(false);
+  const [videoOpen, setVideoOpen] = useState(false);
   const current = products.find((p) => p.id === active) ?? products[0];
   const Icon = current.icon;
 
@@ -393,11 +395,14 @@ export function Products() {
                   <Download className="h-4 w-4" />
                   Unduh Demo Sekarang
                 </Button>
-                <Button variant="outline" size="pill" asChild>
-                  <a href="#" aria-label="Lihat Video Tutorial">
-                    <PlayCircle className="h-4 w-4" />
-                    Lihat Video Tutorial
-                  </a>
+                <Button
+                  variant="outline"
+                  size="pill"
+                  onClick={() => setVideoOpen(true)}
+                  aria-label="Lihat Video Tutorial"
+                >
+                  <PlayCircle className="h-4 w-4" />
+                  Lihat Video Tutorial
                 </Button>
                 <Button variant="whatsapp" size="pill" asChild>
                   <a
@@ -427,6 +432,12 @@ export function Products() {
           productName={current.name}
           tierLabel={effectiveTier === "lengkap" ? "Lengkap" : "Standar"}
           downloadHref={downloadHref}
+        />
+
+        <VideoTutorialModal
+          open={videoOpen}
+          onOpenChange={setVideoOpen}
+          productName={current.name}
         />
       </div>
     </section>
