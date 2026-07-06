@@ -9,9 +9,15 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as SyaratKetentuanRouteImport } from './routes/syarat-ketentuan'
 import { Route as EulaRouteImport } from './routes/eula'
 import { Route as IndexRouteImport } from './routes/index'
 
+const SyaratKetentuanRoute = SyaratKetentuanRouteImport.update({
+  id: '/syarat-ketentuan',
+  path: '/syarat-ketentuan',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const EulaRoute = EulaRouteImport.update({
   id: '/eula',
   path: '/eula',
@@ -26,31 +32,42 @@ const IndexRoute = IndexRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/eula': typeof EulaRoute
+  '/syarat-ketentuan': typeof SyaratKetentuanRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/eula': typeof EulaRoute
+  '/syarat-ketentuan': typeof SyaratKetentuanRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/eula': typeof EulaRoute
+  '/syarat-ketentuan': typeof SyaratKetentuanRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/eula'
+  fullPaths: '/' | '/eula' | '/syarat-ketentuan'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/eula'
-  id: '__root__' | '/' | '/eula'
+  to: '/' | '/eula' | '/syarat-ketentuan'
+  id: '__root__' | '/' | '/eula' | '/syarat-ketentuan'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   EulaRoute: typeof EulaRoute
+  SyaratKetentuanRoute: typeof SyaratKetentuanRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/syarat-ketentuan': {
+      id: '/syarat-ketentuan'
+      path: '/syarat-ketentuan'
+      fullPath: '/syarat-ketentuan'
+      preLoaderRoute: typeof SyaratKetentuanRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/eula': {
       id: '/eula'
       path: '/eula'
@@ -71,6 +88,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   EulaRoute: EulaRoute,
+  SyaratKetentuanRoute: SyaratKetentuanRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
