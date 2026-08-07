@@ -438,6 +438,8 @@ export function Products() {
           open={videoOpen}
           onOpenChange={setVideoOpen}
           productName={current.name}
+          tierLabel={effectiveTier === "lengkap" ? "Lengkap" : "Standar"}
+          videoId={current.youtubeVideoId[effectiveTier]}
         />
       </div>
     </section>

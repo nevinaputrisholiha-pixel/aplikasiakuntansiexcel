@@ -10,14 +10,16 @@ type Props = {
   open: boolean;
   onOpenChange: (v: boolean) => void;
   productName: string;
-  videoUrl?: string;
+  tierLabel?: string;
+  videoId: string;
 };
 
 export function VideoTutorialModal({
   open,
   onOpenChange,
   productName,
-  videoUrl = "https://www.youtube.com/embed/dQw4w9WgXcQ",
+  tierLabel,
+  videoId,
 }: Props) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -25,15 +27,17 @@ export function VideoTutorialModal({
         <DialogHeader>
           <DialogTitle className="text-brand-navy">
             Video Tutorial — {productName}
+            {tierLabel ? ` (Versi ${tierLabel})` : ""}
           </DialogTitle>
           <DialogDescription>
-            Panduan singkat penggunaan aplikasi. Tekan tombol ✕ di pojok kanan atas untuk menutup.
+            Panduan singkat Part 1 penggunaan aplikasi. Tekan tombol ✕ di pojok kanan atas untuk menutup.
           </DialogDescription>
         </DialogHeader>
         <div className="aspect-video w-full overflow-hidden rounded-xl bg-black">
           {open && (
             <iframe
-              src={videoUrl}
+              key={videoId}
+              src={`https://www.youtube.com/embed/${videoId}`}
               title={`Video Tutorial ${productName}`}
               className="h-full w-full"
               frameBorder={0}
@@ -42,6 +46,14 @@ export function VideoTutorialModal({
             />
           )}
         </div>
+        <a
+          href="https://www.youtube.com/@programexcelindonesia8161"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-block text-sm font-medium text-brand-teal hover:underline"
+        >
+          Lihat Playlist &amp; Part Lengkapnya di Channel YouTube Kami ➔
+        </a>
       </DialogContent>
     </Dialog>
   );
