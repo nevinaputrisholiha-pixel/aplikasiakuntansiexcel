@@ -24,7 +24,12 @@ export type Product = {
   icon: LucideIcon;
   accent: string; // tailwind class for tinted accent
   subVariants?: SubVariant[];
+  youtubeVideoId: { standar: string; lengkap: string };
 };
+
+// Video tutorial Part 1 — Akuntansi Jasa Versi Lengkap.
+// Dipakai ulang untuk produk yang belum punya video khusus (Kontraktor).
+const JASA_LENGKAP_VIDEO = "vbjbyWriZHE";
 
 export type ProductVariant = {
   price: number;
@@ -94,6 +99,7 @@ export const products: Product[] = [
     ],
     icon: Briefcase,
     accent: "from-brand-mint/30 to-brand-teal/10",
+    youtubeVideoId: { standar: "n4FG-FXr5Uc", lengkap: JASA_LENGKAP_VIDEO },
   },
   {
     id: "kontraktor",
@@ -141,6 +147,7 @@ export const products: Product[] = [
     ],
     icon: HardHat,
     accent: "from-brand-teal/30 to-brand-mint/10",
+    youtubeVideoId: { standar: JASA_LENGKAP_VIDEO, lengkap: JASA_LENGKAP_VIDEO },
   },
   {
     id: "dagang",
@@ -188,6 +195,7 @@ export const products: Product[] = [
     ],
     icon: ShoppingBag,
     accent: "from-brand-cyan/30 to-brand-teal/10",
+    youtubeVideoId: { standar: "3FmM1a7zQGo", lengkap: "1GzSuqXQvBA" },
   },
   {
     id: "manufaktur",
@@ -239,6 +247,7 @@ export const products: Product[] = [
     ],
     icon: Factory,
     accent: "from-brand-teal/30 to-brand-cyan/10",
+    youtubeVideoId: { standar: "xhwSYJ_e5Fg", lengkap: "w4MA2tzJ188" },
   },
   {
     id: "stok",
@@ -273,6 +282,7 @@ export const products: Product[] = [
     targets: ["Usaha perdagangan dengan stok barang fisik"],
     icon: Boxes,
     accent: "from-brand-mint/30 to-brand-cyan/10",
+    youtubeVideoId: { standar: "y3BS3YonlQY", lengkap: "52UN8sozhLE" },
     subVariants: [
       {
         id: "agen",
