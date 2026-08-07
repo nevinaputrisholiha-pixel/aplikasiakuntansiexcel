@@ -355,6 +355,7 @@ export const products: Product[] = [
     targets: ["Yayasan non-profit", "Usaha rintisan", "Individu", "Keluarga"],
     icon: Wallet,
     accent: "from-brand-cyan/30 to-brand-mint/10",
+    youtubeVideoId: { standar: "X2xZpkHorVc", lengkap: "X2xZpkHorVc" },
   },
 ];
 
