@@ -1,5 +1,6 @@
 import logoIcon from "@/assets/logo-icon.png.asset.json";
 import { Link } from "@tanstack/react-router";
+import { getWhatsAppLink } from "@/lib/whatsapp";
 
 export function Footer() {
   return (
@@ -42,10 +43,10 @@ export function Footer() {
               <li><a href="#kontak" className="hover:text-brand-teal">Hubungi Kami</a></li>
               <li>
                 <a
-                  href="https://wa.me/6285213556300"
+                  href={getWhatsAppLink("Halo Admin, saya ingin tanya tentang Aplikasi Akuntansi Excel.")}
                   className="hover:text-brand-teal"
                   target="_blank"
-                  rel="noreferrer"
+                  rel="noopener noreferrer"
                 >
                   WhatsApp
                 </a>

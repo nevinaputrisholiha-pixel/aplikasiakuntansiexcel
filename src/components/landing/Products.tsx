@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { products } from "./data";
+import { getWhatsAppLink } from "@/lib/whatsapp";
 import {
   Download,
   Sparkles,
@@ -390,11 +391,11 @@ export function Products() {
                 </Button>
                 <Button variant="whatsapp" size="pill" asChild>
                   <a
-                    href={`https://wa.me/6285213556300?text=${encodeURIComponent(
+                    href={getWhatsAppLink(
                       `Halo, saya tertarik membeli ${current.name} Versi ${effectiveTier === "lengkap" ? "Lengkap" : "Standar"}.`,
-                    )}`}
+                    )}
                     target="_blank"
-                    rel="noreferrer"
+                    rel="noopener noreferrer"
                   >
                     Beli via WhatsApp
                   </a>

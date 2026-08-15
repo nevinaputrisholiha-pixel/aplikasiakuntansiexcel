@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { FileSpreadsheet, Download, MessageCircle, CheckCircle2 } from "lucide-react";
+import { getWhatsAppLink } from "@/lib/whatsapp";
 
 type Props = {
   open: boolean;
@@ -104,7 +105,7 @@ export function DemoDownloadModal({
             className="w-full sm:flex-1"
           >
             <a
-              href={`https://wa.me/6285213556300?text=${encodeURIComponent(waMsg)}`}
+              href={getWhatsAppLink(waMsg)}
               target="_blank"
               rel="noopener noreferrer"
             >

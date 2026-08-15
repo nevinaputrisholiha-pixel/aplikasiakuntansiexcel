@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Sparkles, Package, Info } from "lucide-react";
+import { getWhatsAppLink } from "@/lib/whatsapp";
 
 type CategoryId = "kombidagang" | "kombimanufaktur" | "kombikasstok" | "mega";
 
@@ -134,7 +135,7 @@ export function Bundling() {
                 </div>
                 <Button variant="whatsapp" size="pill" asChild className="mt-5 w-full">
                   <a
-                    href={`https://wa.me/6285213556300?text=${encodeURIComponent(waMsg)}`}
+                    href={getWhatsAppLink(waMsg)}
                     target="_blank"
                     rel="noopener noreferrer"
                   >
