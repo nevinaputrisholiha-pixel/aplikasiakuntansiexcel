@@ -22,7 +22,6 @@ import {
   Truck,
   ShoppingCart,
   CalendarClock,
-  Info,
   PlayCircle,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
