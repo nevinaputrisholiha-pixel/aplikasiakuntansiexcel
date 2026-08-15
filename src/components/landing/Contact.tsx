@@ -1,5 +1,7 @@
 import { MapPin, Mail, Phone, MessageCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { getWhatsAppLink } from "@/lib/whatsapp";
+
 
 export function Contact() {
   return (
@@ -25,9 +27,9 @@ export function Contact() {
               <div className="mt-8 flex flex-wrap gap-3">
                 <Button variant="whatsapp" size="xl" asChild>
                   <a
-                    href="https://wa.me/6285213556300"
+                    href={getWhatsAppLink("Halo Admin, saya ingin tanya tentang Aplikasi Akuntansi Excel.")}
                     target="_blank"
-                    rel="noreferrer"
+                    rel="noopener noreferrer"
                   >
                     <MessageCircle className="h-5 w-5" />
                     Chat WhatsApp
@@ -44,7 +46,7 @@ export function Contact() {
                 icon={Phone}
                 label="Telepon / WhatsApp"
                 value="0852 1355 6300"
-                href="https://wa.me/6285213556300"
+                href={getWhatsAppLink()}
               />
               <ContactCard
                 icon={Mail}
@@ -87,7 +89,7 @@ function ContactCard({ icon: Icon, label, value, href }: CardProps) {
     </div>
   );
   return href ? (
-    <a href={href} target="_blank" rel="noreferrer">
+    <a href={href} target="_blank" rel="noopener noreferrer">
       {inner}
     </a>
   ) : (
