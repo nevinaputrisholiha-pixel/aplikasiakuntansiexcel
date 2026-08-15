@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { FileSpreadsheet, Download, MessageCircle, CheckCircle2 } from "lucide-react";
+import { getWhatsAppLink } from "@/lib/whatsapp";
 
 type Props = {
   open: boolean;
