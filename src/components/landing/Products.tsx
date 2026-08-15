@@ -22,7 +22,6 @@ import {
   Truck,
   ShoppingCart,
   CalendarClock,
-  Info,
   PlayCircle,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
@@ -264,21 +263,6 @@ export function Products() {
               <p className="mt-4 text-sm leading-relaxed text-brand-navy/90">
                 {current.description}
               </p>
-
-              {/* Business fit / education */}
-              <div className="mt-5 flex items-start gap-3 rounded-2xl border border-brand-teal/30 bg-brand-mint/25 p-4">
-                <span className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-white text-brand-teal shadow-soft">
-                  <Info className="h-4 w-4" strokeWidth={2.4} />
-                </span>
-                <div className="min-w-0">
-                  <p className="text-[11px] font-bold uppercase tracking-wider text-brand-teal">
-                    Apakah cocok untuk usaha saya?
-                  </p>
-                  <p className="mt-1 text-xs leading-relaxed text-brand-navy/90">
-                    {current.businessFit}
-                  </p>
-                </div>
-              </div>
 
               {/* Pricing */}
               <div className="mt-6 rounded-2xl bg-white/80 p-5 shadow-soft backdrop-blur">
