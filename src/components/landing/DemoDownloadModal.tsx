@@ -104,7 +104,7 @@ export function DemoDownloadModal({
             className="w-full sm:flex-1"
           >
             <a
-              href={`https://wa.me/6285213556300?text=${encodeURIComponent(waMsg)}`}
+              href={getWhatsAppLink(waMsg)}
               target="_blank"
               rel="noopener noreferrer"
             >
