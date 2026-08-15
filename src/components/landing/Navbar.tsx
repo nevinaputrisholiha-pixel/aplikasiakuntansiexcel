@@ -59,7 +59,7 @@ export function Navbar() {
       </div>
 
       {open && (
-        <div className="border-t border-border/60 bg-background md:hidden">
+        <div className="border-t border-border/60 bg-background lg:hidden">
           <div className="space-y-1 px-4 py-4">
             {links.map((l) => (
               <a
