@@ -28,7 +28,7 @@ export function Navbar() {
           </span>
         </a>
 
-        <nav className="hidden items-center gap-8 md:flex">
+        <nav className="hidden items-center gap-8 lg:flex">
           {links.map((l) => (
             <a
               key={l.href}
@@ -40,7 +40,7 @@ export function Navbar() {
           ))}
         </nav>
 
-        <div className="hidden items-center gap-3 md:flex">
+        <div className="hidden items-center gap-3 lg:flex">
           <Button variant="ghost" asChild>
             <a href="#unduh-demo">Unduh Demo</a>
           </Button>
@@ -51,7 +51,7 @@ export function Navbar() {
 
         <button
           aria-label="Toggle menu"
-          className="rounded-full p-2 text-foreground md:hidden"
+          className="rounded-full p-2 text-foreground lg:hidden"
           onClick={() => setOpen((v) => !v)}
         >
           {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
@@ -59,7 +59,7 @@ export function Navbar() {
       </div>
 
       {open && (
-        <div className="border-t border-border/60 bg-background md:hidden">
+        <div className="border-t border-border/60 bg-background lg:hidden">
           <div className="space-y-1 px-4 py-4">
             {links.map((l) => (
               <a
