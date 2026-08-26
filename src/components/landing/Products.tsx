@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { products } from "./data";
+import { products, type Product, type SubVariant } from "./data";
 import { getWhatsAppLink } from "@/lib/whatsapp";
 import {
   Download,
@@ -24,6 +24,7 @@ import {
   ShoppingCart,
   CalendarClock,
   PlayCircle,
+  Check,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -140,6 +141,24 @@ function pickHighlights(list: string[], max: number): string[] {
   return ordered.filter((f) => f.toLowerCase() !== "home").slice(0, max);
 }
 
+function getDisplayFeatures(
+  product: Product,
+  tier: Tier,
+  activeSub: SubVariant | null,
+  onlyLengkap: boolean
+): string[] {
+  // For products without a Standar tier, show everything as the single offering.
+  if (onlyLengkap) return [...product.baseFeatures, ...product.extraFeatures];
+  // Standar tier shows the base feature set.
+  if (tier === "standar") return product.baseFeatures;
+  // Lengkap tier emphasizes the upgrade delta: everything in Standar PLUS these extras.
+  if (activeSub) {
+    const standarSet = new Set(product.baseFeatures.map((f) => f.toLowerCase()));
+    return activeSub.features.filter((f) => !standarSet.has(f.toLowerCase()));
+  }
+  return product.extraFeatures;
+}
+
 export function Products() {
   const [active, setActive] = useState(products[0].id);
   const [tier, setTier] = useState<Tier>("lengkap");
@@ -165,15 +184,10 @@ export function Products() {
     : null;
   const downloadHref = activeSub?.downloadFile ?? variant.downloadFile;
 
-  const featureList: string[] = hasSubVariants && activeSub
-    ? activeSub.features
-    : [
-        ...current.baseFeatures,
-        ...(effectiveTier === "lengkap" ? current.extraFeatures : []),
-      ];
-
-  const highlightCount = effectiveTier === "lengkap" ? 5 : 4;
-  const highlights = pickHighlights(featureList, highlightCount);
+  const isLengkap = effectiveTier === "lengkap";
+  const showCumulativeBadge = isLengkap && !onlyLengkap;
+  const displayFeatures = getDisplayFeatures(current, effectiveTier, activeSub, onlyLengkap);
+  const displayHighlights = pickHighlights(displayFeatures, isLengkap ? 5 : 4);
 
   return (
     <section id="produk" className="py-20 md:py-28">
@@ -345,11 +359,19 @@ export function Products() {
                 Keunggulan Utama
               </p>
               <h4 className="mt-1 text-lg font-extrabold text-brand-navy">
-                Yang Anda Dapatkan di Versi {effectiveTier === "lengkap" ? "Lengkap" : "Standar"}
+                {showCumulativeBadge
+                  ? "Fitur Tambahan di Versi Lengkap"
+                  : `Yang Anda Dapatkan di Versi ${isLengkap ? "Lengkap" : "Standar"}`}
                 {hasSubVariants && activeSub ? ` — ${activeSub.name}` : ""}
               </h4>
+              {showCumulativeBadge && (
+                <div className="mt-4 inline-flex w-fit items-center gap-2 rounded-full border border-brand-teal/30 bg-brand-mint/40 px-3 py-1.5 text-xs font-bold text-brand-navy">
+                  <Check className="h-3.5 w-3.5 text-brand-teal" strokeWidth={3} />
+                  Termasuk SEMUA Fitur Versi Standar +
+                </div>
+              )}
               <ul className="mt-5 space-y-3">
-                {highlights.map((f) => {
+                {displayHighlights.map((f) => {
                   const { icon: FIcon, desc } = getFeatureMeta(f);
                   return (
                     <li
