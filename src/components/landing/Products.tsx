@@ -359,11 +359,19 @@ export function Products() {
                 Keunggulan Utama
               </p>
               <h4 className="mt-1 text-lg font-extrabold text-brand-navy">
-                Yang Anda Dapatkan di Versi {effectiveTier === "lengkap" ? "Lengkap" : "Standar"}
+                {showCumulativeBadge
+                  ? "Fitur Tambahan di Versi Lengkap"
+                  : `Yang Anda Dapatkan di Versi ${isLengkap ? "Lengkap" : "Standar"}`}
                 {hasSubVariants && activeSub ? ` — ${activeSub.name}` : ""}
               </h4>
+              {showCumulativeBadge && (
+                <div className="mt-4 inline-flex items-center gap-2 rounded-full border border-brand-teal/30 bg-brand-mint/40 px-3 py-1.5 text-xs font-bold text-brand-navy">
+                  <Check className="h-3.5 w-3.5 text-brand-teal" strokeWidth={3} />
+                  Termasuk SEMUA Fitur Versi Standar +
+                </div>
+              )}
               <ul className="mt-5 space-y-3">
-                {highlights.map((f) => {
+                {displayHighlights.map((f) => {
                   const { icon: FIcon, desc } = getFeatureMeta(f);
                   return (
                     <li
