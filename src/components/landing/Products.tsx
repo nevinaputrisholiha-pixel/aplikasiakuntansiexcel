@@ -184,15 +184,10 @@ export function Products() {
     : null;
   const downloadHref = activeSub?.downloadFile ?? variant.downloadFile;
 
-  const featureList: string[] = hasSubVariants && activeSub
-    ? activeSub.features
-    : [
-        ...current.baseFeatures,
-        ...(effectiveTier === "lengkap" ? current.extraFeatures : []),
-      ];
-
-  const highlightCount = effectiveTier === "lengkap" ? 5 : 4;
-  const highlights = pickHighlights(featureList, highlightCount);
+  const isLengkap = effectiveTier === "lengkap";
+  const showCumulativeBadge = isLengkap && !onlyLengkap;
+  const displayFeatures = getDisplayFeatures(current, effectiveTier, activeSub, onlyLengkap);
+  const displayHighlights = pickHighlights(displayFeatures, isLengkap ? 5 : 4);
 
   return (
     <section id="produk" className="py-20 md:py-28">
