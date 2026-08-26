@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { products } from "./data";
+import { products, type Product, type SubVariant } from "./data";
 import { getWhatsAppLink } from "@/lib/whatsapp";
 import {
   Download,
@@ -24,6 +24,7 @@ import {
   ShoppingCart,
   CalendarClock,
   PlayCircle,
+  Check,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
