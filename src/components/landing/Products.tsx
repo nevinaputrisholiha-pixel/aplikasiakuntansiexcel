@@ -141,6 +141,24 @@ function pickHighlights(list: string[], max: number): string[] {
   return ordered.filter((f) => f.toLowerCase() !== "home").slice(0, max);
 }
 
+function getDisplayFeatures(
+  product: Product,
+  tier: Tier,
+  activeSub: SubVariant | null,
+  onlyLengkap: boolean
+): string[] {
+  // For products without a Standar tier, show everything as the single offering.
+  if (onlyLengkap) return [...product.baseFeatures, ...product.extraFeatures];
+  // Standar tier shows the base feature set.
+  if (tier === "standar") return product.baseFeatures;
+  // Lengkap tier emphasizes the upgrade delta: everything in Standar PLUS these extras.
+  if (activeSub) {
+    const standarSet = new Set(product.baseFeatures.map((f) => f.toLowerCase()));
+    return activeSub.features.filter((f) => !standarSet.has(f.toLowerCase()));
+  }
+  return product.extraFeatures;
+}
+
 export function Products() {
   const [active, setActive] = useState(products[0].id);
   const [tier, setTier] = useState<Tier>("lengkap");
