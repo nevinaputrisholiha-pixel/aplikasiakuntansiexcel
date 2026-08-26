@@ -365,7 +365,7 @@ export function Products() {
                 {hasSubVariants && activeSub ? ` — ${activeSub.name}` : ""}
               </h4>
               {showCumulativeBadge && (
-                <div className="mt-4 inline-flex items-center gap-2 rounded-full border border-brand-teal/30 bg-brand-mint/40 px-3 py-1.5 text-xs font-bold text-brand-navy">
+                <div className="mt-4 inline-flex w-fit items-center gap-2 rounded-full border border-brand-teal/30 bg-brand-mint/40 px-3 py-1.5 text-xs font-bold text-brand-navy">
                   <Check className="h-3.5 w-3.5 text-brand-teal" strokeWidth={3} />
                   Termasuk SEMUA Fitur Versi Standar +
                 </div>
