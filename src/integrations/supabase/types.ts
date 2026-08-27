@@ -14,13 +14,157 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      generated_files: {
+        Row: {
+          created_at: string
+          expires_at: string | null
+          file_path: string
+          id: string
+          order_id: string
+        }
+        Insert: {
+          created_at?: string
+          expires_at?: string | null
+          file_path: string
+          id?: string
+          order_id: string
+        }
+        Update: {
+          created_at?: string
+          expires_at?: string | null
+          file_path?: string
+          id?: string
+          order_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "generated_files_order_id_fkey"
+            columns: ["order_id"]
+            isOneToOne: false
+            referencedRelation: "orders"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      orders: {
+        Row: {
+          amount: number
+          company_name: string
+          created_at: string
+          email: string
+          generated_file_path: string | null
+          generation_status: string
+          id: string
+          order_number: string
+          payment_status: string
+          product_id: string
+          updated_at: string
+        }
+        Insert: {
+          amount: number
+          company_name: string
+          created_at?: string
+          email: string
+          generated_file_path?: string | null
+          generation_status?: string
+          id?: string
+          order_number?: string
+          payment_status?: string
+          product_id: string
+          updated_at?: string
+        }
+        Update: {
+          amount?: number
+          company_name?: string
+          created_at?: string
+          email?: string
+          generated_file_path?: string | null
+          generation_status?: string
+          id?: string
+          order_number?: string
+          payment_status?: string
+          product_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "orders_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "orders_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products_public"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      products: {
+        Row: {
+          active: boolean
+          created_at: string
+          id: string
+          master_file_path: string
+          name: string
+          price: number
+          target_cell: string
+          target_sheet: string
+          updated_at: string
+        }
+        Insert: {
+          active?: boolean
+          created_at?: string
+          id?: string
+          master_file_path: string
+          name: string
+          price: number
+          target_cell?: string
+          target_sheet?: string
+          updated_at?: string
+        }
+        Update: {
+          active?: boolean
+          created_at?: string
+          id?: string
+          master_file_path?: string
+          name?: string
+          price?: number
+          target_cell?: string
+          target_sheet?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
-      [_ in never]: never
+      products_public: {
+        Row: {
+          active: boolean | null
+          id: string | null
+          name: string | null
+          price: number | null
+        }
+        Insert: {
+          active?: boolean | null
+          id?: string | null
+          name?: string | null
+          price?: number | null
+        }
+        Update: {
+          active?: boolean | null
+          id?: string | null
+          name?: string | null
+          price?: number | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
-      [_ in never]: never
+      generate_order_number: { Args: never; Returns: string }
     }
     Enums: {
       [_ in never]: never
