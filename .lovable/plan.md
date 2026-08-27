@@ -29,17 +29,19 @@ Baris awal (10 produk, sesuai file yang diunggah):
 | Buku Kas — Lengkap | 185.000 | LICENSI_Program_Excel_Buku_Kas.xlsx |
 
 ### 3. Tabel `orders`
-`id`, `product_id` (FK ke products), `email`, `company_name`, `amount`, `payment_status` (`pending` / `paid` / `failed` / `refunded`), `generation_status` (`pending` / `processing` / `done` / `failed`), `generated_file_path`, `created_at`, `updated_at`.
+`id` (uuid, primary key), `order_number` (text, **unique**, contoh `AAE-20260827-0001`, dipakai di email/success page/CS), `product_id` (FK ke products), `email`, `company_name`, `amount`, `payment_status` (`pending` / `paid` / `failed` / `refunded`), `generation_status` (`pending` / `processing` / `done` / `failed`), `generated_file_path`, `created_at`, `updated_at`.
 
 ### 4. Tabel `generated_files`
 `id`, `order_id` (FK ke orders, cascade delete), `file_path`, `expires_at`, `created_at`.
+`file_path` **hanya** menyimpan path storage privat (mis. `generated/<order_number>.xlsx`) — bukan signed URL. Signed URL dibuat on-demand oleh server tepercaya saat customer meminta unduhan.
 
 ## Keamanan
 
 - RLS aktif di ketiga tabel.
-- `products`: publik hanya boleh membaca produk `active` — dan hanya kolom aman. Karena `master_file_path` tidak boleh bocor, pembacaan publik dilakukan lewat *view* / server function yang tidak menyertakan kolom itu; tabel mentahnya tidak diberi akses `anon`.
-- `orders` dan `generated_files`: **tidak ada** akses `anon` maupun `authenticated` sama sekali. Hanya kode server tepercaya yang boleh menulis/membaca. Ini mencegah kebocoran email pembeli dan link file hasil.
-- Bucket master privat, tanpa policy publik. Nanti pengiriman file ke customer memakai signed URL berumur pendek, bukan URL publik.
+- `products`: tabel mentah **tidak** diberi akses `anon`/`authenticated`. Katalog publik dibaca lewat view/server function yang hanya mengekspos `id`, `name`, `price`, `active` — `master_file_path`, `target_sheet`, dan `target_cell` tidak pernah sampai ke client.
+- `orders` dan `generated_files`: **tidak ada** akses `anon` maupun `authenticated` sama sekali. Hanya kode server tepercaya yang boleh menulis/membaca. Ini mencegah kebocoran email pembeli dan file hasil.
+- Bucket master privat, tanpa policy publik. Pengiriman file ke customer nanti memakai signed URL berumur pendek yang dibuat saat diminta.
+
 
 ## Catatan teknis
 
