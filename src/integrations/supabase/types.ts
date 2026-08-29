@@ -56,6 +56,10 @@ export type Database = {
           generation_status: string
           id: string
           order_number: string
+          paid_at: string | null
+          payment_provider: string
+          payment_raw_status: string | null
+          payment_reference: string | null
           payment_status: string
           product_id: string
           updated_at: string
@@ -69,6 +73,10 @@ export type Database = {
           generation_status?: string
           id?: string
           order_number?: string
+          paid_at?: string | null
+          payment_provider?: string
+          payment_raw_status?: string | null
+          payment_reference?: string | null
           payment_status?: string
           product_id: string
           updated_at?: string
@@ -82,6 +90,10 @@ export type Database = {
           generation_status?: string
           id?: string
           order_number?: string
+          paid_at?: string | null
+          payment_provider?: string
+          payment_raw_status?: string | null
+          payment_reference?: string | null
           payment_status?: string
           product_id?: string
           updated_at?: string
