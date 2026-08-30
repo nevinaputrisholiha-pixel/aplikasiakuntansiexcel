@@ -14,6 +14,7 @@ import { Route as KebijakanPrivasiRouteImport } from './routes/kebijakan-privasi
 import { Route as EulaRouteImport } from './routes/eula'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as OrderOrderNumberRouteImport } from './routes/order.$orderNumber'
+import { Route as ApiPublicMidtransSelftestRouteImport } from './routes/api/public/midtrans/selftest'
 import { Route as ApiPublicMidtransNotificationRouteImport } from './routes/api/public/midtrans/notification'
 
 const SyaratKetentuanRoute = SyaratKetentuanRouteImport.update({
@@ -41,6 +42,12 @@ const OrderOrderNumberRoute = OrderOrderNumberRouteImport.update({
   path: '/order/$orderNumber',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiPublicMidtransSelftestRoute =
+  ApiPublicMidtransSelftestRouteImport.update({
+    id: '/api/public/midtrans/selftest',
+    path: '/api/public/midtrans/selftest',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const ApiPublicMidtransNotificationRoute =
   ApiPublicMidtransNotificationRouteImport.update({
     id: '/api/public/midtrans/notification',
@@ -55,6 +62,7 @@ export interface FileRoutesByFullPath {
   '/syarat-ketentuan': typeof SyaratKetentuanRoute
   '/order/$orderNumber': typeof OrderOrderNumberRoute
   '/api/public/midtrans/notification': typeof ApiPublicMidtransNotificationRoute
+  '/api/public/midtrans/selftest': typeof ApiPublicMidtransSelftestRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -63,6 +71,7 @@ export interface FileRoutesByTo {
   '/syarat-ketentuan': typeof SyaratKetentuanRoute
   '/order/$orderNumber': typeof OrderOrderNumberRoute
   '/api/public/midtrans/notification': typeof ApiPublicMidtransNotificationRoute
+  '/api/public/midtrans/selftest': typeof ApiPublicMidtransSelftestRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -72,6 +81,7 @@ export interface FileRoutesById {
   '/syarat-ketentuan': typeof SyaratKetentuanRoute
   '/order/$orderNumber': typeof OrderOrderNumberRoute
   '/api/public/midtrans/notification': typeof ApiPublicMidtransNotificationRoute
+  '/api/public/midtrans/selftest': typeof ApiPublicMidtransSelftestRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -82,6 +92,7 @@ export interface FileRouteTypes {
     | '/syarat-ketentuan'
     | '/order/$orderNumber'
     | '/api/public/midtrans/notification'
+    | '/api/public/midtrans/selftest'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -90,6 +101,7 @@ export interface FileRouteTypes {
     | '/syarat-ketentuan'
     | '/order/$orderNumber'
     | '/api/public/midtrans/notification'
+    | '/api/public/midtrans/selftest'
   id:
     | '__root__'
     | '/'
@@ -98,6 +110,7 @@ export interface FileRouteTypes {
     | '/syarat-ketentuan'
     | '/order/$orderNumber'
     | '/api/public/midtrans/notification'
+    | '/api/public/midtrans/selftest'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -107,6 +120,7 @@ export interface RootRouteChildren {
   SyaratKetentuanRoute: typeof SyaratKetentuanRoute
   OrderOrderNumberRoute: typeof OrderOrderNumberRoute
   ApiPublicMidtransNotificationRoute: typeof ApiPublicMidtransNotificationRoute
+  ApiPublicMidtransSelftestRoute: typeof ApiPublicMidtransSelftestRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -146,6 +160,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof OrderOrderNumberRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/public/midtrans/selftest': {
+      id: '/api/public/midtrans/selftest'
+      path: '/api/public/midtrans/selftest'
+      fullPath: '/api/public/midtrans/selftest'
+      preLoaderRoute: typeof ApiPublicMidtransSelftestRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/public/midtrans/notification': {
       id: '/api/public/midtrans/notification'
       path: '/api/public/midtrans/notification'
@@ -163,6 +184,7 @@ const rootRouteChildren: RootRouteChildren = {
   SyaratKetentuanRoute: SyaratKetentuanRoute,
   OrderOrderNumberRoute: OrderOrderNumberRoute,
   ApiPublicMidtransNotificationRoute: ApiPublicMidtransNotificationRoute,
+  ApiPublicMidtransSelftestRoute: ApiPublicMidtransSelftestRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
