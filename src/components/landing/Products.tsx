@@ -31,6 +31,7 @@ import { Button } from "@/components/ui/button";
 import { GlobalComparisonTable } from "./GlobalComparisonTable";
 import { DemoDownloadModal } from "./DemoDownloadModal";
 import { VideoTutorialModal } from "./VideoTutorialModal";
+import { CheckoutModal } from "./CheckoutModal";
 
 type Tier = "lengkap" | "standar";
 
@@ -165,6 +166,7 @@ export function Products() {
   const [subVariantId, setSubVariantId] = useState<string | null>(null);
   const [demoOpen, setDemoOpen] = useState(false);
   const [videoOpen, setVideoOpen] = useState(false);
+  const [checkoutOpen, setCheckoutOpen] = useState(false);
   const current = products.find((p) => p.id === active) ?? products[0];
   const Icon = current.icon;
 
@@ -411,17 +413,22 @@ export function Products() {
                   <PlayCircle className="h-4 w-4" />
                   Lihat Video Tutorial
                 </Button>
-                <Button variant="whatsapp" size="pill" asChild>
-                  <a
-                    href={getWhatsAppLink(
-                      `Halo, saya tertarik membeli ${current.name} Versi ${effectiveTier === "lengkap" ? "Lengkap" : "Standar"}.`,
-                    )}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    Beli via WhatsApp
-                  </a>
+                <Button variant="brand" size="pill" onClick={() => setCheckoutOpen(true)}>
+                  <ShoppingCart className="h-4 w-4" />
+                  Beli Sekarang
                 </Button>
+              </div>
+              <div className="mt-3">
+                <a
+                  href={getWhatsAppLink(
+                    `Halo, saya tertarik membeli ${current.name} Versi ${effectiveTier === "lengkap" ? "Lengkap" : "Standar"}.`,
+                  )}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-xs font-semibold text-brand-navy/70 underline underline-offset-4 hover:text-brand-teal"
+                >
+                  Atau pesan via WhatsApp
+                </a>
               </div>
             </div>
           </div>
@@ -439,6 +446,15 @@ export function Products() {
           productName={current.name}
           tierLabel={effectiveTier === "lengkap" ? "Lengkap" : "Standar"}
           downloadHref={downloadHref}
+        />
+
+        <CheckoutModal
+          open={checkoutOpen}
+          onOpenChange={setCheckoutOpen}
+          productId={variant.dbProductId}
+          productName={current.name}
+          tierLabel={effectiveTier === "lengkap" ? "Lengkap" : "Standar"}
+          price={variant.price}
         />
 
         <VideoTutorialModal

@@ -13,6 +13,7 @@ import { Route as SyaratKetentuanRouteImport } from './routes/syarat-ketentuan'
 import { Route as KebijakanPrivasiRouteImport } from './routes/kebijakan-privasi'
 import { Route as EulaRouteImport } from './routes/eula'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as OrderOrderNumberRouteImport } from './routes/order.$orderNumber'
 import { Route as ApiPublicMidtransNotificationRouteImport } from './routes/api/public/midtrans/notification'
 
 const SyaratKetentuanRoute = SyaratKetentuanRouteImport.update({
@@ -35,6 +36,11 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const OrderOrderNumberRoute = OrderOrderNumberRouteImport.update({
+  id: '/order/$orderNumber',
+  path: '/order/$orderNumber',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiPublicMidtransNotificationRoute =
   ApiPublicMidtransNotificationRouteImport.update({
     id: '/api/public/midtrans/notification',
@@ -47,6 +53,7 @@ export interface FileRoutesByFullPath {
   '/eula': typeof EulaRoute
   '/kebijakan-privasi': typeof KebijakanPrivasiRoute
   '/syarat-ketentuan': typeof SyaratKetentuanRoute
+  '/order/$orderNumber': typeof OrderOrderNumberRoute
   '/api/public/midtrans/notification': typeof ApiPublicMidtransNotificationRoute
 }
 export interface FileRoutesByTo {
@@ -54,6 +61,7 @@ export interface FileRoutesByTo {
   '/eula': typeof EulaRoute
   '/kebijakan-privasi': typeof KebijakanPrivasiRoute
   '/syarat-ketentuan': typeof SyaratKetentuanRoute
+  '/order/$orderNumber': typeof OrderOrderNumberRoute
   '/api/public/midtrans/notification': typeof ApiPublicMidtransNotificationRoute
 }
 export interface FileRoutesById {
@@ -62,6 +70,7 @@ export interface FileRoutesById {
   '/eula': typeof EulaRoute
   '/kebijakan-privasi': typeof KebijakanPrivasiRoute
   '/syarat-ketentuan': typeof SyaratKetentuanRoute
+  '/order/$orderNumber': typeof OrderOrderNumberRoute
   '/api/public/midtrans/notification': typeof ApiPublicMidtransNotificationRoute
 }
 export interface FileRouteTypes {
@@ -71,6 +80,7 @@ export interface FileRouteTypes {
     | '/eula'
     | '/kebijakan-privasi'
     | '/syarat-ketentuan'
+    | '/order/$orderNumber'
     | '/api/public/midtrans/notification'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -78,6 +88,7 @@ export interface FileRouteTypes {
     | '/eula'
     | '/kebijakan-privasi'
     | '/syarat-ketentuan'
+    | '/order/$orderNumber'
     | '/api/public/midtrans/notification'
   id:
     | '__root__'
@@ -85,6 +96,7 @@ export interface FileRouteTypes {
     | '/eula'
     | '/kebijakan-privasi'
     | '/syarat-ketentuan'
+    | '/order/$orderNumber'
     | '/api/public/midtrans/notification'
   fileRoutesById: FileRoutesById
 }
@@ -93,6 +105,7 @@ export interface RootRouteChildren {
   EulaRoute: typeof EulaRoute
   KebijakanPrivasiRoute: typeof KebijakanPrivasiRoute
   SyaratKetentuanRoute: typeof SyaratKetentuanRoute
+  OrderOrderNumberRoute: typeof OrderOrderNumberRoute
   ApiPublicMidtransNotificationRoute: typeof ApiPublicMidtransNotificationRoute
 }
 
@@ -126,6 +139,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/order/$orderNumber': {
+      id: '/order/$orderNumber'
+      path: '/order/$orderNumber'
+      fullPath: '/order/$orderNumber'
+      preLoaderRoute: typeof OrderOrderNumberRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/public/midtrans/notification': {
       id: '/api/public/midtrans/notification'
       path: '/api/public/midtrans/notification'
@@ -141,6 +161,7 @@ const rootRouteChildren: RootRouteChildren = {
   EulaRoute: EulaRoute,
   KebijakanPrivasiRoute: KebijakanPrivasiRoute,
   SyaratKetentuanRoute: SyaratKetentuanRoute,
+  OrderOrderNumberRoute: OrderOrderNumberRoute,
   ApiPublicMidtransNotificationRoute: ApiPublicMidtransNotificationRoute,
 }
 export const routeTree = rootRouteImport
