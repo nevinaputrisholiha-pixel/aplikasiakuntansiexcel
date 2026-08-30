@@ -92,7 +92,7 @@ export const Route = createFileRoute("/api/public/midtrans/notification")({
             payment_raw_status: body.transaction_status ?? null,
             payment_reference: body.transaction_id ?? null,
             payment_provider: "midtrans",
-            paid_at: next === "paid" ? new Date().toISOString() : null,
+            ...(next === "paid" ? { paid_at: new Date().toISOString() } : {}),
           })
           .eq("id", order.id)
           .eq("payment_status", order.payment_status);
