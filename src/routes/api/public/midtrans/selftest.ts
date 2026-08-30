@@ -8,6 +8,15 @@ export const Route = createFileRoute("/api/public/midtrans/selftest")({
       GET: async ({ request }) => {
         const serverKey = process.env["MIDTRANS_SERVER_KEY"]!;
         const origin = new URL(request.url).origin;
+        const clientKey = process.env["MIDTRANS_CLIENT_KEY"] ?? "";
+        if (new URL(request.url).searchParams.has("keys")) {
+          return Response.json({
+            serverKeyPrefix: serverKey?.slice(0, 14) ?? null,
+            serverKeyLength: serverKey?.length ?? 0,
+            clientKeyPrefix: clientKey.slice(0, 14),
+            clientKeyLength: clientKey.length,
+          });
+        }
         const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
 
         const { data: product } = await supabaseAdmin
