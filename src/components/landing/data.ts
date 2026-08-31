@@ -45,6 +45,8 @@ export type SubVariant = {
   highlight: string;
   features: string[];
   downloadFile: string;
+  /** Optional dedicated row in `products` (source of truth for price). */
+  dbProductId?: string;
 };
 
 export const products: Product[] = [
@@ -316,6 +318,7 @@ export const products: Product[] = [
       },
       {
         id: "sales",
+        dbProductId: "b608b6c2-526f-4257-b598-e66e69f6080f",
         name: "Sales & Reseller",
         highlight:
           "Analisis penjualan mendalam per Salesman atau per Customer Service (CS).",
