@@ -34,8 +34,6 @@ const JASA_LENGKAP_VIDEO = "vbjbyWriZHE";
 export type ProductVariant = {
   /** UUID of the matching row in the `products` table (source of truth for price). */
   dbProductId: string;
-  price: number;
-  originalPrice: number;
   downloadFile: string; // path under /demos/
 };
 
@@ -81,8 +79,8 @@ export const products: Product[] = [
       "Rekonsiliasi Bank",
     ],
     variants: {
-      lengkap: { dbProductId: "3073f6d1-9f30-4a32-8097-00a0a4fa92d8", price: 585000, originalPrice: 1170000, downloadFile: "/demos/demo-jasa-lengkap.xlsx" },
-      standar: { dbProductId: "03aca12f-8be0-4f9c-b44c-2bbde01c95e2", price: 385000, originalPrice: 770000, downloadFile: "/demos/demo-jasa-standar.xlsx" },
+      lengkap: { dbProductId: "3073f6d1-9f30-4a32-8097-00a0a4fa92d8", downloadFile: "/demos/demo-jasa-lengkap.xlsx" },
+      standar: { dbProductId: "03aca12f-8be0-4f9c-b44c-2bbde01c95e2", downloadFile: "/demos/demo-jasa-standar.xlsx" },
     },
     targets: [
       "Salon",
@@ -138,7 +136,7 @@ export const products: Product[] = [
       "Rekonsiliasi Bank",
     ],
     variants: {
-      lengkap: { dbProductId: "65cf174c-4e55-430f-967e-cc8a58bd824c", price: 585000, originalPrice: 1170000, downloadFile: "/demos/demo-kontraktor-lengkap.xlsx" },
+      lengkap: { dbProductId: "65cf174c-4e55-430f-967e-cc8a58bd824c", downloadFile: "/demos/demo-kontraktor-lengkap.xlsx" },
       standar: null,
     },
     targets: [
@@ -185,8 +183,8 @@ export const products: Product[] = [
       "Rekonsiliasi Bank",
     ],
     variants: {
-      lengkap: { dbProductId: "7b2142d1-aa58-4485-9e37-1ee0324ed4af", price: 585000, originalPrice: 1170000, downloadFile: "/demos/demo-dagang-lengkap.xlsx" },
-      standar: { dbProductId: "e2724fd5-ef19-43e3-b92c-8f12e71b0418", price: 385000, originalPrice: 770000, downloadFile: "/demos/demo-dagang-standar.xlsx" },
+      lengkap: { dbProductId: "7b2142d1-aa58-4485-9e37-1ee0324ed4af", downloadFile: "/demos/demo-dagang-lengkap.xlsx" },
+      standar: { dbProductId: "e2724fd5-ef19-43e3-b92c-8f12e71b0418", downloadFile: "/demos/demo-dagang-standar.xlsx" },
     },
     targets: [
       "Toko Tas",
@@ -234,8 +232,8 @@ export const products: Product[] = [
       "Rekonsiliasi Bank",
     ],
     variants: {
-      lengkap: { dbProductId: "e8403aaf-4981-48be-99b6-357ac39e4cb9", price: 585000, originalPrice: 1170000, downloadFile: "/demos/demo-manufaktur-lengkap.xlsx" },
-      standar: { dbProductId: "d3ea15b5-c326-49e4-a5d8-1da4da1f96f3", price: 385000, originalPrice: 770000, downloadFile: "/demos/demo-manufaktur-standar.xlsx" },
+      lengkap: { dbProductId: "e8403aaf-4981-48be-99b6-357ac39e4cb9", downloadFile: "/demos/demo-manufaktur-lengkap.xlsx" },
+      standar: { dbProductId: "d3ea15b5-c326-49e4-a5d8-1da4da1f96f3", downloadFile: "/demos/demo-manufaktur-standar.xlsx" },
     },
     targets: [
       "Restoran",
@@ -280,8 +278,8 @@ export const products: Product[] = [
       "Laporan Penjualan per Retailer",
     ],
     variants: {
-      lengkap: { dbProductId: "a2dd8819-b981-4d43-a4ac-ed889bcc93cc", price: 385000, originalPrice: 770000, downloadFile: "/demos/demo-stok-lengkap-agen.xlsx" },
-      standar: { dbProductId: "26166423-a329-4e59-804b-5551d74fe940", price: 185000, originalPrice: 370000, downloadFile: "/demos/demo-stok-standar.xlsx" },
+      lengkap: { dbProductId: "a2dd8819-b981-4d43-a4ac-ed889bcc93cc", downloadFile: "/demos/demo-stok-lengkap-agen.xlsx" },
+      standar: { dbProductId: "26166423-a329-4e59-804b-5551d74fe940", downloadFile: "/demos/demo-stok-standar.xlsx" },
     },
     targets: ["Usaha perdagangan dengan stok barang fisik"],
     icon: Boxes,
@@ -354,7 +352,7 @@ export const products: Product[] = [
     baseFeatures: ["Home", "Kode Akun", "Jurnal Umum", "Buku Besar"],
     extraFeatures: [],
     variants: {
-      lengkap: { dbProductId: "ad4f69b9-e26e-4f69-88e3-8fb67c46190b", price: 185000, originalPrice: 370000, downloadFile: "/demos/demo-bukukas-lengkap.xlsx" },
+      lengkap: { dbProductId: "ad4f69b9-e26e-4f69-88e3-8fb67c46190b", downloadFile: "/demos/demo-bukukas-lengkap.xlsx" },
       standar: null,
     },
     targets: ["Yayasan non-profit", "Usaha rintisan", "Individu", "Keluarga"],
