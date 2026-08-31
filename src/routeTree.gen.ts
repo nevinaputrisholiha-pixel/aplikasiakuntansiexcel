@@ -15,6 +15,7 @@ import { Route as EulaRouteImport } from './routes/eula'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as OrderOrderNumberRouteImport } from './routes/order.$orderNumber'
 import { Route as ApiPublicMidtransNotificationRouteImport } from './routes/api/public/midtrans/notification'
+import { Route as ApiPublicMidtransKeycheckRouteImport } from './routes/api/public/midtrans/keycheck'
 
 const SyaratKetentuanRoute = SyaratKetentuanRouteImport.update({
   id: '/syarat-ketentuan',
@@ -47,6 +48,12 @@ const ApiPublicMidtransNotificationRoute =
     path: '/api/public/midtrans/notification',
     getParentRoute: () => rootRouteImport,
   } as any)
+const ApiPublicMidtransKeycheckRoute =
+  ApiPublicMidtransKeycheckRouteImport.update({
+    id: '/api/public/midtrans/keycheck',
+    path: '/api/public/midtrans/keycheck',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -54,6 +61,7 @@ export interface FileRoutesByFullPath {
   '/kebijakan-privasi': typeof KebijakanPrivasiRoute
   '/syarat-ketentuan': typeof SyaratKetentuanRoute
   '/order/$orderNumber': typeof OrderOrderNumberRoute
+  '/api/public/midtrans/keycheck': typeof ApiPublicMidtransKeycheckRoute
   '/api/public/midtrans/notification': typeof ApiPublicMidtransNotificationRoute
 }
 export interface FileRoutesByTo {
@@ -62,6 +70,7 @@ export interface FileRoutesByTo {
   '/kebijakan-privasi': typeof KebijakanPrivasiRoute
   '/syarat-ketentuan': typeof SyaratKetentuanRoute
   '/order/$orderNumber': typeof OrderOrderNumberRoute
+  '/api/public/midtrans/keycheck': typeof ApiPublicMidtransKeycheckRoute
   '/api/public/midtrans/notification': typeof ApiPublicMidtransNotificationRoute
 }
 export interface FileRoutesById {
@@ -71,6 +80,7 @@ export interface FileRoutesById {
   '/kebijakan-privasi': typeof KebijakanPrivasiRoute
   '/syarat-ketentuan': typeof SyaratKetentuanRoute
   '/order/$orderNumber': typeof OrderOrderNumberRoute
+  '/api/public/midtrans/keycheck': typeof ApiPublicMidtransKeycheckRoute
   '/api/public/midtrans/notification': typeof ApiPublicMidtransNotificationRoute
 }
 export interface FileRouteTypes {
@@ -81,6 +91,7 @@ export interface FileRouteTypes {
     | '/kebijakan-privasi'
     | '/syarat-ketentuan'
     | '/order/$orderNumber'
+    | '/api/public/midtrans/keycheck'
     | '/api/public/midtrans/notification'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -89,6 +100,7 @@ export interface FileRouteTypes {
     | '/kebijakan-privasi'
     | '/syarat-ketentuan'
     | '/order/$orderNumber'
+    | '/api/public/midtrans/keycheck'
     | '/api/public/midtrans/notification'
   id:
     | '__root__'
@@ -97,6 +109,7 @@ export interface FileRouteTypes {
     | '/kebijakan-privasi'
     | '/syarat-ketentuan'
     | '/order/$orderNumber'
+    | '/api/public/midtrans/keycheck'
     | '/api/public/midtrans/notification'
   fileRoutesById: FileRoutesById
 }
@@ -106,6 +119,7 @@ export interface RootRouteChildren {
   KebijakanPrivasiRoute: typeof KebijakanPrivasiRoute
   SyaratKetentuanRoute: typeof SyaratKetentuanRoute
   OrderOrderNumberRoute: typeof OrderOrderNumberRoute
+  ApiPublicMidtransKeycheckRoute: typeof ApiPublicMidtransKeycheckRoute
   ApiPublicMidtransNotificationRoute: typeof ApiPublicMidtransNotificationRoute
 }
 
@@ -153,6 +167,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiPublicMidtransNotificationRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/public/midtrans/keycheck': {
+      id: '/api/public/midtrans/keycheck'
+      path: '/api/public/midtrans/keycheck'
+      fullPath: '/api/public/midtrans/keycheck'
+      preLoaderRoute: typeof ApiPublicMidtransKeycheckRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -162,6 +183,7 @@ const rootRouteChildren: RootRouteChildren = {
   KebijakanPrivasiRoute: KebijakanPrivasiRoute,
   SyaratKetentuanRoute: SyaratKetentuanRoute,
   OrderOrderNumberRoute: OrderOrderNumberRoute,
+  ApiPublicMidtransKeycheckRoute: ApiPublicMidtransKeycheckRoute,
   ApiPublicMidtransNotificationRoute: ApiPublicMidtransNotificationRoute,
 }
 export const routeTree = rootRouteImport
