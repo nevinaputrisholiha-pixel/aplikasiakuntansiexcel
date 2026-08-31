@@ -1,10 +1,10 @@
-# Sinkronisasi Katalog Produk dengan Master Files
+# Sinkronisasi Katalog Produk: Database + Landing Page
 
-Menyelaraskan 11 produk di database dengan file master yang ada di bucket privat `product-masters`. Tidak ada perubahan pada file Excel, bucket tetap privat, dan payment/checkout/UI tidak disentuh.
+Menyelaraskan 11 produk di database dengan file master di bucket privat `product-masters`, lalu menjadikan database sebagai satu-satunya sumber kebenaran harga di landing page. File Excel tidak diubah, tidak dipindah, tidak di-rename, bucket tetap privat.
 
 ## Temuan dari pemeriksaan
 
-Bucket `product-masters` berisi tepat 11 file, tetapi semuanya tersimpan **di root bucket**, bukan di dalam folder `masters/`:
+Bucket `product-masters` berisi tepat 11 file, semuanya di **root bucket** (tanpa folder `masters/`):
 
 ```text
 LISENSI_Program_Excel_Jasa_Standar.xlsx
@@ -20,21 +20,13 @@ LISENSI_Program_Excel_Stok_Barang_Lengkap_Sales.xlsx
 LISENSI_Program_Excel_Buku_Kas.xlsx
 ```
 
-Artinya semua 11 nama file yang Anda sebutkan memang ada — hanya prefix `masters/` yang tidak ada. Saat ini setiap baris `products` menyimpan path `masters/...`, jadi seluruh path di database saat ini menunjuk ke objek yang tidak ada (termasuk Buku Kas yang di database masih tertulis `LICENSI_...`).
+Sesuai permintaan, file dibiarkan di posisi sekarang dan `master_file_path` di database diisi persis nama file root tersebut (tanpa prefix `masters/`). Path lama di database (`masters/...`, termasuk `LICENSI_...Buku_Kas`) saat ini tidak menunjuk ke objek mana pun, jadi semuanya diperbaiki.
 
-Karena file tidak boleh diubah, saya akan menyimpan path **apa adanya sesuai isi bucket** (tanpa prefix `masters/`). Jika Anda lebih suka file benar-benar dipindahkan ke folder `masters/`, sebutkan saja dan saya ubah pendekatannya.
+## Bagian 1 — Update database
 
-## Yang akan dikerjakan
-
-1. Update 10 produk lama **berdasarkan UUID yang sudah ada** (tidak ada UUID baru, tidak ada duplikasi):
-   - nama diseragamkan ke format final (contoh: "Akuntansi Jasa — Standar"),
-   - harga baru,
-   - `master_file_path` diperbaiki ke nama file nyata,
-   - `target_sheet = Home`, `target_cell = B2`, `active = true`.
+1. Update 10 produk lama **berdasarkan UUID yang ada** (tanpa UUID baru, tanpa duplikasi): nama final, harga baru, `master_file_path` benar, `target_sheet = Home`, `target_cell = B2`, `active = true`.
 2. Tambah 1 baris baru **Stok Barang — Sales** (UUID baru), harga 397.000, file `LISENSI_Program_Excel_Stok_Barang_Lengkap_Sales.xlsx`.
-3. Verifikasi akhir: query gabungan `products` × objek storage untuk memastikan tepat 11 produk aktif dan setiap path benar-benar ada, lalu tampilkan tabel Product / UUID / Price / master_file_path / Storage file exists.
-
-## Peta harga final
+3. Verifikasi: query gabungan `products` × objek storage, lalu tampilkan tabel Product / UUID / Price / master_file_path / Storage file exists. Target: tepat 11 produk aktif, semua file ada.
 
 | Produk | Harga | UUID |
 |---|---|---|
@@ -50,8 +42,17 @@ Karena file tidak boleh diubah, saya akan menyimpan path **apa adanya sesuai isi
 | Stok Barang — Sales | 397.000 | baru |
 | Buku Kas — Lengkap | 97.000 | ad4f69b9… (existing) |
 
+## Bagian 2 — Landing page memakai harga dari database
+
+- Katalog publik sudah tersedia lewat server function `listPublicProducts` (view `products_public`: hanya id, name, price, active).
+- `Products.tsx` akan mengambil katalog itu (React Query + loader) dan memetakan harga berdasarkan `dbProductId` yang sudah ada di `data.ts`.
+- Semua tampilan harga produk (harga utama, coretan harga asli, badge diskon/hemat) dihitung dari harga database. Harga asli/coretan tetap memakai pola yang berlaku sekarang (2× harga), sehingga tidak ada angka harga yang di-hard-code lagi.
+- Field `price` di `data.ts` dihapus dari pemakaian tampilan agar tidak ada harga basi; `dbProductId` dan data non-harga (fitur, demo, video) tetap.
+- Sub-varian "Sales" pada Stok Barang dihubungkan ke UUID produk Sales yang baru, supaya checkout memakai produk dan harga yang benar.
+- Bila katalog gagal dimuat, kartu menampilkan placeholder harga singkat (skeleton) alih-alih angka lama — desain, tata letak, warna, dan komponen lain tidak berubah.
+
 ## Catatan teknis
 
-- Perubahan dilakukan sebagai operasi data (UPDATE per-UUID + satu INSERT), bukan migrasi skema; struktur tabel tidak berubah.
-- Tidak ada perubahan bucket, policy, atau visibilitas — `product-masters` tetap privat.
-- Tidak ada perubahan kode: `catalog.functions.ts`, checkout, webhook Midtrans, dan komponen UI dibiarkan apa adanya. Harga di landing page (`data.ts`) juga tidak diubah pada tahap ini; beri tahu saya jika ingin disinkronkan juga.
+- Perubahan data dilakukan sebagai UPDATE per-UUID + satu INSERT; tidak ada perubahan skema, policy, atau visibilitas bucket.
+- Checkout, webhook Midtrans, dan logika pembayaran tidak diubah. Harga transaksi tetap ditentukan server dari tabel `products`.
+- Section lain yang menyebut angka harga (mis. Bundling) tidak termasuk lingkup ini kecuali Anda minta.
