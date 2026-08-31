@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { listPublicProducts } from "@/lib/catalog.functions";
 import { products, type Product, type SubVariant } from "./data";
 import { getWhatsAppLink } from "@/lib/whatsapp";
 import {
@@ -185,6 +187,18 @@ export function Products() {
       current.subVariants![0]
     : null;
   const downloadHref = activeSub?.downloadFile ?? variant.downloadFile;
+
+  // Harga selalu diambil dari database (tabel products) — tidak di-hard-code.
+  const { data: catalog } = useQuery({
+    queryKey: ["public-products"],
+    queryFn: () => listPublicProducts(),
+    staleTime: 5 * 60_000,
+  });
+  const priceById = new Map(
+    (catalog?.products ?? []).map((p) => [p.id, p.price] as const),
+  );
+  const checkoutProductId = activeSub?.dbProductId ?? variant.dbProductId;
+  const dbPrice = priceById.get(checkoutProductId) ?? null;
 
   const isLengkap = effectiveTier === "lengkap";
   const showCumulativeBadge = isLengkap && !onlyLengkap;
