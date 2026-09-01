@@ -14,6 +14,85 @@ export type Database = {
   }
   public: {
     Tables: {
+      bundle_products: {
+        Row: {
+          bundle_id: string
+          product_id: string
+          sort_order: number
+        }
+        Insert: {
+          bundle_id: string
+          product_id: string
+          sort_order?: number
+        }
+        Update: {
+          bundle_id?: string
+          product_id?: string
+          sort_order?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "bundle_products_bundle_id_fkey"
+            columns: ["bundle_id"]
+            isOneToOne: false
+            referencedRelation: "bundles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "bundle_products_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "bundle_products_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products_public"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      bundles: {
+        Row: {
+          active: boolean
+          best_seller: boolean
+          bundle_price: number
+          category: string
+          created_at: string
+          id: string
+          name: string
+          slug: string
+          sort_order: number
+          updated_at: string
+        }
+        Insert: {
+          active?: boolean
+          best_seller?: boolean
+          bundle_price: number
+          category: string
+          created_at?: string
+          id?: string
+          name: string
+          slug: string
+          sort_order?: number
+          updated_at?: string
+        }
+        Update: {
+          active?: boolean
+          best_seller?: boolean
+          bundle_price?: number
+          category?: string
+          created_at?: string
+          id?: string
+          name?: string
+          slug?: string
+          sort_order?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
       generated_files: {
         Row: {
           created_at: string
@@ -49,6 +128,7 @@ export type Database = {
       orders: {
         Row: {
           amount: number
+          bundle_id: string | null
           company_name: string
           created_at: string
           email: string
@@ -56,16 +136,18 @@ export type Database = {
           generation_status: string
           id: string
           order_number: string
+          order_type: string
           paid_at: string | null
           payment_provider: string
           payment_raw_status: string | null
           payment_reference: string | null
           payment_status: string
-          product_id: string
+          product_id: string | null
           updated_at: string
         }
         Insert: {
           amount: number
+          bundle_id?: string | null
           company_name: string
           created_at?: string
           email: string
@@ -73,16 +155,18 @@ export type Database = {
           generation_status?: string
           id?: string
           order_number?: string
+          order_type?: string
           paid_at?: string | null
           payment_provider?: string
           payment_raw_status?: string | null
           payment_reference?: string | null
           payment_status?: string
-          product_id: string
+          product_id?: string | null
           updated_at?: string
         }
         Update: {
           amount?: number
+          bundle_id?: string | null
           company_name?: string
           created_at?: string
           email?: string
@@ -90,15 +174,23 @@ export type Database = {
           generation_status?: string
           id?: string
           order_number?: string
+          order_type?: string
           paid_at?: string | null
           payment_provider?: string
           payment_raw_status?: string | null
           payment_reference?: string | null
           payment_status?: string
-          product_id?: string
+          product_id?: string | null
           updated_at?: string
         }
         Relationships: [
+          {
+            foreignKeyName: "orders_bundle_id_fkey"
+            columns: ["bundle_id"]
+            isOneToOne: false
+            referencedRelation: "bundles"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "orders_product_id_fkey"
             columns: ["product_id"]
