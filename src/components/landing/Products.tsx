@@ -307,7 +307,11 @@ export function Products() {
                 </p>
                 <div className="mt-1 flex items-baseline gap-3">
                   <span className="text-3xl font-extrabold text-brand-navy md:text-4xl">
-                    {formatRp(variant.price)}
+                    {dbPrice !== null ? (
+                      formatRp(dbPrice)
+                    ) : (
+                      <span className="inline-block h-8 w-40 animate-pulse rounded-lg bg-brand-navy/10 align-middle md:h-10" />
+                    )}
                   </span>
                 </div>
                 <div className="mt-2 flex flex-wrap items-center gap-2">
@@ -427,7 +431,12 @@ export function Products() {
                   <PlayCircle className="h-4 w-4" />
                   Lihat Video Tutorial
                 </Button>
-                <Button variant="brand" size="pill" onClick={() => setCheckoutOpen(true)}>
+                <Button
+                  variant="brand"
+                  size="pill"
+                  disabled={dbPrice === null}
+                  onClick={() => setCheckoutOpen(true)}
+                >
                   <ShoppingCart className="h-4 w-4" />
                   Beli Sekarang
                 </Button>
@@ -465,10 +474,10 @@ export function Products() {
         <CheckoutModal
           open={checkoutOpen}
           onOpenChange={setCheckoutOpen}
-          productId={variant.dbProductId}
+          productId={checkoutProductId}
           productName={current.name}
           tierLabel={effectiveTier === "lengkap" ? "Lengkap" : "Standar"}
-          price={variant.price}
+          price={dbPrice ?? 0}
         />
 
         <VideoTutorialModal
