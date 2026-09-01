@@ -431,7 +431,12 @@ export function Products() {
                   <PlayCircle className="h-4 w-4" />
                   Lihat Video Tutorial
                 </Button>
-                <Button variant="brand" size="pill" onClick={() => setCheckoutOpen(true)}>
+                <Button
+                  variant="brand"
+                  size="pill"
+                  disabled={dbPrice === null}
+                  onClick={() => setCheckoutOpen(true)}
+                >
                   <ShoppingCart className="h-4 w-4" />
                   Beli Sekarang
                 </Button>
