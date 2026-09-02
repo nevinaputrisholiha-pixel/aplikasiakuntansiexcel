@@ -52,7 +52,13 @@ function DashCell() {
   );
 }
 
-export function GlobalComparisonTable({ productId, productName, activeTier }: Props) {
+export function GlobalComparisonTable({
+  productId,
+  productName,
+  activeTier,
+  standarPrice,
+  lengkapPrice,
+}: Props) {
   const spec = productComparison[productId];
   if (!spec) return null;
 
@@ -145,7 +151,7 @@ export function GlobalComparisonTable({ productId, productName, activeTier }: Pr
                   <span
                     className={`text-sm font-extrabold ${spec.hasStandar ? (standarActive ? "text-brand-teal" : "text-brand-navy") : "text-brand-navy/40"}`}
                   >
-                    {spec.priceRow.standar}
+                    {spec.hasStandar ? <PriceValue price={standarPrice} /> : "Tidak Tersedia"}
                   </span>
                 </td>
                 <td
@@ -154,7 +160,7 @@ export function GlobalComparisonTable({ productId, productName, activeTier }: Pr
                   <span
                     className={`text-sm font-extrabold ${lengkapActive ? "text-brand-teal" : "text-brand-navy"}`}
                   >
-                    {spec.priceRow.lengkap}
+                    <PriceValue price={lengkapPrice} />
                   </span>
                 </td>
               </tr>
