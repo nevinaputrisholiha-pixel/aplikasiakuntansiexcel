@@ -12,7 +12,6 @@ export type ComparisonCategory = {
 
 export type ComparisonSpec = {
   hasStandar: boolean;
-  priceRow: { standar: string; lengkap: string };
   categories: ComparisonCategory[];
 };
 
@@ -259,17 +258,14 @@ function stokCategories(): ComparisonCategory[] {
 export const productComparison: Record<string, ComparisonSpec> = {
   jasa: {
     hasStandar: true,
-    priceRow: { standar: "Rp 385.000", lengkap: "Rp 585.000" },
     categories: accCategories({ standar: jasaStandar, lengkap: jasaLengkap }),
   },
   dagang: {
     hasStandar: true,
-    priceRow: { standar: "Rp 385.000", lengkap: "Rp 585.000" },
     categories: accCategories({ standar: dagangStandar, lengkap: dagangLengkap }),
   },
   manufaktur: {
     hasStandar: true,
-    priceRow: { standar: "Rp 385.000", lengkap: "Rp 585.000" },
     categories: accCategories({
       standar: manufakturStandar,
       lengkap: manufakturLengkap,
@@ -277,7 +273,6 @@ export const productComparison: Record<string, ComparisonSpec> = {
   },
   kontraktor: {
     hasStandar: false,
-    priceRow: { standar: "Tidak Tersedia", lengkap: "Rp 585.000" },
     categories: accCategories({
       standar: new Set<string>(),
       lengkap: kontraktorLengkap,
@@ -291,12 +286,10 @@ export const productComparison: Record<string, ComparisonSpec> = {
   },
   stok: {
     hasStandar: true,
-    priceRow: { standar: "Rp 185.000", lengkap: "Rp 385.000" },
     categories: stokCategories(),
   },
   bukukas: {
     hasStandar: false,
-    priceRow: { standar: "Tidak Tersedia", lengkap: "Rp 185.000" },
     categories: accCategories({
       standar: new Set<string>(),
       lengkap: bukukasLengkap,
