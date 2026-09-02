@@ -42,7 +42,7 @@ export const getOrderStatus = createServerFn({ method: "POST" })
 
     const { data: order, error } = await supabaseAdmin
       .from("orders")
-      .select("order_number, company_name, email, amount, payment_status, created_at, products(name)")
+      .select("order_number, company_name, email, amount, payment_status, created_at, order_type, products(name), bundles(name)")
       .eq("order_number", data.orderNumber)
       .maybeSingle();
 
@@ -55,12 +55,13 @@ export const getOrderStatus = createServerFn({ method: "POST" })
     }
 
     const product = order.products as { name: string } | null;
+    const bundle = order.bundles as { name: string } | null;
 
     return {
       ok: true,
       order: {
         orderNumber: order.order_number,
-        productName: product?.name ?? "Produk",
+        productName: bundle?.name ?? product?.name ?? "Produk",
         companyName: order.company_name,
         emailMasked: maskEmail(order.email),
         amount: order.amount,

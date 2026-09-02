@@ -200,6 +200,13 @@ export function Products() {
   const checkoutProductId = activeSub?.dbProductId ?? variant.dbProductId;
   const dbPrice = priceById.get(checkoutProductId) ?? null;
 
+  // Harga untuk Tabel Perbandingan — dipetakan lewat dbProductId (bukan nama).
+  const standarDbId = current.variants.standar?.dbProductId;
+  const lengkapDbId =
+    activeSub?.dbProductId ?? current.variants.lengkap?.dbProductId;
+  const standarTablePrice = standarDbId ? priceById.get(standarDbId) ?? null : null;
+  const lengkapTablePrice = lengkapDbId ? priceById.get(lengkapDbId) ?? null : null;
+
   const isLengkap = effectiveTier === "lengkap";
   const showCumulativeBadge = isLengkap && !onlyLengkap;
   const displayFeatures = getDisplayFeatures(current, effectiveTier, activeSub, onlyLengkap);
@@ -444,13 +451,13 @@ export function Products() {
               <div className="mt-3">
                 <a
                   href={getWhatsAppLink(
-                    `Halo, saya tertarik membeli ${current.name} Versi ${effectiveTier === "lengkap" ? "Lengkap" : "Standar"}.`,
+                    `Halo, saya ingin konsultasi mengenai ${current.name} Versi ${effectiveTier === "lengkap" ? "Lengkap" : "Standar"}.`,
                   )}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-xs font-semibold text-brand-navy/70 underline underline-offset-4 hover:text-brand-teal"
                 >
-                  Atau pesan via WhatsApp
+                  💬 Ada pertanyaan? Konsultasi via WhatsApp
                 </a>
               </div>
             </div>
@@ -461,6 +468,8 @@ export function Products() {
           productId={current.id}
           productName={current.name}
           activeTier={effectiveTier}
+          standarPrice={standarTablePrice}
+          lengkapPrice={lengkapTablePrice}
         />
 
         <DemoDownloadModal

@@ -6,7 +6,19 @@ type Props = {
   productId: string;
   productName: string;
   activeTier: "standar" | "lengkap";
+  /** Harga dari tabel `products` (database). null = masih dimuat. */
+  standarPrice: number | null;
+  lengkapPrice: number | null;
 };
+
+const formatRp = (n: number) => "Rp " + n.toLocaleString("id-ID");
+
+function PriceValue({ price }: { price: number | null }) {
+  if (price === null) {
+    return <span className="inline-block h-4 w-20 animate-pulse rounded bg-muted align-middle" />;
+  }
+  return <>{formatRp(price)}</>;
+}
 
 function CheckCell() {
   return (
@@ -40,7 +52,13 @@ function DashCell() {
   );
 }
 
-export function GlobalComparisonTable({ productId, productName, activeTier }: Props) {
+export function GlobalComparisonTable({
+  productId,
+  productName,
+  activeTier,
+  standarPrice,
+  lengkapPrice,
+}: Props) {
   const spec = productComparison[productId];
   if (!spec) return null;
 
@@ -133,7 +151,7 @@ export function GlobalComparisonTable({ productId, productName, activeTier }: Pr
                   <span
                     className={`text-sm font-extrabold ${spec.hasStandar ? (standarActive ? "text-brand-teal" : "text-brand-navy") : "text-brand-navy/40"}`}
                   >
-                    {spec.priceRow.standar}
+                    {spec.hasStandar ? <PriceValue price={standarPrice} /> : "Tidak Tersedia"}
                   </span>
                 </td>
                 <td
@@ -142,7 +160,7 @@ export function GlobalComparisonTable({ productId, productName, activeTier }: Pr
                   <span
                     className={`text-sm font-extrabold ${lengkapActive ? "text-brand-teal" : "text-brand-navy"}`}
                   >
-                    {spec.priceRow.lengkap}
+                    <PriceValue price={lengkapPrice} />
                   </span>
                 </td>
               </tr>
