@@ -4,6 +4,7 @@ import { useNavigate } from "@tanstack/react-router";
 import { Loader2, ShieldCheck } from "lucide-react";
 
 import { createCheckout } from "@/lib/checkout.functions";
+import { loadSnap } from "@/lib/snap";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
