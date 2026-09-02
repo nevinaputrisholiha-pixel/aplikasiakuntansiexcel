@@ -1,62 +1,47 @@
 import { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { Sparkles, Package, Gift, ShoppingCart, MessageCircle } from "lucide-react";
+
 import { Button } from "@/components/ui/button";
-import { Sparkles, Package, Info } from "lucide-react";
 import { getWhatsAppLink } from "@/lib/whatsapp";
+import { listPublicProducts } from "@/lib/catalog.functions";
+import { listPublicBundles } from "@/lib/bundles.functions";
+import { BundleCheckoutModal } from "./BundleCheckoutModal";
 
-type CategoryId = "kombidagang" | "kombimanufaktur" | "kombikasstok" | "mega";
-
-type Bundle = {
-  name: string;
-  items: string[];
-  price: number;
-  saving: number;
-  bestSeller?: boolean;
-};
-
-const categories: { id: CategoryId; label: string; bundles: Bundle[] }[] = [
-  {
-    id: "kombidagang",
-    label: "KOMBIDAGANG",
-    bundles: [
-      { name: "Paket Nanas", items: ["Dagang Lengkap", "Stok Barang Lengkap"], price: 870000, saving: 100000, bestSeller: true },
-      { name: "Paket Strawberry", items: ["Dagang Lengkap", "Stok Barang Standar"], price: 670000, saving: 100000 },
-      { name: "Paket Jeruk", items: ["Dagang Standar", "Stok Barang Lengkap"], price: 670000, saving: 100000 },
-      { name: "Paket Kiwi", items: ["Dagang Standar", "Stok Barang Standar"], price: 470000, saving: 100000 },
-    ],
-  },
-  {
-    id: "kombimanufaktur",
-    label: "KOMBIMANUFAKTUR",
-    bundles: [
-      { name: "Paket Jambu", items: ["Manufaktur Lengkap", "Stok Barang Lengkap"], price: 870000, saving: 100000 },
-      { name: "Paket Melon", items: ["Manufaktur Lengkap", "Stok Barang Standar"], price: 670000, saving: 100000 },
-      { name: "Paket Mangga", items: ["Manufaktur Standar", "Stok Barang Lengkap"], price: 670000, saving: 100000 },
-      { name: "Paket Semangka", items: ["Manufaktur Standar", "Stok Barang Standar"], price: 470000, saving: 100000 },
-    ],
-  },
-  {
-    id: "kombikasstok",
-    label: "KOMBIKAS/STOK",
-    bundles: [
-      { name: "Paket Apel", items: ["Stok Barang Lengkap", "Buku Kas"], price: 470000, saving: 100000 },
-      { name: "Paket Alpukat", items: ["Stok Barang Standar", "Buku Kas"], price: 270000, saving: 100000 },
-    ],
-  },
-  {
-    id: "mega",
-    label: "MEGA BUNDLING",
-    bundles: [
-      { name: "Paket Anggur", items: ["Jasa Lengkap", "Dagang Lengkap", "Manufaktur Lengkap"], price: 1455000, saving: 300000, bestSeller: true },
-      { name: "Paket Cherry", items: ["Jasa Standar", "Dagang Standar", "Manufaktur Standar"], price: 855000, saving: 300000 },
-    ],
-  },
+const categoryLabels: { id: string; label: string }[] = [
+  { id: "kombidagang", label: "KOMBIDAGANG" },
+  { id: "kombimanufaktur", label: "KOMBIMANUFAKTUR" },
+  { id: "kombikasstok", label: "KOMBIKAS/STOK" },
+  { id: "mega", label: "MEGA BUNDLING" },
 ];
 
 const formatRp = (n: number) => "Rp " + n.toLocaleString("id-ID");
 
 export function Bundling() {
-  const [active, setActive] = useState<CategoryId>("kombidagang");
-  const current = categories.find((c) => c.id === active)!;
+  const [active, setActive] = useState<string>("kombidagang");
+  const [checkout, setCheckout] = useState<{
+    id: string;
+    name: string;
+    items: string[];
+    price: number;
+  } | null>(null);
+
+  const { data: catalog } = useQuery({
+    queryKey: ["public-products"],
+    queryFn: () => listPublicProducts(),
+    staleTime: 5 * 60_000,
+  });
+  const { data: bundleData } = useQuery({
+    queryKey: ["public-bundles"],
+    queryFn: () => listPublicBundles(),
+    staleTime: 5 * 60_000,
+  });
+
+  const productById = new Map(
+    (catalog?.products ?? []).map((p) => [p.id, p] as const),
+  );
+  const bundles = (bundleData?.bundles ?? []).filter((b) => b.category === active);
+  const catalogReady = (catalog?.products ?? []).length > 0;
 
   return (
     <section id="bundling" className="py-20 bg-gradient-to-b from-brand-mint/10 to-background">
@@ -80,7 +65,7 @@ export function Bundling() {
             style={{ scrollbarWidth: "none" }}
           >
             <style>{`#bundling .flex.gap-2.overflow-x-auto::-webkit-scrollbar{display:none}`}</style>
-            {categories.map((c) => (
+            {categoryLabels.map((c) => (
               <button
                 key={c.id}
                 onClick={() => setActive(c.id)}
@@ -98,11 +83,19 @@ export function Bundling() {
 
         {/* Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
-          {current.bundles.map((b) => {
-            const waMsg = `Halo Admin, saya ingin membeli ${b.name} (${b.items.join(" + ")}) dengan harga ${formatRp(b.price)}. Mohon info pembayarannya.`;
+          {bundles.map((b) => {
+            const items = b.productIds.map((id) => productById.get(id)?.name ?? "—");
+            const regularTotal = b.productIds.reduce(
+              (sum, id) => sum + (productById.get(id)?.price ?? 0),
+              0,
+            );
+            const savings = regularTotal - b.bundlePrice;
+            const savingsPercent = regularTotal > 0 ? Math.round((savings / regularTotal) * 100) : 0;
+            const ready = catalogReady && regularTotal > 0;
+
             return (
               <div
-                key={b.name}
+                key={b.id}
                 className="relative flex flex-col rounded-3xl bg-white border border-brand-mint/40 p-6 shadow-card hover:shadow-glow transition-all"
               >
                 {b.bestSeller && (
@@ -116,42 +109,100 @@ export function Bundling() {
                 </div>
                 <h3 className="text-xl font-bold text-brand-navy">{b.name}</h3>
                 <div className="mt-3 space-y-1.5">
-                  {b.items.map((item) => (
-                    <div key={item} className="flex items-start gap-2 text-sm font-semibold text-brand-navy">
+                  {items.map((item, i) => (
+                    <div
+                      key={`${b.id}-${i}`}
+                      className="flex items-start gap-2 text-sm font-semibold text-brand-navy"
+                    >
                       <span className="mt-1 w-1.5 h-1.5 rounded-full bg-brand-teal shrink-0" />
                       <span>{item}</span>
                     </div>
                   ))}
                 </div>
+
                 <div className="mt-5 pt-5 border-t border-brand-mint/40">
-                  <div className="text-3xl font-extrabold text-brand-navy">{formatRp(b.price)}</div>
-                  <div
-                    className="mt-1 inline-flex items-center gap-1 px-2.5 py-1 rounded-md bg-emerald-600 text-white text-xs font-bold shadow-soft"
-                    title="Dihitung dari selisih total harga satuan produk dalam paket dibanding harga bundling."
-                  >
-                    Anda Hemat: {formatRp(b.saving)}
-                    <Info className="w-3 h-3 opacity-80" />
-                  </div>
+                  {ready ? (
+                    <>
+                      <div className="text-sm font-semibold text-brand-navy/50 line-through">
+                        {formatRp(regularTotal)}
+                      </div>
+                      <div className="text-3xl font-extrabold text-brand-navy">
+                        {formatRp(b.bundlePrice)}
+                      </div>
+                      <div className="mt-1 inline-flex items-center gap-1 px-2.5 py-1 rounded-md bg-emerald-600 text-white text-xs font-bold shadow-soft">
+                        Hemat {formatRp(savings)}
+                      </div>
+                      <div className="mt-1 text-xs font-semibold text-brand-navy/60">
+                        Hemat {savingsPercent}%
+                      </div>
+                    </>
+                  ) : (
+                    <div className="space-y-2">
+                      <div className="h-4 w-24 animate-pulse rounded bg-muted" />
+                      <div className="h-8 w-36 animate-pulse rounded bg-muted" />
+                    </div>
+                  )}
                 </div>
-                <Button variant="whatsapp" size="pill" asChild className="mt-5 w-full">
-                  <a
-                    href={getWhatsAppLink(waMsg)}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    Beli Paket via WA
-                  </a>
+
+                <div className="mt-4 flex items-start gap-2 rounded-xl bg-brand-mint/20 px-3 py-2 text-xs font-semibold text-brand-navy">
+                  <Gift className="mt-0.5 h-4 w-4 shrink-0 text-brand-teal" />
+                  <span>
+                    16 Bonus Gratis
+                    <span className="block font-medium text-brand-navy/70">
+                      Senilai Rp1.500.000
+                    </span>
+                  </span>
+                </div>
+
+                <Button
+                  variant="brand"
+                  size="pill"
+                  className="mt-5 w-full"
+                  disabled={!ready}
+                  onClick={() =>
+                    setCheckout({ id: b.id, name: b.name, items, price: b.bundlePrice })
+                  }
+                >
+                  <ShoppingCart className="h-4 w-4" />
+                  Beli Sekarang
                 </Button>
               </div>
             );
           })}
         </div>
 
-        <p className="mt-8 text-center text-xs text-brand-navy/60 max-w-2xl mx-auto">
-          * Nilai <strong>&quot;Anda Hemat&quot;</strong> dihitung dari selisih total harga satuan
-          setiap produk dalam paket dibanding harga bundling. Harga satuan mengacu pada harga
-          normal (sebelum diskon) yang tercantum di halaman Produk.
+        <div className="mt-8 text-center">
+          <a
+            href={getWhatsAppLink(
+              "Halo Admin, saya ingin konsultasi mengenai paket bundling Aplikasi Akuntansi Excel.",
+            )}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 text-sm font-semibold text-brand-navy/70 underline underline-offset-4 hover:text-brand-teal"
+          >
+            <MessageCircle className="h-4 w-4" />
+            Ada pertanyaan? Konsultasi via WhatsApp
+          </a>
+        </div>
+
+        <p className="mt-6 text-center text-xs text-brand-navy/60 max-w-2xl mx-auto">
+          * Nilai <strong>&quot;Hemat&quot;</strong> dihitung otomatis dari selisih total harga
+          satuan setiap produk dalam paket dibanding harga bundling. 16 bonus gratis tidak
+          diperhitungkan dalam nilai hemat.
         </p>
+
+        {checkout && (
+          <BundleCheckoutModal
+            open={!!checkout}
+            onOpenChange={(open) => {
+              if (!open) setCheckout(null);
+            }}
+            bundleId={checkout.id}
+            bundleName={checkout.name}
+            items={checkout.items}
+            price={checkout.price}
+          />
+        )}
       </div>
     </section>
   );
