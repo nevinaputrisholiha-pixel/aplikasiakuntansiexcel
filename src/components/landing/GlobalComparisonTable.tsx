@@ -6,7 +6,19 @@ type Props = {
   productId: string;
   productName: string;
   activeTier: "standar" | "lengkap";
+  /** Harga dari tabel `products` (database). null = masih dimuat. */
+  standarPrice: number | null;
+  lengkapPrice: number | null;
 };
+
+const formatRp = (n: number) => "Rp " + n.toLocaleString("id-ID");
+
+function PriceValue({ price }: { price: number | null }) {
+  if (price === null) {
+    return <span className="inline-block h-4 w-20 animate-pulse rounded bg-muted align-middle" />;
+  }
+  return <>{formatRp(price)}</>;
+}
 
 function CheckCell() {
   return (
