@@ -14,8 +14,8 @@ Langkah untuk tiap file master:
    - jika sel memakai shared string, buat/ganti entry shared string khusus untuk sel itu saja (tidak mengubah entry lain yang mungkin dipakai sel lain);
    - jika inline/`str`, ganti isi `<v>`/`<t>` sel tersebut.
 5. Perbarui **cached value** sel-sel formula yang menampilkan nama lama: hanya sel yang punya `<f>` (formula tetap formula, tidak pernah diubah jadi teks) dan yang nilai cache-nya persis sama dengan nama perusahaan lama. Tidak ada global string replace terhadap seluruh XML/data.
-6. Set `fullCalcOnLoad` pada `xl/calcChain`/`workbook.xml` calcPr agar Excel menghitung ulang saat dibuka (cadangan bila ada sel turunan yang tidak tertangkap langkah 5).
-7. Zip ulang dengan entry lain **byte-identik** — drawing, `xl/drawings/*`, `_rels`, sheet protection, data validation, named ranges, media, dan VBA tidak pernah disentuh.
+6. `xl/calcChain.xml` **tidak pernah dimodifikasi maupun dibuat ulang** — dipertahankan apa adanya. Bila recalculation saat dibuka masih diperlukan, cukup set atribut `fullCalcOnLoad` pada elemen `calcPr` di `xl/workbook.xml` (satu atribut, tanpa menyentuh entry lain), dan hanya jika memang dibutuhkan setelah langkah 5.
+7. Zip ulang dengan entry lain **byte-identik** — drawing, `xl/drawings/*`, `_rels`, `calcChain.xml`, sheet protection, data validation, named ranges, media, dan VBA tidak pernah disentuh. Prinsip: ubah sesedikit mungkin, pertahankan seluruh entry asli byte-for-byte.
 
 Library: `fflate` (pure JS, aman untuk runtime server Cloudflare Workers) untuk unzip/zip, plus parser/penulis XML ringan yang bekerja pada string XML. Tidak memakai library "open workbook → save workbook" (exceljs/xlsx) karena itulah yang menghilangkan drawing pada Test 1/2.
 
