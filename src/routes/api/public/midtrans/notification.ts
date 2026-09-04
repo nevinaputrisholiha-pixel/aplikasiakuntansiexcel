@@ -102,6 +102,20 @@ export const Route = createFileRoute("/api/public/midtrans/notification")({
           return new Response("Update failed", { status: 500 });
         }
 
+        // Payment verification above is unchanged; a confirmed payment simply
+        // hands the order to the Excel generator (idempotent, self-locking).
+        if (next === "paid") {
+          try {
+            const { generateForOrder } = await import("@/lib/generation.server");
+            const result = await generateForOrder(order.id);
+            if (!result.ok) {
+              console.error("Generation failed after payment", order_id, result.reason);
+            }
+          } catch (err) {
+            console.error("Generation threw after payment", order_id, err);
+          }
+        }
+
         return new Response("ok");
       },
     },

@@ -18,6 +18,7 @@ export type OrderStatusResult =
         emailMasked: string;
         amount: number;
         paymentStatus: string;
+        generationStatus: string;
         createdAt: string;
       };
     }
@@ -42,7 +43,7 @@ export const getOrderStatus = createServerFn({ method: "POST" })
 
     const { data: order, error } = await supabaseAdmin
       .from("orders")
-      .select("order_number, company_name, email, amount, payment_status, created_at, order_type, products(name), bundles(name)")
+      .select("order_number, company_name, email, amount, payment_status, generation_status, created_at, order_type, products(name), bundles(name)")
       .eq("order_number", data.orderNumber)
       .maybeSingle();
 
@@ -66,6 +67,7 @@ export const getOrderStatus = createServerFn({ method: "POST" })
         emailMasked: maskEmail(order.email),
         amount: order.amount,
         paymentStatus: order.payment_status,
+        generationStatus: order.generation_status,
         createdAt: order.created_at,
       },
     };
