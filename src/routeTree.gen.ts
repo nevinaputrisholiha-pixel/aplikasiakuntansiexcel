@@ -14,7 +14,7 @@ import { Route as KebijakanPrivasiRouteImport } from './routes/kebijakan-privasi
 import { Route as EulaRouteImport } from './routes/eula'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as OrderOrderNumberRouteImport } from './routes/order.$orderNumber'
-import { Route as ApiPublic_genTestRouteImport } from './routes/api/public/__gen-test'
+import { Route as ApiPublicGenTestRouteImport } from './routes/api/public/gen-test'
 import { Route as ApiPublicMidtransNotificationRouteImport } from './routes/api/public/midtrans/notification'
 
 const SyaratKetentuanRoute = SyaratKetentuanRouteImport.update({
@@ -42,9 +42,9 @@ const OrderOrderNumberRoute = OrderOrderNumberRouteImport.update({
   path: '/order/$orderNumber',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ApiPublic_genTestRoute = ApiPublic_genTestRouteImport.update({
-  id: '/api/public/__gen-test',
-  path: '/api/public',
+const ApiPublicGenTestRoute = ApiPublicGenTestRouteImport.update({
+  id: '/api/public/gen-test',
+  path: '/api/public/gen-test',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ApiPublicMidtransNotificationRoute =
@@ -60,7 +60,7 @@ export interface FileRoutesByFullPath {
   '/kebijakan-privasi': typeof KebijakanPrivasiRoute
   '/syarat-ketentuan': typeof SyaratKetentuanRoute
   '/order/$orderNumber': typeof OrderOrderNumberRoute
-  '/api/public': typeof ApiPublic_genTestRoute
+  '/api/public/gen-test': typeof ApiPublicGenTestRoute
   '/api/public/midtrans/notification': typeof ApiPublicMidtransNotificationRoute
 }
 export interface FileRoutesByTo {
@@ -69,7 +69,7 @@ export interface FileRoutesByTo {
   '/kebijakan-privasi': typeof KebijakanPrivasiRoute
   '/syarat-ketentuan': typeof SyaratKetentuanRoute
   '/order/$orderNumber': typeof OrderOrderNumberRoute
-  '/api/public': typeof ApiPublic_genTestRoute
+  '/api/public/gen-test': typeof ApiPublicGenTestRoute
   '/api/public/midtrans/notification': typeof ApiPublicMidtransNotificationRoute
 }
 export interface FileRoutesById {
@@ -79,7 +79,7 @@ export interface FileRoutesById {
   '/kebijakan-privasi': typeof KebijakanPrivasiRoute
   '/syarat-ketentuan': typeof SyaratKetentuanRoute
   '/order/$orderNumber': typeof OrderOrderNumberRoute
-  '/api/public/__gen-test': typeof ApiPublic_genTestRoute
+  '/api/public/gen-test': typeof ApiPublicGenTestRoute
   '/api/public/midtrans/notification': typeof ApiPublicMidtransNotificationRoute
 }
 export interface FileRouteTypes {
@@ -90,7 +90,7 @@ export interface FileRouteTypes {
     | '/kebijakan-privasi'
     | '/syarat-ketentuan'
     | '/order/$orderNumber'
-    | '/api/public'
+    | '/api/public/gen-test'
     | '/api/public/midtrans/notification'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -99,7 +99,7 @@ export interface FileRouteTypes {
     | '/kebijakan-privasi'
     | '/syarat-ketentuan'
     | '/order/$orderNumber'
-    | '/api/public'
+    | '/api/public/gen-test'
     | '/api/public/midtrans/notification'
   id:
     | '__root__'
@@ -108,7 +108,7 @@ export interface FileRouteTypes {
     | '/kebijakan-privasi'
     | '/syarat-ketentuan'
     | '/order/$orderNumber'
-    | '/api/public/__gen-test'
+    | '/api/public/gen-test'
     | '/api/public/midtrans/notification'
   fileRoutesById: FileRoutesById
 }
@@ -118,7 +118,7 @@ export interface RootRouteChildren {
   KebijakanPrivasiRoute: typeof KebijakanPrivasiRoute
   SyaratKetentuanRoute: typeof SyaratKetentuanRoute
   OrderOrderNumberRoute: typeof OrderOrderNumberRoute
-  ApiPublic_genTestRoute: typeof ApiPublic_genTestRoute
+  ApiPublicGenTestRoute: typeof ApiPublicGenTestRoute
   ApiPublicMidtransNotificationRoute: typeof ApiPublicMidtransNotificationRoute
 }
 
@@ -159,11 +159,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof OrderOrderNumberRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/api/public/__gen-test': {
-      id: '/api/public/__gen-test'
-      path: '/api/public'
-      fullPath: '/api/public'
-      preLoaderRoute: typeof ApiPublic_genTestRouteImport
+    '/api/public/gen-test': {
+      id: '/api/public/gen-test'
+      path: '/api/public/gen-test'
+      fullPath: '/api/public/gen-test'
+      preLoaderRoute: typeof ApiPublicGenTestRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/public/midtrans/notification': {
@@ -182,7 +182,7 @@ const rootRouteChildren: RootRouteChildren = {
   KebijakanPrivasiRoute: KebijakanPrivasiRoute,
   SyaratKetentuanRoute: SyaratKetentuanRoute,
   OrderOrderNumberRoute: OrderOrderNumberRoute,
-  ApiPublic_genTestRoute: ApiPublic_genTestRoute,
+  ApiPublicGenTestRoute: ApiPublicGenTestRoute,
   ApiPublicMidtransNotificationRoute: ApiPublicMidtransNotificationRoute,
 }
 export const routeTree = rootRouteImport
