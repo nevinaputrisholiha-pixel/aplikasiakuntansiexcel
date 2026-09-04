@@ -102,8 +102,15 @@ function OrderStatusPage() {
     queryFn: () => fetchStatus({ data: { orderNumber } }),
     // Keep polling while the payment is still pending — status only ever
     // changes server-side via the verified Midtrans webhook.
-    refetchInterval: (query) =>
-      query.state.data?.ok && query.state.data.order.paymentStatus === "pending" ? 5000 : false,
+    refetchInterval: (query) => {
+      const d = query.state.data;
+      if (!d?.ok) return false;
+      if (d.order.paymentStatus === "pending") return 5000;
+      // Keep polling while the personalized Excel file is still being built.
+      if (d.order.paymentStatus === "paid" && ["pending", "processing"].includes(d.order.generationStatus))
+        return 5000;
+      return false;
+    },
   });
 
   if (isLoading) {
