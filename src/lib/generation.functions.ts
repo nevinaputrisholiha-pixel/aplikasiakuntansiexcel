@@ -14,7 +14,12 @@ const schema = z.object({
 });
 
 export type AdminGenerationResult =
-  | { ok: true; status: string; reason?: string; files?: unknown }
+  | {
+      ok: true;
+      status: string;
+      reason?: string;
+      files?: { path: string; product: string; cellValue: string | null; checks: string[] }[];
+    }
   | { ok: false; error: string };
 
 export const adminGenerateOrder = createServerFn({ method: "POST" })
