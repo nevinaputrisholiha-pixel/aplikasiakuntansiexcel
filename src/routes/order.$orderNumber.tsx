@@ -143,9 +143,15 @@ function OrderStatusPage() {
         </p>
       )}
       {order.paymentStatus === "paid" && (
-        <p className="mt-1 text-xs text-brand-navy/60">
-          File program yang sudah dipersonalisasi akan dikirim ke email Anda.
-        </p>
+        <div className="mt-4 rounded-2xl bg-surface-soft px-4 py-3 ring-1 ring-border">
+          <p className="text-xs font-bold uppercase tracking-wider text-brand-teal">File Program</p>
+          <p className="mt-1 text-sm font-semibold text-brand-navy">
+            {GENERATION_MESSAGE[order.generationStatus] ?? GENERATION_MESSAGE.pending}
+          </p>
+          <p className="mt-1 text-xs text-brand-navy/60">
+            File program yang sudah dipersonalisasi akan dikirim ke email Anda.
+          </p>
+        </div>
       )}
 
       <dl className="mt-8 divide-y divide-border rounded-2xl border border-border">
