@@ -71,6 +71,13 @@ const STATUS_UI: Record<
   },
 };
 
+const GENERATION_MESSAGE: Record<string, string> = {
+  pending: "Menyiapkan file Excel...",
+  processing: "Sedang membuat file Excel...",
+  done: "File Anda siap.",
+  failed: "File belum berhasil diproses. Silakan coba lagi.",
+};
+
 function Shell({ children }: { children: React.ReactNode }) {
   return (
     <main className="min-h-screen bg-surface-soft py-16">
