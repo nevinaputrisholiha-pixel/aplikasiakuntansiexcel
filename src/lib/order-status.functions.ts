@@ -18,6 +18,7 @@ export type OrderStatusResult =
         emailMasked: string;
         amount: number;
         paymentStatus: string;
+        generationStatus: string;
         createdAt: string;
       };
     }
