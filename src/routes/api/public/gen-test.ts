@@ -1,7 +1,7 @@
 // TEMPORARY test-only route — removed after Tahap 3 verification.
 import { createFileRoute } from "@tanstack/react-router";
 
-export const Route = createFileRoute("/api/public/__gen-test")({
+export const Route = createFileRoute("/api/public/gen-test")({
   server: {
     handlers: {
       POST: async ({ request }) => {
