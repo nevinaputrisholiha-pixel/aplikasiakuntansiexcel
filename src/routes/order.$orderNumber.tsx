@@ -162,11 +162,16 @@ function OrderStatusPage() {
           <p className="mt-1 text-sm font-semibold text-brand-navy">
             {GENERATION_MESSAGE[order.generationStatus] ?? GENERATION_MESSAGE.pending}
           </p>
-          <p className="mt-1 text-xs text-brand-navy/60">
-            File program yang sudah dipersonalisasi akan dikirim ke email Anda.
-          </p>
+          {order.generationStatus === "done" ? (
+            <DownloadSection orderNumber={order.orderNumber} />
+          ) : (
+            <p className="mt-1 text-xs text-brand-navy/60">
+              Halaman ini akan memperbarui otomatis saat file Anda selesai dibuat.
+            </p>
+          )}
         </div>
       )}
+
 
       <dl className="mt-8 divide-y divide-border rounded-2xl border border-border">
         {[
