@@ -71,7 +71,7 @@ function DownloadSection({ orderNumber }: { orderNumber: string }) {
           <span className="text-sm font-semibold text-brand-navy">{f.label}</span>
           <Button
             size="sm"
-            variant="hero"
+            variant="brand"
             disabled={busyId === f.id}
             onClick={() => void handleDownload(f.id)}
           >
