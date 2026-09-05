@@ -1,11 +1,97 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
-import { CheckCircle2, Clock, XCircle, RotateCcw, Loader2 } from "lucide-react";
+import { useState } from "react";
+import { CheckCircle2, Clock, XCircle, RotateCcw, Loader2, Download } from "lucide-react";
 
 import { getOrderStatus } from "@/lib/order-status.functions";
+import { listOrderFiles, getDownloadUrl } from "@/lib/download.functions";
 import { Button } from "@/components/ui/button";
 import { getWhatsAppLink } from "@/lib/whatsapp";
+
+function DownloadSection({ orderNumber }: { orderNumber: string }) {
+  const fetchFiles = useServerFn(listOrderFiles);
+  const requestUrl = useServerFn(getDownloadUrl);
+  const [busyId, setBusyId] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
+
+  const { data, isLoading } = useQuery({
+    queryKey: ["order-files", orderNumber],
+    queryFn: () => fetchFiles({ data: { orderNumber } }),
+  });
+
+  const handleDownload = async (fileId: string) => {
+    setError(null);
+    setBusyId(fileId);
+    try {
+      const res = await requestUrl({ data: { orderNumber, fileId } });
+      if (!res.ok) {
+        setError(res.error);
+        return;
+      }
+      const a = document.createElement("a");
+      a.href = res.url;
+      a.download = res.fileName;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+    } catch {
+      setError("File belum dapat diunduh. Silakan coba lagi.");
+    } finally {
+      setBusyId(null);
+    }
+  };
+
+  if (isLoading) {
+    return (
+      <div className="mt-3 flex items-center gap-2 text-xs text-brand-navy/70">
+        <Loader2 className="h-3.5 w-3.5 animate-spin" /> Menyiapkan tautan unduhan...
+      </div>
+    );
+  }
+
+  const files = data?.ok ? data.files : [];
+  if (files.length === 0) {
+    return (
+      <p className="mt-1 text-xs text-brand-navy/60">
+        File belum dapat diunduh. Silakan coba lagi beberapa saat.
+      </p>
+    );
+  }
+
+  const single = files.length === 1;
+
+  return (
+    <div className="mt-3 space-y-2">
+      {files.map((f) => (
+        <div
+          key={f.id}
+          className="flex flex-wrap items-center justify-between gap-2 rounded-xl bg-white px-3 py-2 ring-1 ring-border"
+        >
+          <span className="text-sm font-semibold text-brand-navy">{f.label}</span>
+          <Button
+            size="sm"
+            variant="brand"
+            disabled={busyId === f.id}
+            onClick={() => void handleDownload(f.id)}
+          >
+            {busyId === f.id ? (
+              <Loader2 className="h-4 w-4 animate-spin" />
+            ) : (
+              <Download className="h-4 w-4" />
+            )}
+            {single ? "Download File" : "Download"}
+          </Button>
+        </div>
+      ))}
+      {error && <p className="text-xs font-semibold text-destructive">{error}</p>}
+      <p className="text-xs text-brand-navy/60">
+        Tautan unduhan berlaku sementara. Tekan tombol lagi jika kedaluwarsa.
+      </p>
+    </div>
+  );
+}
+
 
 export const Route = createFileRoute("/order/$orderNumber")({
   head: () => ({
@@ -162,11 +248,16 @@ function OrderStatusPage() {
           <p className="mt-1 text-sm font-semibold text-brand-navy">
             {GENERATION_MESSAGE[order.generationStatus] ?? GENERATION_MESSAGE.pending}
           </p>
-          <p className="mt-1 text-xs text-brand-navy/60">
-            File program yang sudah dipersonalisasi akan dikirim ke email Anda.
-          </p>
+          {order.generationStatus === "done" ? (
+            <DownloadSection orderNumber={order.orderNumber} />
+          ) : (
+            <p className="mt-1 text-xs text-brand-navy/60">
+              Halaman ini akan memperbarui otomatis saat file Anda selesai dibuat.
+            </p>
+          )}
         </div>
       )}
+
 
       <dl className="mt-8 divide-y divide-border rounded-2xl border border-border">
         {[
