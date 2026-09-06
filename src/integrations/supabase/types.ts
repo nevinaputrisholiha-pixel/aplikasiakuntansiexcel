@@ -217,6 +217,8 @@ export type Database = {
           price: number
           target_cell: string
           target_sheet: string
+          trial_enabled: boolean
+          trial_master_file_path: string | null
           updated_at: string
         }
         Insert: {
@@ -228,6 +230,8 @@ export type Database = {
           price: number
           target_cell?: string
           target_sheet?: string
+          trial_enabled?: boolean
+          trial_master_file_path?: string | null
           updated_at?: string
         }
         Update: {
@@ -239,9 +243,59 @@ export type Database = {
           price?: number
           target_cell?: string
           target_sheet?: string
+          trial_enabled?: boolean
+          trial_master_file_path?: string | null
           updated_at?: string
         }
         Relationships: []
+      }
+      trial_access: {
+        Row: {
+          created_at: string
+          email: string
+          expires_at: string
+          first_download_at: string
+          generated_file_path: string | null
+          id: string
+          product_id: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          expires_at: string
+          first_download_at?: string
+          generated_file_path?: string | null
+          id?: string
+          product_id: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          expires_at?: string
+          first_download_at?: string
+          generated_file_path?: string | null
+          id?: string
+          product_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "trial_access_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "trial_access_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products_public"
+            referencedColumns: ["id"]
+          },
+        ]
       }
     }
     Views: {
