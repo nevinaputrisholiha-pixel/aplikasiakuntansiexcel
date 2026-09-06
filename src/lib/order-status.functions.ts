@@ -41,11 +41,29 @@ export const getOrderStatus = createServerFn({ method: "POST" })
   .handler(async ({ data }): Promise<OrderStatusResult> => {
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
 
-    const { data: order, error } = await supabaseAdmin
+    const select =
+      "order_number, company_name, email, amount, payment_status, generation_status, created_at, order_type, products(name), bundles(name)";
+
+    let { data: order, error } = await supabaseAdmin
       .from("orders")
-      .select("order_number, company_name, email, amount, payment_status, generation_status, created_at, order_type, products(name), bundles(name)")
+      .select(select)
       .eq("order_number", data.orderNumber)
       .maybeSingle();
+
+    // Safety net: if the webhook never arrived, ask Midtrans directly for the
+    // authoritative status (signature + amount verified server-side), then
+    // re-read the row.
+    if (!error && order && order.payment_status === "pending") {
+      const { syncOrderPayment } = await import("@/lib/payment-sync.server");
+      await syncOrderPayment(data.orderNumber);
+      const refreshed = await supabaseAdmin
+        .from("orders")
+        .select(select)
+        .eq("order_number", data.orderNumber)
+        .maybeSingle();
+      if (!refreshed.error && refreshed.data) order = refreshed.data;
+    }
+
 
     if (error) {
       console.error("getOrderStatus failed", error.message);
