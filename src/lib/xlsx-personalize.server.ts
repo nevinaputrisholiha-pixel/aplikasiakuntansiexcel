@@ -346,3 +346,39 @@ export function personalizeWorkbook(
     },
   };
 }
+
+/**
+ * Writes a plain number (e.g. an Excel date serial) into `sheetName!cellRef`,
+ * keeping the cell's style index so date formatting is preserved. Only the
+ * target worksheet part is changed; every other package entry is untouched.
+ */
+export function writeNumericCell(
+  bytes: Uint8Array,
+  sheetName: string,
+  cellRef: string,
+  value: number,
+): Uint8Array {
+  if (!Number.isFinite(value)) throw new Error("Numeric value required");
+  const zip = unzipSync(bytes);
+  const target = resolveSheets(zip).find((s) => s.name === sheetName);
+  if (!target) throw new Error(`Worksheet "${sheetName}" not found`);
+  const xml = readText(zip, target.path);
+  if (!xml) throw new Error(`Worksheet part ${target.path} missing`);
+  const m = xml.match(cellRegex(cellRef));
+  if (!m) throw new Error(`Cell ${sheetName}!${cellRef} not found in master`);
+  if (m[0].includes("<f")) throw new Error(`Cell ${sheetName}!${cellRef} is a formula`);
+  const style = attr(m[0], "s");
+  const replacement = `<c r="${cellRef}"${style ? ` s="${style}"` : ""}><v>${value}</v></c>`;
+  const out: Zip = {};
+  for (const [name, data] of Object.entries(zip)) {
+    out[name] = name === target.path ? encoder.encode(xml.replace(m[0], replacement)) : data;
+  }
+  return zipSync(out, { level: 6 });
+}
+
+/** Converts a JS Date to an Excel 1900-system date serial (whole days, Asia/Jakarta). */
+export function toExcelDateSerial(date: Date): number {
+  const jkt = new Date(date.getTime() + 7 * 3600 * 1000);
+  const utcMidnight = Date.UTC(jkt.getUTCFullYear(), jkt.getUTCMonth(), jkt.getUTCDate());
+  return Math.round(utcMidnight / 86400000) + 25569;
+}
