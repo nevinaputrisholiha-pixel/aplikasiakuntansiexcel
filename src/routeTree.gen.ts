@@ -14,6 +14,7 @@ import { Route as KebijakanPrivasiRouteImport } from './routes/kebijakan-privasi
 import { Route as EulaRouteImport } from './routes/eula'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as OrderOrderNumberRouteImport } from './routes/order.$orderNumber'
+import { Route as ApiPublicTrialCleanupRouteImport } from './routes/api/public/trial-cleanup'
 import { Route as ApiPublicMidtransNotificationRouteImport } from './routes/api/public/midtrans/notification'
 
 const SyaratKetentuanRoute = SyaratKetentuanRouteImport.update({
@@ -41,6 +42,11 @@ const OrderOrderNumberRoute = OrderOrderNumberRouteImport.update({
   path: '/order/$orderNumber',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiPublicTrialCleanupRoute = ApiPublicTrialCleanupRouteImport.update({
+  id: '/api/public/trial-cleanup',
+  path: '/api/public/trial-cleanup',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiPublicMidtransNotificationRoute =
   ApiPublicMidtransNotificationRouteImport.update({
     id: '/api/public/midtrans/notification',
@@ -54,6 +60,7 @@ export interface FileRoutesByFullPath {
   '/kebijakan-privasi': typeof KebijakanPrivasiRoute
   '/syarat-ketentuan': typeof SyaratKetentuanRoute
   '/order/$orderNumber': typeof OrderOrderNumberRoute
+  '/api/public/trial-cleanup': typeof ApiPublicTrialCleanupRoute
   '/api/public/midtrans/notification': typeof ApiPublicMidtransNotificationRoute
 }
 export interface FileRoutesByTo {
@@ -62,6 +69,7 @@ export interface FileRoutesByTo {
   '/kebijakan-privasi': typeof KebijakanPrivasiRoute
   '/syarat-ketentuan': typeof SyaratKetentuanRoute
   '/order/$orderNumber': typeof OrderOrderNumberRoute
+  '/api/public/trial-cleanup': typeof ApiPublicTrialCleanupRoute
   '/api/public/midtrans/notification': typeof ApiPublicMidtransNotificationRoute
 }
 export interface FileRoutesById {
@@ -71,6 +79,7 @@ export interface FileRoutesById {
   '/kebijakan-privasi': typeof KebijakanPrivasiRoute
   '/syarat-ketentuan': typeof SyaratKetentuanRoute
   '/order/$orderNumber': typeof OrderOrderNumberRoute
+  '/api/public/trial-cleanup': typeof ApiPublicTrialCleanupRoute
   '/api/public/midtrans/notification': typeof ApiPublicMidtransNotificationRoute
 }
 export interface FileRouteTypes {
@@ -81,6 +90,7 @@ export interface FileRouteTypes {
     | '/kebijakan-privasi'
     | '/syarat-ketentuan'
     | '/order/$orderNumber'
+    | '/api/public/trial-cleanup'
     | '/api/public/midtrans/notification'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -89,6 +99,7 @@ export interface FileRouteTypes {
     | '/kebijakan-privasi'
     | '/syarat-ketentuan'
     | '/order/$orderNumber'
+    | '/api/public/trial-cleanup'
     | '/api/public/midtrans/notification'
   id:
     | '__root__'
@@ -97,6 +108,7 @@ export interface FileRouteTypes {
     | '/kebijakan-privasi'
     | '/syarat-ketentuan'
     | '/order/$orderNumber'
+    | '/api/public/trial-cleanup'
     | '/api/public/midtrans/notification'
   fileRoutesById: FileRoutesById
 }
@@ -106,6 +118,7 @@ export interface RootRouteChildren {
   KebijakanPrivasiRoute: typeof KebijakanPrivasiRoute
   SyaratKetentuanRoute: typeof SyaratKetentuanRoute
   OrderOrderNumberRoute: typeof OrderOrderNumberRoute
+  ApiPublicTrialCleanupRoute: typeof ApiPublicTrialCleanupRoute
   ApiPublicMidtransNotificationRoute: typeof ApiPublicMidtransNotificationRoute
 }
 
@@ -146,6 +159,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof OrderOrderNumberRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/public/trial-cleanup': {
+      id: '/api/public/trial-cleanup'
+      path: '/api/public/trial-cleanup'
+      fullPath: '/api/public/trial-cleanup'
+      preLoaderRoute: typeof ApiPublicTrialCleanupRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/public/midtrans/notification': {
       id: '/api/public/midtrans/notification'
       path: '/api/public/midtrans/notification'
@@ -162,6 +182,7 @@ const rootRouteChildren: RootRouteChildren = {
   KebijakanPrivasiRoute: KebijakanPrivasiRoute,
   SyaratKetentuanRoute: SyaratKetentuanRoute,
   OrderOrderNumberRoute: OrderOrderNumberRoute,
+  ApiPublicTrialCleanupRoute: ApiPublicTrialCleanupRoute,
   ApiPublicMidtransNotificationRoute: ApiPublicMidtransNotificationRoute,
 }
 export const routeTree = rootRouteImport

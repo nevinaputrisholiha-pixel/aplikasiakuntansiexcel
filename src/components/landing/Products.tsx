@@ -31,7 +31,8 @@ import {
 import type { LucideIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { GlobalComparisonTable } from "./GlobalComparisonTable";
-import { DemoDownloadModal } from "./DemoDownloadModal";
+import { TrialModal } from "./TrialModal";
+import { listTrialProductIds } from "@/lib/trial.functions";
 import { VideoTutorialModal } from "./VideoTutorialModal";
 import { CheckoutModal } from "./CheckoutModal";
 
@@ -186,7 +187,6 @@ export function Products() {
     ? current.subVariants!.find((s) => s.id === subVariantId) ??
       current.subVariants![0]
     : null;
-  const downloadHref = activeSub?.downloadFile ?? variant.downloadFile;
 
   // Harga selalu diambil dari database (tabel products) — tidak di-hard-code.
   const { data: catalog } = useQuery({
@@ -198,6 +198,12 @@ export function Products() {
     (catalog?.products ?? []).map((p) => [p.id, p.price] as const),
   );
   const checkoutProductId = activeSub?.dbProductId ?? variant.dbProductId;
+  const { data: trialData } = useQuery({
+    queryKey: ["trial-products"],
+    queryFn: () => listTrialProductIds(),
+    staleTime: 5 * 60_000,
+  });
+  const trialEnabled = !!checkoutProductId && (trialData?.ids ?? []).includes(checkoutProductId);
   const dbPrice = priceById.get(checkoutProductId) ?? null;
 
   // Harga untuk Tabel Perbandingan — dipetakan lewat dbProductId (bukan nama).
@@ -421,14 +427,16 @@ export function Products() {
               </p>
 
               <div id="unduh-demo" className="mt-6 flex flex-wrap gap-3 scroll-mt-24">
-                <Button
-                  variant="brand"
-                  size="pill"
-                  onClick={() => setDemoOpen(true)}
-                >
-                  <Download className="h-4 w-4" />
-                  Unduh Demo Sekarang
-                </Button>
+                {trialEnabled && (
+                  <Button
+                    variant="brand"
+                    size="pill"
+                    onClick={() => setDemoOpen(true)}
+                  >
+                    <Gift className="h-4 w-4" />
+                    🎁 Coba Gratis
+                  </Button>
+                )}
                 <Button
                   variant="outline"
                   size="pill"
@@ -472,13 +480,15 @@ export function Products() {
           lengkapPrice={lengkapTablePrice}
         />
 
-        <DemoDownloadModal
-          open={demoOpen}
-          onOpenChange={setDemoOpen}
-          productName={current.name}
-          tierLabel={effectiveTier === "lengkap" ? "Lengkap" : "Standar"}
-          downloadHref={downloadHref}
-        />
+        {trialEnabled && checkoutProductId && (
+          <TrialModal
+            open={demoOpen}
+            onOpenChange={setDemoOpen}
+            productId={checkoutProductId}
+            productName={current.name}
+            tierLabel={effectiveTier === "lengkap" ? "Lengkap" : "Standar"}
+          />
+        )}
 
         <CheckoutModal
           open={checkoutOpen}
