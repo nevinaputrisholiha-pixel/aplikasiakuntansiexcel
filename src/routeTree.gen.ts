@@ -9,22 +9,17 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as SyaratKetentuanRouteImport } from './routes/syarat-ketentuan'
-import { Route as KebijakanPrivasiRouteImport } from './routes/kebijakan-privasi'
-import { Route as EulaRouteImport } from './routes/eula'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as EulaRouteImport } from './routes/eula'
+import { Route as KebijakanPrivasiRouteImport } from './routes/kebijakan-privasi'
+import { Route as SyaratKetentuanRouteImport } from './routes/syarat-ketentuan'
 import { Route as OrderOrderNumberRouteImport } from './routes/order.$orderNumber'
 import { Route as ApiPublicTrialCleanupRouteImport } from './routes/api/public/trial-cleanup'
 import { Route as ApiPublicMidtransNotificationRouteImport } from './routes/api/public/midtrans/notification'
 
-const SyaratKetentuanRoute = SyaratKetentuanRouteImport.update({
-  id: '/syarat-ketentuan',
-  path: '/syarat-ketentuan',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const KebijakanPrivasiRoute = KebijakanPrivasiRouteImport.update({
-  id: '/kebijakan-privasi',
-  path: '/kebijakan-privasi',
+const IndexRoute = IndexRouteImport.update({
+  id: '/',
+  path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const EulaRoute = EulaRouteImport.update({
@@ -32,9 +27,14 @@ const EulaRoute = EulaRouteImport.update({
   path: '/eula',
   getParentRoute: () => rootRouteImport,
 } as any)
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
+const KebijakanPrivasiRoute = KebijakanPrivasiRouteImport.update({
+  id: '/kebijakan-privasi',
+  path: '/kebijakan-privasi',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SyaratKetentuanRoute = SyaratKetentuanRouteImport.update({
+  id: '/syarat-ketentuan',
+  path: '/syarat-ketentuan',
   getParentRoute: () => rootRouteImport,
 } as any)
 const OrderOrderNumberRoute = OrderOrderNumberRouteImport.update({
@@ -124,18 +124,11 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/syarat-ketentuan': {
-      id: '/syarat-ketentuan'
-      path: '/syarat-ketentuan'
-      fullPath: '/syarat-ketentuan'
-      preLoaderRoute: typeof SyaratKetentuanRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/kebijakan-privasi': {
-      id: '/kebijakan-privasi'
-      path: '/kebijakan-privasi'
-      fullPath: '/kebijakan-privasi'
-      preLoaderRoute: typeof KebijakanPrivasiRouteImport
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/eula': {
@@ -145,11 +138,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof EulaRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
+    '/kebijakan-privasi': {
+      id: '/kebijakan-privasi'
+      path: '/kebijakan-privasi'
+      fullPath: '/kebijakan-privasi'
+      preLoaderRoute: typeof KebijakanPrivasiRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/syarat-ketentuan': {
+      id: '/syarat-ketentuan'
+      path: '/syarat-ketentuan'
+      fullPath: '/syarat-ketentuan'
+      preLoaderRoute: typeof SyaratKetentuanRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/order/$orderNumber': {
