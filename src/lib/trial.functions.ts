@@ -83,3 +83,19 @@ export const adminTrial = createServerFn({ method: "POST" })
     const row = await t.getTrial(data.email, data.productId);
     return { ok: true, trial: row ? { id: row.id, firstDownloadAt: row.first_download_at, expiresAt: row.expires_at, active: t.isActive(row) } : null };
   });
+
+/** Ids of products that currently offer a free trial (no paths, no secrets). */
+export const listTrialProductIds = createServerFn({ method: "GET" }).handler(async () => {
+  try {
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const { data } = await supabaseAdmin
+      .from("products")
+      .select("id")
+      .eq("active", true)
+      .eq("trial_enabled", true)
+      .not("trial_master_file_path", "is", null);
+    return { ids: (data ?? []).map((r) => r.id) };
+  } catch {
+    return { ids: [] as string[] };
+  }
+});

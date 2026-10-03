@@ -42,7 +42,7 @@ export function Navbar() {
 
         <div className="hidden items-center gap-3 lg:flex">
           <Button variant="ghost" asChild>
-            <a href="#unduh-demo">Unduh Demo</a>
+            <a href="#unduh-demo">Coba Gratis</a>
           </Button>
           <Button variant="brand" asChild>
             <a href="#kontak">Beli Sekarang</a>
@@ -73,7 +73,7 @@ export function Navbar() {
             ))}
             <div className="flex gap-2 pt-2">
               <Button variant="outline" className="flex-1" asChild>
-                <a href="#unduh-demo">Unduh Demo</a>
+                <a href="#unduh-demo">Coba Gratis</a>
               </Button>
               <Button variant="brand" className="flex-1" asChild>
                 <a href="#kontak">Beli</a>
