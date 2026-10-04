@@ -180,7 +180,23 @@ export async function cleanupExpiredTrials() {
     await removeTrial(row);
     removed += 1;
   }
-  return { removed };
+  // Sweep orphaned trial files (no matching row, older than 1 hour). Only the
+  // trial bucket under trial/ is ever listed or touched.
+  let orphans = 0;
+  const { data: files } = await supabaseAdmin.storage.from(TRIAL_BUCKET).list("trial", { limit: 1000 });
+  const { data: live } = await supabaseAdmin.from("trial_access").select("generated_file_path");
+  const keep = new Set((live ?? []).map((r) => r.generated_file_path));
+  const cutoff = Date.now() - 3600_000;
+  const stale = (files ?? [])
+    .filter((f) => f.id && f.name.endsWith(".xlsx"))
+    .map((f) => ({ path: `trial/${f.name}`, at: new Date(f.created_at ?? 0).getTime() }))
+    .filter((f) => !keep.has(f.path) && f.at < cutoff)
+    .map((f) => f.path);
+  if (stale.length) {
+    await supabaseAdmin.storage.from(TRIAL_BUCKET).remove(stale);
+    orphans = stale.length;
+  }
+  return { removed, orphans };
 }
 
 /** Test helper: forces a trial into the expired state. */
