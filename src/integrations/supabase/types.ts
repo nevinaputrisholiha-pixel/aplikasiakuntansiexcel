@@ -125,6 +125,24 @@ export type Database = {
           },
         ]
       }
+      job_secrets: {
+        Row: {
+          name: string
+          updated_at: string
+          value: string
+        }
+        Insert: {
+          name: string
+          updated_at?: string
+          value: string
+        }
+        Update: {
+          name?: string
+          updated_at?: string
+          value?: string
+        }
+        Relationships: []
+      }
       orders: {
         Row: {
           amount: number
