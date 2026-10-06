@@ -1,5 +1,6 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
+import { getMidtransConfig } from "./midtrans.server";
 
 const checkoutSchema = z.object({
   productId: z.string().uuid({ message: "Produk tidak valid." }),
@@ -16,11 +17,11 @@ const checkoutSchema = z.object({
 });
 
 export type CheckoutResult =
-  | { ok: true; orderNumber: string; snapToken: string; clientKey: string }
+  | { ok: true; orderNumber: string; snapToken: string; clientKey: string; snapJsUrl: string }
   | { ok: false; error: string };
 
 /**
- * Creates a pending order and a Midtrans Snap transaction (SANDBOX).
+ * Creates a pending order and a Midtrans Snap transaction (mode from MIDTRANS_ENV).
  *
  * SECURITY: price, product name and active flag are always re-read from the
  * database. Nothing about the amount is trusted from the browser. The Midtrans
@@ -74,7 +75,8 @@ export const createCheckout = createServerFn({ method: "POST" })
     }
 
     const auth = btoa(`${serverKey}:`);
-    const response = await fetch("https://app.sandbox.midtrans.com/snap/v1/transactions", {
+    const midtrans = getMidtransConfig();
+    const response = await fetch(midtrans.snapApiUrl, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -119,6 +121,7 @@ export const createCheckout = createServerFn({ method: "POST" })
       orderNumber: order.order_number,
       snapToken: snap.token,
       clientKey,
+      snapJsUrl: midtrans.snapJsUrl,
     };
   });
 
@@ -137,7 +140,7 @@ const bundleCheckoutSchema = z.object({
 });
 
 /**
- * Creates a pending BUNDLE order and a Midtrans Snap transaction (SANDBOX).
+ * Creates a pending BUNDLE order and a Midtrans Snap transaction (mode from MIDTRANS_ENV).
  *
  * SECURITY: the bundle is loaded by UUID from the database; `bundle_price`
  * and the active flag always come from the database. Nothing about the amount
@@ -192,7 +195,8 @@ export const createBundleCheckout = createServerFn({ method: "POST" })
     }
 
     const auth = btoa(`${serverKey}:`);
-    const response = await fetch("https://app.sandbox.midtrans.com/snap/v1/transactions", {
+    const midtrans = getMidtransConfig();
+    const response = await fetch(midtrans.snapApiUrl, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -237,5 +241,6 @@ export const createBundleCheckout = createServerFn({ method: "POST" })
       orderNumber: order.order_number,
       snapToken: snap.token,
       clientKey,
+      snapJsUrl: midtrans.snapJsUrl,
     };
   });
