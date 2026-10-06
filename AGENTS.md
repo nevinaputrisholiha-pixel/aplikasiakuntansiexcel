@@ -1,0 +1,1 @@
+- Midtrans mode is set only by the MIDTRANS_ENV secret via src/lib/midtrans.server.ts (exactly "production" = live, anything else = sandbox); Snap API, Snap JS and status fallback all read it. Why: one switch keeps backend, frontend and fallback in the same mode and fails safe to sandbox.
