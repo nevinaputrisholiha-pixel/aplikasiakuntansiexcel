@@ -69,7 +69,7 @@ export function BundleCheckoutModal({
       }
 
       const orderNumber = result.orderNumber;
-      await loadSnap(result.clientKey);
+      await loadSnap(result.clientKey, result.snapJsUrl);
 
       const goToStatus = () => {
         onOpenChange(false);

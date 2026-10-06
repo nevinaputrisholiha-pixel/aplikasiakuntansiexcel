@@ -11,6 +11,7 @@
  * `gross_amount` must match `orders.amount` before anything is updated.
  */
 import { createHash } from "node:crypto";
+import { getMidtransConfig } from "./midtrans.server";
 
 type StatusResponse = {
   order_id?: string;
@@ -48,7 +49,7 @@ export async function syncOrderPayment(orderNumber: string): Promise<void> {
   let body: StatusResponse;
   try {
     const res = await fetch(
-      `https://api.sandbox.midtrans.com/v2/${encodeURIComponent(orderNumber)}/status`,
+      `${getMidtransConfig().statusApiBase}/${encodeURIComponent(orderNumber)}/status`,
       {
         headers: {
           Accept: "application/json",

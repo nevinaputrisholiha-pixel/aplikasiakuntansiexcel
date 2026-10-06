@@ -14,10 +14,16 @@ declare global {
   }
 }
 
-export const SNAP_SRC = "https://app.sandbox.midtrans.com/snap/snap.js";
+const ALLOWED_SNAP_SRC = new Set([
+  "https://app.sandbox.midtrans.com/snap/snap.js",
+  "https://app.midtrans.com/snap/snap.js",
+]);
 
-export function loadSnap(clientKey: string): Promise<void> {
+// The Snap URL comes from the server (MIDTRANS_ENV), so frontend and backend
+// always use the same Midtrans mode.
+export function loadSnap(clientKey: string, SNAP_SRC: string): Promise<void> {
   return new Promise((resolve, reject) => {
+    if (!ALLOWED_SNAP_SRC.has(SNAP_SRC)) return reject(new Error("invalid snap url"));
     if (window.snap) return resolve();
     const existing = document.querySelector<HTMLScriptElement>(`script[src="${SNAP_SRC}"]`);
     if (existing) {
