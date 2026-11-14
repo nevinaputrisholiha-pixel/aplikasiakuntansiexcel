@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
-import logoIcon from "@/assets/logo-icon.png.asset.json";
+const logoIcon = { url: "/logo-icon.png" };
 import { Button } from "@/components/ui/button";
 
 const links = [
