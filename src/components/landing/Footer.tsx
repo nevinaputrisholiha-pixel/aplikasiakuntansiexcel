@@ -1,6 +1,7 @@
-import logoIcon from "@/assets/logo-icon.png.asset.json";
 import { Link } from "@tanstack/react-router";
 import { getWhatsAppLink } from "@/lib/whatsapp";
+
+const logoIcon = { url: "/logo-icon.png" };
 
 export function Footer() {
   return (
