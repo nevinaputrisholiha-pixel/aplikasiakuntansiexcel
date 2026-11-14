@@ -1,8 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Check, Sparkles } from "lucide-react";
-import heroScreenshotAsset from "@/assets/buku-besar.gif.asset.json";
-
-const heroScreenshot = heroScreenshotAsset.url;
+const heroScreenshot = "/buku-besar.gif";
 
 const bullets = [
   "Bayar 1x, pakai seumur hidup",
