@@ -113,7 +113,7 @@ export function BundleCheckoutModal({
               onChange={(e) => setEmail(e.target.value)}
             />
             <p className="text-xs text-muted-foreground">
-              File program akan dikirim ke email ini.
+              Email dipakai untuk data pesanan Anda. File bisa langsung diunduh setelah pembayaran berhasil.
             </p>
           </div>
 

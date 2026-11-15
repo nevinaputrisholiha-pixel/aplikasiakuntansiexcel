@@ -7,15 +7,13 @@ const steps = [
   },
   {
     n: "02",
-    title: "Transfer Pembayaran",
-    description:
-      "Bayar lisensi satu kali via transfer bank (BCA, Mandiri, BNI, atau bank lainnya).",
+    title: "Bayar Online",
+    description: "Bayar lisensi satu kali secara online lewat halaman pembayaran yang aman. Pilih metode yang tersedia.",
   },
   {
     n: "03",
-    title: "Terima File via Email",
-    description:
-      "Program Excel + 16 bonus dikirim online via email. Tanpa pengiriman fisik, langsung pakai.",
+    title: "Download File Langsung",
+    description: "Setelah pembayaran berhasil, tombol download muncul di halaman pesanan. Program Excel + 16 bonus siap diunduh, tanpa pengiriman fisik. Simpan link halaman pesanan Anda.",
   },
   {
     n: "04",
