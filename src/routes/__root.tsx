@@ -83,12 +83,9 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { property: "og:title", content: "Aplikasi Akuntansi Excel untuk Laporan Keuangan Siap Pakai" },
       { property: "og:description", content: "Program akuntansi berbasis Excel siap pakai untuk usaha jasa, dagang, manufaktur, stok barang & buku kas. Beli 1x, pakai seumur hidup, tanpa biaya bulanan." },
       { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary" },
-      { name: "twitter:site", content: "@Lovable" },
+      { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:title", content: "Aplikasi Akuntansi Excel untuk Laporan Keuangan Siap Pakai" },
       { name: "twitter:description", content: "Program akuntansi berbasis Excel siap pakai untuk usaha jasa, dagang, manufaktur, stok barang & buku kas. Beli 1x, pakai seumur hidup, tanpa biaya bulanan." },
-      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/09d07826-9527-4a64-89e1-4cf3690d31bd/id-preview-52cb7ca9--62ff9e6b-b7aa-42d5-8e83-edc52e6e3570.lovable.app-1782955063771.png" },
-      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/09d07826-9527-4a64-89e1-4cf3690d31bd/id-preview-52cb7ca9--62ff9e6b-b7aa-42d5-8e83-edc52e6e3570.lovable.app-1782955063771.png" },
     ],
     links: [
       { rel: "icon", href: "/favicon.ico" },
