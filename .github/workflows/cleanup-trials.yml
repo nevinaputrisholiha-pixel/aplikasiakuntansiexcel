@@ -1,0 +1,15 @@
+name: Cleanup expired trials
+
+on:
+  schedule:
+    - cron: "30 3 * * *"
+  workflow_dispatch:
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Call trial cleanup endpoint
+        run: |
+          curl -fsS -X POST "https://aplikasiakuntansiexcel.com/api/public/trial-cleanup" \
+            -H "x-cleanup-secret: ${{ secrets.CLEANUP_SECRET }}"
