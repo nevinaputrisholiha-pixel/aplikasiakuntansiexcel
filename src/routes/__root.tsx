@@ -86,6 +86,8 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:title", content: "Aplikasi Akuntansi Excel untuk Laporan Keuangan Siap Pakai" },
       { name: "twitter:description", content: "Program akuntansi berbasis Excel siap pakai untuk usaha jasa, dagang, manufaktur, stok barang & buku kas. Beli 1x, pakai seumur hidup, tanpa biaya bulanan." },
+      { property: "og:image", content: "https://aplikasiakuntansiexcel.com/og-image.png" },
+      { name: "twitter:image", content: "https://aplikasiakuntansiexcel.com/og-image.png" },
     ],
     links: [
       { rel: "icon", href: "/favicon.ico" },
