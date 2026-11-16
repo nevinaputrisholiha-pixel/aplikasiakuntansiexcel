@@ -5,7 +5,7 @@ import { useState } from "react";
 import { CheckCircle2, Clock, XCircle, RotateCcw, Loader2, Download } from "lucide-react";
 
 import { getOrderStatus } from "@/lib/order-status.functions";
-import { listOrderFiles, getDownloadUrl } from "@/lib/download.functions";
+import { listOrderFiles, getDownloadUrl, getBonusDownloadUrl } from "@/lib/download.functions";
 import { Button } from "@/components/ui/button";
 import { getWhatsAppLink } from "@/lib/whatsapp";
 
@@ -86,6 +86,51 @@ function DownloadSection({ orderNumber }: { orderNumber: string }) {
       ))}
       {error && <p className="text-xs font-semibold text-destructive">{error}</p>}
       <p className="text-xs text-brand-navy/60">
+        Tautan unduhan berlaku sementara. Tekan tombol lagi jika kedaluwarsa.
+      </p>
+    </div>
+  );
+}
+
+function BonusDownloadSection({ orderNumber }: { orderNumber: string }) {
+  const requestUrl = useServerFn(getBonusDownloadUrl);
+  const [isBusy, setIsBusy] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const handleDownload = async () => {
+    setError(null);
+    setIsBusy(true);
+    try {
+      const res = await requestUrl({ data: { orderNumber } });
+      if (!res.ok) {
+        setError(res.error);
+        return;
+      }
+      const a = document.createElement("a");
+      a.href = res.url;
+      a.download = res.fileName;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+    } catch {
+      setError("File belum dapat diunduh. Silakan coba lagi.");
+    } finally {
+      setIsBusy(false);
+    }
+  };
+
+  return (
+    <div className="mt-3 rounded-2xl bg-surface-soft px-4 py-3 ring-1 ring-border">
+      <p className="text-xs font-bold uppercase tracking-wider text-brand-teal">Bonus Gratis</p>
+      <p className="mt-1 text-sm font-semibold text-brand-navy">16 Program Bisnis Excel</p>
+      <div className="mt-3">
+        <Button size="sm" variant="brand" disabled={isBusy} onClick={() => void handleDownload()}>
+          {isBusy ? <Loader2 className="h-4 w-4 animate-spin" /> : <Download className="h-4 w-4" />}
+          Download Bonus (ZIP)
+        </Button>
+      </div>
+      {error && <p className="mt-2 text-xs font-semibold text-destructive">{error}</p>}
+      <p className="mt-2 text-xs text-brand-navy/60">
         Tautan unduhan berlaku sementara. Tekan tombol lagi jika kedaluwarsa.
       </p>
     </div>
@@ -243,19 +288,22 @@ function OrderStatusPage() {
         </p>
       )}
       {order.paymentStatus === "paid" && (
-        <div className="mt-4 rounded-2xl bg-surface-soft px-4 py-3 ring-1 ring-border">
-          <p className="text-xs font-bold uppercase tracking-wider text-brand-teal">File Program</p>
-          <p className="mt-1 text-sm font-semibold text-brand-navy">
-            {GENERATION_MESSAGE[order.generationStatus] ?? GENERATION_MESSAGE.pending}
-          </p>
-          {order.generationStatus === "done" ? (
-            <DownloadSection orderNumber={order.orderNumber} />
-          ) : (
-            <p className="mt-1 text-xs text-brand-navy/60">
-              Halaman ini akan memperbarui otomatis saat file Anda selesai dibuat.
+        <>
+          <div className="mt-4 rounded-2xl bg-surface-soft px-4 py-3 ring-1 ring-border">
+            <p className="text-xs font-bold uppercase tracking-wider text-brand-teal">File Program</p>
+            <p className="mt-1 text-sm font-semibold text-brand-navy">
+              {GENERATION_MESSAGE[order.generationStatus] ?? GENERATION_MESSAGE.pending}
             </p>
-          )}
-        </div>
+            {order.generationStatus === "done" ? (
+              <DownloadSection orderNumber={order.orderNumber} />
+            ) : (
+              <p className="mt-1 text-xs text-brand-navy/60">
+                Halaman ini akan memperbarui otomatis saat file Anda selesai dibuat.
+              </p>
+            )}
+          </div>
+          <BonusDownloadSection orderNumber={order.orderNumber} />
+        </>
       )}
 
 

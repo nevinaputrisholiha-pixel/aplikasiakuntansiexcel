@@ -178,3 +178,41 @@ export const getDownloadUrl = createServerFn({ method: "POST" })
 
     return { ok: true, url: signed.signedUrl, fileName };
   });
+
+const bonusSchema = z.object({ orderNumber: ORDER_NUMBER });
+
+export const getBonusDownloadUrl = createServerFn({ method: "POST" })
+  .inputValidator((input: unknown) => bonusSchema.parse(input))
+  .handler(async ({ data }): Promise<DownloadUrlResult> => {
+    if (rateLimited(data.orderNumber)) {
+      return { ok: false, error: "Terlalu banyak permintaan. Coba lagi sebentar lagi." };
+    }
+
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+
+    const { data: order, error } = await supabaseAdmin
+      .from("orders")
+      .select("payment_status")
+      .eq("order_number", data.orderNumber)
+      .maybeSingle();
+
+    if (error) {
+      console.error("getBonusDownloadUrl lookup failed", error.message);
+      return { ok: false, error: GENERIC_ERROR };
+    }
+    if (!order || order.payment_status !== "paid") {
+      return { ok: false, error: GENERIC_ERROR };
+    }
+
+    const fileName = "Bonus-16-Program-Excel.zip";
+    const { data: signed, error: signError } = await supabaseAdmin.storage
+      .from("bonus-files")
+      .createSignedUrl(fileName, SIGNED_URL_TTL_SECONDS, { download: fileName });
+
+    if (signError || !signed?.signedUrl) {
+      console.error("getBonusDownloadUrl sign failed", signError?.message);
+      return { ok: false, error: GENERIC_ERROR };
+    }
+
+    return { ok: true, url: signed.signedUrl, fileName };
+  });
