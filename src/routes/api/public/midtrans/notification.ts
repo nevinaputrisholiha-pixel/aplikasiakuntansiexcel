@@ -114,6 +114,14 @@ export const Route = createFileRoute("/api/public/midtrans/notification")({
           } catch (err) {
             console.error("Generation threw after payment", order_id, err);
           }
+
+          // Best-effort receipt email with the tokenised order link.
+          try {
+            const { sendOrderEmail } = await import("@/lib/order-email.server");
+            await sendOrderEmail(order.id);
+          } catch (err) {
+            console.error("Order email threw after payment", order_id, err);
+          }
         }
 
         return new Response("ok");

@@ -120,5 +120,13 @@ export async function syncOrderPayment(orderNumber: string): Promise<void> {
     } catch (err) {
       console.error("Generation threw after sync", orderNumber, err);
     }
+
+    // Best-effort receipt email with the tokenised order link.
+    try {
+      const { sendOrderEmail } = await import("@/lib/order-email.server");
+      await sendOrderEmail(order.id);
+    } catch (err) {
+      console.error("Order email threw after sync", orderNumber, err);
+    }
   }
 }
