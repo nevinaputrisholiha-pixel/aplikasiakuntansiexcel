@@ -68,10 +68,19 @@ export async function syncOrderPayment(orderNumber: string): Promise<void> {
   const { status_code, gross_amount, signature_key } = body;
   if (!status_code || !gross_amount || !signature_key) return;
 
-  const expected = createHash("sha512")
-    .update(`${orderNumber}${status_code}${gross_amount}${serverKey}`)
-    .digest("hex");
-  if (expected !== signature_key.toLowerCase()) {
+  // Newer Midtrans accounts sign with a separate "Signature Secret Key"; older
+  // ones sign with the Server Key. Accept either (both are known only to us).
+  const secrets = [process.env["MIDTRANS_SIGNATURE_SECRET_KEY"], serverKey].filter(
+    (k): k is string => Boolean(k),
+  );
+  const received = signature_key.toLowerCase();
+  const signatureOk = secrets.some(
+    (secret) =>
+      createHash("sha512")
+        .update(`${orderNumber}${status_code}${gross_amount}${secret}`)
+        .digest("hex") === received,
+  );
+  if (!signatureOk) {
     console.warn("syncOrderPayment signature mismatch", orderNumber);
     return;
   }

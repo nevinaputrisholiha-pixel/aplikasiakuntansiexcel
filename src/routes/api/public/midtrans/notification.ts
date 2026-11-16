@@ -43,12 +43,21 @@ export const Route = createFileRoute("/api/public/midtrans/notification")({
           return new Response("Missing fields", { status: 400 });
         }
 
-        // Midtrans signature: SHA512(order_id + status_code + gross_amount + ServerKey)
-        const expected = createHash("sha512")
-          .update(`${order_id}${status_code}${gross_amount}${serverKey}`)
-          .digest("hex");
+        // Midtrans signature: SHA512(order_id + status_code + gross_amount + SecretKey).
+        // Newer Midtrans accounts sign with a separate "Signature Secret Key"; older
+        // ones sign with the Server Key. Accept either (both are known only to us).
+        const secrets = [process.env["MIDTRANS_SIGNATURE_SECRET_KEY"], serverKey].filter(
+          (k): k is string => Boolean(k),
+        );
+        const received = signature_key.toLowerCase();
+        const signatureOk = secrets.some(
+          (secret) =>
+            createHash("sha512")
+              .update(`${order_id}${status_code}${gross_amount}${secret}`)
+              .digest("hex") === received,
+        );
 
-        if (expected.length !== signature_key.length || expected !== signature_key.toLowerCase()) {
+        if (!signatureOk) {
           console.warn("Midtrans notification with invalid signature", order_id);
           return new Response("Invalid signature", { status: 403 });
         }
