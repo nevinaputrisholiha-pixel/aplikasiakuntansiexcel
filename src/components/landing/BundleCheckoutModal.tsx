@@ -69,11 +69,12 @@ export function BundleCheckoutModal({
       }
 
       const orderNumber = result.orderNumber;
+      const accessToken = result.accessToken;
       await loadSnap(result.clientKey, result.snapJsUrl);
 
       const goToStatus = () => {
         onOpenChange(false);
-        void navigate({ to: "/order/$orderNumber", params: { orderNumber } });
+        void navigate({ to: "/order/$orderNumber", params: { orderNumber }, search: { t: accessToken } });
       };
 
       window.snap?.pay(result.snapToken, {

@@ -6,6 +6,7 @@ const schema = z.object({
     .string()
     .trim()
     .regex(/^AAE-\d{8}-\d{5}$/, { message: "Nomor pesanan tidak valid." }),
+  token: z.string().regex(/^[a-f0-9]{64}$/),
 });
 
 export type OrderStatusResult =
@@ -48,6 +49,7 @@ export const getOrderStatus = createServerFn({ method: "POST" })
       .from("orders")
       .select(select)
       .eq("order_number", data.orderNumber)
+      .eq("access_token", data.token)
       .maybeSingle();
 
     // Safety net: if the webhook never arrived, ask Midtrans directly for the
@@ -60,6 +62,7 @@ export const getOrderStatus = createServerFn({ method: "POST" })
         .from("orders")
         .select(select)
         .eq("order_number", data.orderNumber)
+        .eq("access_token", data.token)
         .maybeSingle();
       if (!refreshed.error && refreshed.data) order = refreshed.data;
     }

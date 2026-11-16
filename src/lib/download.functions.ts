@@ -15,9 +15,12 @@ const ORDER_NUMBER = z
   .trim()
   .regex(/^AAE-\d{8}-\d{5}$/, { message: "Nomor pesanan tidak valid." });
 
-const listSchema = z.object({ orderNumber: ORDER_NUMBER });
+const ACCESS_TOKEN = z.string().regex(/^[a-f0-9]{64}$/);
+
+const listSchema = z.object({ orderNumber: ORDER_NUMBER, token: ACCESS_TOKEN });
 const urlSchema = z.object({
   orderNumber: ORDER_NUMBER,
+  token: ACCESS_TOKEN,
   fileId: z.string().uuid({ message: "File tidak valid." }),
 });
 
@@ -75,6 +78,7 @@ export const listOrderFiles = createServerFn({ method: "POST" })
       .from("orders")
       .select("id, order_type, bundle_id, payment_status, generation_status, products(name)")
       .eq("order_number", data.orderNumber)
+      .eq("access_token", data.token)
       .maybeSingle();
 
     if (error) {
@@ -140,13 +144,14 @@ export const getDownloadUrl = createServerFn({ method: "POST" })
       .from("orders")
       .select("id, payment_status, generation_status")
       .eq("order_number", data.orderNumber)
+      .eq("access_token", data.token)
       .maybeSingle();
 
     if (error) {
       console.error("getDownloadUrl lookup failed", error.message);
       return { ok: false, error: GENERIC_ERROR };
     }
-    if (!order) return { ok: false, error: GENERIC_ERROR };
+    if (!order) return { ok: false, error: "Pesanan tidak ditemukan." };
     if (order.payment_status !== "paid" || order.generation_status !== "done") {
       return { ok: false, error: GENERIC_ERROR };
     }
@@ -179,7 +184,7 @@ export const getDownloadUrl = createServerFn({ method: "POST" })
     return { ok: true, url: signed.signedUrl, fileName };
   });
 
-const bonusSchema = z.object({ orderNumber: ORDER_NUMBER });
+const bonusSchema = z.object({ orderNumber: ORDER_NUMBER, token: ACCESS_TOKEN });
 
 export const getBonusDownloadUrl = createServerFn({ method: "POST" })
   .inputValidator((input: unknown) => bonusSchema.parse(input))
@@ -194,13 +199,15 @@ export const getBonusDownloadUrl = createServerFn({ method: "POST" })
       .from("orders")
       .select("payment_status")
       .eq("order_number", data.orderNumber)
+      .eq("access_token", data.token)
       .maybeSingle();
 
     if (error) {
       console.error("getBonusDownloadUrl lookup failed", error.message);
       return { ok: false, error: GENERIC_ERROR };
     }
-    if (!order || order.payment_status !== "paid") {
+    if (!order) return { ok: false, error: "Pesanan tidak ditemukan." };
+    if (order.payment_status !== "paid") {
       return { ok: false, error: GENERIC_ERROR };
     }
 

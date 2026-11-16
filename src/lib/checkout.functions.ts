@@ -17,7 +17,14 @@ const checkoutSchema = z.object({
 });
 
 export type CheckoutResult =
-  | { ok: true; orderNumber: string; snapToken: string; clientKey: string; snapJsUrl: string }
+  | {
+      ok: true;
+      orderNumber: string;
+      accessToken: string;
+      snapToken: string;
+      clientKey: string;
+      snapJsUrl: string;
+    }
   | { ok: false; error: string };
 
 /**
@@ -66,7 +73,7 @@ export const createCheckout = createServerFn({ method: "POST" })
         generation_status: "pending",
         payment_provider: "midtrans",
       })
-      .select("id, order_number, amount")
+      .select("id, order_number, amount, access_token")
       .single();
 
     if (orderError || !order) {
@@ -119,6 +126,7 @@ export const createCheckout = createServerFn({ method: "POST" })
     return {
       ok: true,
       orderNumber: order.order_number,
+      accessToken: order.access_token,
       snapToken: snap.token,
       clientKey,
       snapJsUrl: midtrans.snapJsUrl,
@@ -186,7 +194,7 @@ export const createBundleCheckout = createServerFn({ method: "POST" })
         generation_status: "pending",
         payment_provider: "midtrans",
       })
-      .select("id, order_number, amount")
+      .select("id, order_number, amount, access_token")
       .single();
 
     if (orderError || !order) {
@@ -239,6 +247,7 @@ export const createBundleCheckout = createServerFn({ method: "POST" })
     return {
       ok: true,
       orderNumber: order.order_number,
+      accessToken: order.access_token,
       snapToken: snap.token,
       clientKey,
       snapJsUrl: midtrans.snapJsUrl,

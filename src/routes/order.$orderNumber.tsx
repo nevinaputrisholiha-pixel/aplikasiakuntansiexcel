@@ -9,22 +9,22 @@ import { listOrderFiles, getDownloadUrl, getBonusDownloadUrl } from "@/lib/downl
 import { Button } from "@/components/ui/button";
 import { getWhatsAppLink } from "@/lib/whatsapp";
 
-function DownloadSection({ orderNumber }: { orderNumber: string }) {
+function DownloadSection({ orderNumber, token }: { orderNumber: string; token: string }) {
   const fetchFiles = useServerFn(listOrderFiles);
   const requestUrl = useServerFn(getDownloadUrl);
   const [busyId, setBusyId] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   const { data, isLoading } = useQuery({
-    queryKey: ["order-files", orderNumber],
-    queryFn: () => fetchFiles({ data: { orderNumber } }),
+    queryKey: ["order-files", orderNumber, token],
+    queryFn: () => fetchFiles({ data: { orderNumber, token } }),
   });
 
   const handleDownload = async (fileId: string) => {
     setError(null);
     setBusyId(fileId);
     try {
-      const res = await requestUrl({ data: { orderNumber, fileId } });
+      const res = await requestUrl({ data: { orderNumber, fileId, token } });
       if (!res.ok) {
         setError(res.error);
         return;
@@ -92,7 +92,7 @@ function DownloadSection({ orderNumber }: { orderNumber: string }) {
   );
 }
 
-function BonusDownloadSection({ orderNumber }: { orderNumber: string }) {
+function BonusDownloadSection({ orderNumber, token }: { orderNumber: string; token: string }) {
   const requestUrl = useServerFn(getBonusDownloadUrl);
   const [isBusy, setIsBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -101,7 +101,7 @@ function BonusDownloadSection({ orderNumber }: { orderNumber: string }) {
     setError(null);
     setIsBusy(true);
     try {
-      const res = await requestUrl({ data: { orderNumber } });
+      const res = await requestUrl({ data: { orderNumber, token } });
       if (!res.ok) {
         setError(res.error);
         return;
@@ -139,6 +139,9 @@ function BonusDownloadSection({ orderNumber }: { orderNumber: string }) {
 
 
 export const Route = createFileRoute("/order/$orderNumber")({
+  validateSearch: (search: Record<string, unknown>) => ({
+    t: typeof search.t === "string" ? search.t : undefined,
+  }),
   head: () => ({
     meta: [
       { title: "Status Pesanan — AplikasiAkuntansiExcel.com" },
@@ -226,11 +229,16 @@ function Shell({ children }: { children: React.ReactNode }) {
 
 function OrderStatusPage() {
   const { orderNumber } = Route.useParams();
+  const { t } = Route.useSearch();
   const fetchStatus = useServerFn(getOrderStatus);
 
   const { data, isLoading } = useQuery({
-    queryKey: ["order-status", orderNumber],
-    queryFn: () => fetchStatus({ data: { orderNumber } }),
+    queryKey: ["order-status", orderNumber, t],
+    enabled: Boolean(t),
+    queryFn: () =>
+      t
+        ? fetchStatus({ data: { orderNumber, token: t } })
+        : Promise.resolve({ ok: false as const, error: "Pesanan tidak ditemukan. Periksa kembali tautan pesanan Anda." }),
     // Keep polling while the payment is still pending — status only ever
     // changes server-side via the verified Midtrans webhook.
     refetchInterval: (query) => {
@@ -243,6 +251,17 @@ function OrderStatusPage() {
       return false;
     },
   });
+
+  if (!t) {
+    return (
+      <Shell>
+        <h1 className="text-xl font-extrabold text-brand-navy">Pesanan tidak ditemukan</h1>
+        <p className="mt-2 text-sm text-brand-navy/80">
+          Pesanan tidak ditemukan. Periksa kembali tautan pesanan Anda.
+        </p>
+      </Shell>
+    );
+  }
 
   if (isLoading) {
     return (
@@ -295,14 +314,14 @@ function OrderStatusPage() {
               {GENERATION_MESSAGE[order.generationStatus] ?? GENERATION_MESSAGE.pending}
             </p>
             {order.generationStatus === "done" ? (
-              <DownloadSection orderNumber={order.orderNumber} />
+              <DownloadSection orderNumber={order.orderNumber} token={t} />
             ) : (
               <p className="mt-1 text-xs text-brand-navy/60">
                 Halaman ini akan memperbarui otomatis saat file Anda selesai dibuat.
               </p>
             )}
           </div>
-          <BonusDownloadSection orderNumber={order.orderNumber} />
+          <BonusDownloadSection orderNumber={order.orderNumber} token={t} />
         </>
       )}
 
