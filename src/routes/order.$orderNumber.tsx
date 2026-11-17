@@ -2,10 +2,11 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { useState } from "react";
-import { CheckCircle2, Clock, XCircle, RotateCcw, Loader2, Download } from "lucide-react";
+import { CheckCircle2, Clock, XCircle, RotateCcw, Loader2, Download, PlayCircle } from "lucide-react";
 
 import { getOrderStatus } from "@/lib/order-status.functions";
 import { listOrderFiles, getDownloadUrl, getBonusDownloadUrl } from "@/lib/download.functions";
+import { getOrderResources, getDemoDownloadUrl } from "@/lib/order-resources.functions";
 import { Button } from "@/components/ui/button";
 import { getWhatsAppLink } from "@/lib/whatsapp";
 
@@ -87,6 +88,87 @@ function DownloadSection({ orderNumber, token }: { orderNumber: string; token: s
       {error && <p className="text-xs font-semibold text-destructive">{error}</p>}
       <p className="text-xs text-brand-navy/60">
         Tautan unduhan berlaku sementara. Tekan tombol lagi jika kedaluwarsa.
+      </p>
+    </div>
+  );
+}
+
+function ResourcesSection({ orderNumber, token }: { orderNumber: string; token: string }) {
+  const fetchResources = useServerFn(getOrderResources);
+  const requestDemo = useServerFn(getDemoDownloadUrl);
+  const [busyId, setBusyId] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
+
+  const { data } = useQuery({
+    queryKey: ["order-resources", orderNumber, token],
+    queryFn: () => fetchResources({ data: { orderNumber, token } }),
+  });
+
+  if (!data || !data.ok || data.items.length === 0) return null;
+
+  const handleDemo = async (productId: string) => {
+    setError(null);
+    setBusyId(productId);
+    try {
+      const res = await requestDemo({ data: { orderNumber, token, productId } });
+      if (!res.ok) {
+        setError(res.error);
+        return;
+      }
+      const a = document.createElement("a");
+      a.href = res.url;
+      a.download = res.fileName;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+    } catch {
+      setError("File belum dapat diunduh. Silakan coba lagi.");
+    } finally {
+      setBusyId(null);
+    }
+  };
+
+  return (
+    <div className="mt-3 rounded-2xl bg-surface-soft px-4 py-3 ring-1 ring-border">
+      <p className="text-xs font-bold uppercase tracking-wider text-brand-teal">
+        Panduan &amp; Video Tutorial
+      </p>
+      <ul className="mt-2 divide-y divide-border">
+        {data.items.map((item) => (
+          <li key={item.productId} className="py-3 first:pt-1 last:pb-1">
+            <p className="text-sm font-semibold text-brand-navy">{item.name}</p>
+            <div className="mt-2 flex flex-wrap gap-2">
+              {item.tutorialUrl && (
+                <Button size="sm" variant="brandOutline" asChild>
+                  <a href={item.tutorialUrl} target="_blank" rel="noopener noreferrer">
+                    <PlayCircle className="h-4 w-4" />
+                    Video Tutorial (Semua Part)
+                  </a>
+                </Button>
+              )}
+              {item.hasDemo && (
+                <Button
+                  size="sm"
+                  variant="brand"
+                  disabled={busyId === item.productId}
+                  onClick={() => void handleDemo(item.productId)}
+                >
+                  {busyId === item.productId ? (
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                  ) : (
+                    <Download className="h-4 w-4" />
+                  )}
+                  Download Demo Lisensi
+                </Button>
+              )}
+            </div>
+          </li>
+        ))}
+      </ul>
+      {error && <p className="mt-2 text-xs font-semibold text-destructive">{error}</p>}
+      <p className="mt-2 text-xs text-brand-navy/60">
+        Demo Lisensi adalah contoh pengisian transaksi sebagai panduan. Tautan unduhan berlaku
+        sementara; tekan tombol lagi jika kedaluwarsa.
       </p>
     </div>
   );
@@ -322,6 +404,7 @@ function OrderStatusPage() {
             )}
           </div>
           <BonusDownloadSection orderNumber={order.orderNumber} token={t} />
+          <ResourcesSection orderNumber={order.orderNumber} token={t} />
         </>
       )}
 
