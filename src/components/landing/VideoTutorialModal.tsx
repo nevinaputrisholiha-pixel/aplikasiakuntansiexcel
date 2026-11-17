@@ -47,7 +47,7 @@ export function VideoTutorialModal({
           )}
         </div>
         <a
-          href="https://www.youtube.com/@programexcelindonesia8161"
+          href="https://www.youtube.com/@programexcelindonesia"
           target="_blank"
           rel="noopener noreferrer"
           className="inline-block text-sm font-medium text-brand-teal hover:underline"

@@ -7,7 +7,7 @@ const logoIcon = { url: "/logo-icon.png" };
 const socialLinks = [
   { label: "Facebook", href: "https://www.facebook.com/ProgramExcel.id", Icon: Facebook },
   { label: "Instagram", href: "https://www.instagram.com/programexcel.id/", Icon: Instagram },
-  { label: "YouTube", href: "https://www.youtube.com/@programexcelindonesia8161", Icon: Youtube },
+  { label: "YouTube", href: "https://www.youtube.com/@programexcelindonesia", Icon: Youtube },
 ];
 
 export function Footer() {
