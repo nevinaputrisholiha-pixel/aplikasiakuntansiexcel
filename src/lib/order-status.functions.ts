@@ -49,7 +49,7 @@ export const getOrderStatus = createServerFn({ method: "POST" })
       .from("orders")
       .select(select)
       .eq("order_number", data.orderNumber)
-      .eq("access_token", data.token)
+      .eq("access_token" as never, data.token)
       .maybeSingle();
 
     // Safety net: if the webhook never arrived, ask Midtrans directly for the
@@ -62,7 +62,7 @@ export const getOrderStatus = createServerFn({ method: "POST" })
         .from("orders")
         .select(select)
         .eq("order_number", data.orderNumber)
-        .eq("access_token", data.token)
+        .eq("access_token" as never, data.token)
         .maybeSingle();
       if (!refreshed.error && refreshed.data) order = refreshed.data;
     }

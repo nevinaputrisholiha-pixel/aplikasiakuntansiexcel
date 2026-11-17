@@ -78,7 +78,8 @@ export const listOrderFiles = createServerFn({ method: "POST" })
       .from("orders")
       .select("id, order_type, bundle_id, payment_status, generation_status, products(name)")
       .eq("order_number", data.orderNumber)
-      .eq("access_token", data.token)
+      // The external database has access_token; its generated client types lag behind.
+      .eq("access_token" as never, data.token)
       .maybeSingle();
 
     if (error) {
@@ -144,7 +145,7 @@ export const getDownloadUrl = createServerFn({ method: "POST" })
       .from("orders")
       .select("id, payment_status, generation_status")
       .eq("order_number", data.orderNumber)
-      .eq("access_token", data.token)
+      .eq("access_token" as never, data.token)
       .maybeSingle();
 
     if (error) {
@@ -199,7 +200,7 @@ export const getBonusDownloadUrl = createServerFn({ method: "POST" })
       .from("orders")
       .select("payment_status")
       .eq("order_number", data.orderNumber)
-      .eq("access_token", data.token)
+      .eq("access_token" as never, data.token)
       .maybeSingle();
 
     if (error) {
