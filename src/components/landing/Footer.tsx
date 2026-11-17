@@ -1,7 +1,14 @@
 import { Link } from "@tanstack/react-router";
+import { Facebook, Instagram, Youtube } from "lucide-react";
 import { getWhatsAppLink } from "@/lib/whatsapp";
 
 const logoIcon = { url: "/logo-icon.png" };
+
+const socialLinks = [
+  { label: "Facebook", href: "https://www.facebook.com/ProgramExcel.id", Icon: Facebook },
+  { label: "Instagram", href: "https://www.instagram.com/programexcel.id/", Icon: Instagram },
+  { label: "YouTube", href: "https://www.youtube.com/@programexcelindonesia8161", Icon: Youtube },
+];
 
 export function Footer() {
   return (
@@ -23,6 +30,21 @@ export function Footer() {
               Solusi program akuntansi berbasis Excel siap pakai untuk berbagai
               jenis usaha di Indonesia. Bayar sekali, pakai seumur hidup.
             </p>
+            <ul className="mt-5 flex items-center gap-3" aria-label="Media sosial">
+              {socialLinks.map(({ label, href, Icon }) => (
+                <li key={label}>
+                  <a
+                    href={href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={`${label} AplikasiAkuntansiExcel`}
+                    className="flex h-10 w-10 items-center justify-center rounded-full border border-border text-brand-navy transition-colors hover:border-brand-teal hover:text-brand-teal"
+                  >
+                    <Icon className="h-5 w-5" />
+                  </a>
+                </li>
+              ))}
+            </ul>
           </div>
 
           <div>
