@@ -12,6 +12,7 @@ import { Testimonials } from "@/components/landing/Testimonials";
 import { FAQ } from "@/components/landing/FAQ";
 import { Contact } from "@/components/landing/Contact";
 import { Footer } from "@/components/landing/Footer";
+import { Chatbot } from "@/components/landing/Chatbot";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -51,6 +52,7 @@ function Index() {
         <Contact />
       </main>
       <Footer />
+      <Chatbot />
     </div>
   );
 }
