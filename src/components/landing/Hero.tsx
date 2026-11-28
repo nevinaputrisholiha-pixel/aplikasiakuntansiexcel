@@ -23,7 +23,8 @@ export function Hero() {
           </div>
 
           <h1 className="mt-6 text-4xl font-extrabold leading-[1.05] text-brand-navy sm:text-5xl md:text-6xl">
-            Laporan Keuangan <span className="text-gradient-brand">Jadi Lebih Mudah</span>
+            Aplikasi Akuntansi Excel — Laporan Keuangan{" "}
+            <span className="text-gradient-brand">Jadi Lebih Mudah</span>
           </h1>
 
           <p className="mt-6 max-w-xl text-lg leading-relaxed text-muted-foreground">

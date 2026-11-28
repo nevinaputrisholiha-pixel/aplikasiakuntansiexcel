@@ -15,6 +15,14 @@ import { reportLovableError } from "../lib/lovable-error-reporting";
 const GA_ID = (import.meta.env.VITE_GA4_MEASUREMENT_ID ?? "") as string;
 const GSC_TOKEN = ((import.meta.env.VITE_GSC_VERIFICATION_TOKEN ?? "") as string).trim();
 const gaEnabled = /^G-[A-Z0-9]{6,}$/.test(GA_ID);
+import { pageSeo } from "@/lib/seo";
+
+const homeSeo = pageSeo({
+  path: "/",
+  title: "Aplikasi Akuntansi Excel untuk Laporan Keuangan Siap Pakai",
+  description:
+    "Program akuntansi berbasis Excel siap pakai untuk usaha jasa, dagang, manufaktur, stok barang & buku kas. Beli 1x, pakai seumur hidup, tanpa biaya bulanan.",
+});
 
 function NotFoundComponent() {
   return (
@@ -81,39 +89,17 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Aplikasi Akuntansi Excel untuk Laporan Keuangan Siap Pakai" },
-      {
-        name: "description",
-        content:
-          "Program akuntansi berbasis Excel siap pakai untuk usaha jasa, dagang, manufaktur, stok barang & buku kas. Beli 1x, pakai seumur hidup, tanpa biaya bulanan.",
-      },
       { name: "author", content: "AplikasiAkuntansiExcel.com" },
-      {
-        property: "og:title",
-        content: "Aplikasi Akuntansi Excel untuk Laporan Keuangan Siap Pakai",
-      },
-      {
-        property: "og:description",
-        content:
-          "Program akuntansi berbasis Excel siap pakai untuk usaha jasa, dagang, manufaktur, stok barang & buku kas. Beli 1x, pakai seumur hidup, tanpa biaya bulanan.",
-      },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary_large_image" },
-      {
-        name: "twitter:title",
-        content: "Aplikasi Akuntansi Excel untuk Laporan Keuangan Siap Pakai",
-      },
-      {
-        name: "twitter:description",
-        content:
-          "Program akuntansi berbasis Excel siap pakai untuk usaha jasa, dagang, manufaktur, stok barang & buku kas. Beli 1x, pakai seumur hidup, tanpa biaya bulanan.",
-      },
-      { property: "og:image", content: "https://aplikasiakuntansiexcel.com/og-image.jpg" },
-      { name: "twitter:image", content: "https://aplikasiakuntansiexcel.com/og-image.jpg" },
+      { name: "theme-color", content: "#0a0232" },
+      ...homeSeo.meta,
       ...(GSC_TOKEN ? [{ name: "google-site-verification", content: GSC_TOKEN }] : []),
     ],
     links: [
       { rel: "icon", href: "/favicon.ico" },
+      { rel: "icon", href: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
+      { rel: "icon", href: "/favicon-16x16.png", sizes: "16x16", type: "image/png" },
+      { rel: "apple-touch-icon", href: "/apple-touch-icon.png", sizes: "180x180" },
+      { rel: "manifest", href: "/manifest.webmanifest" },
       {
         rel: "stylesheet",
         href: appCss,
@@ -128,7 +114,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 
 function RootShell({ children }: { children: ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="id">
       <head>
         <HeadContent />
         {gaEnabled && (

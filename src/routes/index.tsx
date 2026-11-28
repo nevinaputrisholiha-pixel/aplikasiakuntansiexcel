@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { pageSeo } from "@/lib/seo";
 import { Navbar } from "@/components/landing/Navbar";
 import { Hero } from "@/components/landing/Hero";
 import { LifeQuality } from "@/components/landing/LifeQuality";
@@ -14,23 +15,18 @@ import { Contact } from "@/components/landing/Contact";
 import { Footer } from "@/components/landing/Footer";
 import { Chatbot } from "@/components/landing/Chatbot";
 
+const homeSeo = pageSeo({
+  path: "/",
+  title: "Aplikasi Akuntansi Excel untuk Laporan Keuangan Siap Pakai",
+  description:
+    "Program akuntansi Excel siap pakai untuk usaha jasa, dagang, manufaktur, stok & buku kas. Bayar 1x, pakai seumur hidup, tanpa biaya bulanan.",
+  ogTitle: "Aplikasi Akuntansi Excel untuk Laporan Keuangan Siap Pakai",
+  ogDescription:
+    "Solusi akuntansi Excel untuk UMKM Indonesia. Lengkap dengan 16 bonus program bisnis gratis.",
+});
+
 export const Route = createFileRoute("/")({
-  head: () => ({
-    meta: [
-      { title: "Aplikasi Akuntansi Excel untuk Laporan Keuangan Siap Pakai" },
-      {
-        name: "description",
-        content:
-          "Program akuntansi Excel siap pakai untuk usaha jasa, dagang, manufaktur, stok & buku kas. Bayar 1x, pakai seumur hidup, tanpa biaya bulanan.",
-      },
-      { property: "og:title", content: "Aplikasi Akuntansi Excel untuk Laporan Keuangan Siap Pakai" },
-      {
-        property: "og:description",
-        content:
-          "Solusi akuntansi Excel untuk UMKM Indonesia. Lengkap dengan 16 bonus program bisnis gratis.",
-      },
-    ],
-  }),
+  head: () => ({ meta: homeSeo.meta, links: homeSeo.links }),
   component: Index,
 });
 
