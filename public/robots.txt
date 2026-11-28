@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /order/
+Disallow: /api/
+
+Sitemap: https://aplikasiakuntansiexcel.com/sitemap.xml
