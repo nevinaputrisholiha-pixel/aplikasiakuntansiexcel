@@ -12,6 +12,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Gift, Download, Loader2, CheckCircle2 } from "lucide-react";
 import { claimFreeTrial } from "@/lib/trial.functions";
+import { trackEvent } from "@/lib/analytics";
 
 type Props = {
   open: boolean;
@@ -67,6 +68,7 @@ export function TrialModal({ open, onOpenChange, productId, productName, tierLab
       const res = await claim({ data: { email: em, productId, companyName: co } });
       if (!res.ok) return setError(res.error);
       setDone(res);
+      trackEvent("trial_download", { product: productName, product_id: productId });
       download(res.url, res.fileName);
     } catch {
       setError("Trial belum dapat diproses. Silakan coba lagi.");
@@ -99,7 +101,12 @@ export function TrialModal({ open, onOpenChange, productId, productName, tierLab
                 ? "Unduhan dimulai otomatis. Masa trial dihitung sejak unduhan pertama ini."
                 : "Anda sudah memiliki trial aktif. Unduh ulang tidak memperpanjang masa trial."}
             </p>
-            <Button variant="brand" size="pill" className="w-full" onClick={() => download(done.url, done.fileName)}>
+            <Button
+              variant="brand"
+              size="pill"
+              className="w-full"
+              onClick={() => download(done.url, done.fileName)}
+            >
               <Download className="h-4 w-4" />
               📥 Download Trial
             </Button>
@@ -108,13 +115,26 @@ export function TrialModal({ open, onOpenChange, productId, productName, tierLab
           <form onSubmit={submit} className="space-y-4">
             <div className="space-y-1.5">
               <Label htmlFor="trial-email">Email</Label>
-              <Input id="trial-email" type="email" value={email} maxLength={254}
-                onChange={(e) => setEmail(e.target.value)} placeholder="nama@perusahaan.com" required />
+              <Input
+                id="trial-email"
+                type="email"
+                value={email}
+                maxLength={254}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="nama@perusahaan.com"
+                required
+              />
             </div>
             <div className="space-y-1.5">
               <Label htmlFor="trial-company">Nama Perusahaan</Label>
-              <Input id="trial-company" value={company} maxLength={100}
-                onChange={(e) => setCompany(e.target.value)} placeholder="PT Contoh Sejahtera" required />
+              <Input
+                id="trial-company"
+                value={company}
+                maxLength={100}
+                onChange={(e) => setCompany(e.target.value)}
+                placeholder="PT Contoh Sejahtera"
+                required
+              />
             </div>
             {error && <p className="text-sm font-medium text-destructive">{error}</p>}
             <Button type="submit" variant="brand" size="pill" className="w-full" disabled={busy}>

@@ -1,3 +1,4 @@
+import { Link } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button";
 import { Check, Sparkles } from "lucide-react";
 
@@ -45,7 +46,7 @@ export function Hero() {
 
           <div className="mt-8 flex flex-wrap gap-3">
             <Button variant="brand" size="xl" asChild>
-              <a href="#unduh-demo">Coba Gratis</a>
+              <Link to="/download">Coba Gratis</Link>
             </Button>
             <Button variant="brandOutline" size="xl" asChild>
               <a href="#bundling">Lihat Paket Bundling</a>

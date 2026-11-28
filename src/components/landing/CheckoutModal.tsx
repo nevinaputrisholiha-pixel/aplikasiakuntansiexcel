@@ -4,6 +4,7 @@ import { useNavigate } from "@tanstack/react-router";
 import { Loader2, ShieldCheck } from "lucide-react";
 
 import { createCheckout } from "@/lib/checkout.functions";
+import { trackEvent } from "@/lib/analytics";
 import { loadSnap } from "@/lib/snap";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -74,9 +75,19 @@ export function CheckoutModal({
 
       const goToStatus = () => {
         onOpenChange(false);
-        void navigate({ to: "/order/$orderNumber", params: { orderNumber }, search: { t: accessToken } });
+        void navigate({
+          to: "/order/$orderNumber",
+          params: { orderNumber },
+          search: { t: accessToken },
+        });
       };
 
+      trackEvent("begin_checkout", {
+        product: productName,
+        product_id: productId,
+        value: price,
+        currency: "IDR",
+      });
       window.snap?.pay(result.snapToken, {
         onSuccess: goToStatus,
         onPending: goToStatus,
@@ -114,7 +125,8 @@ export function CheckoutModal({
               onChange={(e) => setEmail(e.target.value)}
             />
             <p className="text-xs text-muted-foreground">
-              Email dipakai untuk data pesanan Anda. File bisa langsung diunduh setelah pembayaran berhasil.
+              Email dipakai untuk data pesanan Anda. File bisa langsung diunduh setelah pembayaran
+              berhasil.
             </p>
           </div>
 
