@@ -1,6 +1,6 @@
+import { Link } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button";
 import { Check, Sparkles } from "lucide-react";
-const heroScreenshot = "/buku-besar.gif";
 
 const bullets = [
   "Bayar 1x, pakai seumur hidup",
@@ -24,14 +24,13 @@ export function Hero() {
           </div>
 
           <h1 className="mt-6 text-4xl font-extrabold leading-[1.05] text-brand-navy sm:text-5xl md:text-6xl">
-            Laporan Keuangan{" "}
+            Aplikasi Akuntansi Excel — Laporan Keuangan{" "}
             <span className="text-gradient-brand">Jadi Lebih Mudah</span>
           </h1>
 
           <p className="mt-6 max-w-xl text-lg leading-relaxed text-muted-foreground">
-            Program akuntansi berbasis Microsoft Excel yang siap pakai untuk
-            berbagai jenis usaha — tanpa keahlian akuntansi khusus, tanpa rumus
-            yang ribet.
+            Program akuntansi berbasis Microsoft Excel yang siap pakai untuk berbagai jenis usaha —
+            tanpa keahlian akuntansi khusus, tanpa rumus yang ribet.
           </p>
 
           <ul className="mt-6 space-y-2.5">
@@ -47,7 +46,7 @@ export function Hero() {
 
           <div className="mt-8 flex flex-wrap gap-3">
             <Button variant="brand" size="xl" asChild>
-              <a href="#unduh-demo">Coba Gratis</a>
+              <Link to="/download">Coba Gratis</Link>
             </Button>
             <Button variant="brandOutline" size="xl" asChild>
               <a href="#bundling">Lihat Paket Bundling</a>
@@ -57,14 +56,14 @@ export function Hero() {
 
         <div className="relative flex items-center justify-center">
           <div className="absolute inset-0 -z-10 rounded-[3rem] bg-gradient-brand opacity-20 blur-3xl" />
-          <HeroMockup src={heroScreenshot} />
+          <HeroMockup />
         </div>
       </div>
     </section>
   );
 }
 
-function HeroMockup({ src }: { src: string }) {
+function HeroMockup() {
   return (
     <div className="group relative w-full max-w-xl animate-fade-in">
       <div className="overflow-hidden rounded-2xl bg-white shadow-[0_30px_80px_-20px_oklch(0.16_0.09_280/0.35)] ring-1 ring-black/5 transition-all duration-500 ease-out group-hover:-translate-y-2 group-hover:shadow-[0_40px_100px_-20px_oklch(0.16_0.09_280/0.45)]">
@@ -77,13 +76,23 @@ function HeroMockup({ src }: { src: string }) {
             aplikasiakuntansiexcel.com
           </span>
         </div>
-        <div className="aspect-[600/370] w-full bg-white">
-          <img
-            src={src}
-            alt="Tampilan aplikasi akuntansi Excel — Buku Besar dengan saldo, debet, kredit, dan riwayat transaksi"
-            loading="lazy"
+        <div className="aspect-[600/386] w-full bg-white">
+          <video
             className="h-full w-full object-contain"
-          />
+            width={600}
+            height={386}
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="auto"
+            poster="/buku-besar-poster.webp"
+            role="img"
+            aria-label="Tampilan aplikasi akuntansi Excel — Buku Besar dengan saldo, debet, kredit, dan riwayat transaksi"
+          >
+            <source src="/buku-besar.webm" type="video/webm" />
+            <source src="/buku-besar.mp4" type="video/mp4" />
+          </video>
         </div>
       </div>
     </div>

@@ -38,39 +38,65 @@ import { CheckoutModal } from "./CheckoutModal";
 
 type Tier = "lengkap" | "standar";
 
-const formatRp = (n: number) =>
-  "Rp " + n.toLocaleString("id-ID");
+const formatRp = (n: number) => "Rp " + n.toLocaleString("id-ID");
 
 function getFeatureMeta(name: string): { icon: LucideIcon; desc: string } {
   const n = name.toLowerCase();
   if (n.includes("home")) return { icon: HomeIcon, desc: "Halaman utama dengan navigasi cepat." };
-  if (n.includes("kode akun")) return { icon: BookOpen, desc: "Daftar akun (chart of accounts) siap pakai." };
-  if (n.includes("penyesuaian")) return { icon: ClipboardList, desc: "Catat jurnal penyesuaian akhir periode." };
-  if (n.includes("jurnal umum") || n === "jurnal") return { icon: FileSpreadsheet, desc: "Input transaksi harian secara terpusat." };
-  if (n.includes("buku besar")) return { icon: BookOpen, desc: "Rincian mutasi tiap akun otomatis." };
-  if (n.includes("neraca lajur")) return { icon: Layers, desc: "Worksheet penyusunan laporan keuangan." };
-  if (n.includes("laba rugi")) return { icon: TrendingUp, desc: "Laporan laba/rugi periode berjalan otomatis." };
-  if (n.includes("neraca perbandingan")) return { icon: ArrowLeftRight, desc: "Bandingkan neraca antar-periode." };
-  if (n === "neraca") return { icon: Landmark, desc: "Posisi aset, hutang, dan modal terupdate otomatis." };
+  if (n.includes("kode akun"))
+    return { icon: BookOpen, desc: "Daftar akun (chart of accounts) siap pakai." };
+  if (n.includes("penyesuaian"))
+    return { icon: ClipboardList, desc: "Catat jurnal penyesuaian akhir periode." };
+  if (n.includes("jurnal umum") || n === "jurnal")
+    return { icon: FileSpreadsheet, desc: "Input transaksi harian secara terpusat." };
+  if (n.includes("buku besar"))
+    return { icon: BookOpen, desc: "Rincian mutasi tiap akun otomatis." };
+  if (n.includes("neraca lajur"))
+    return { icon: Layers, desc: "Worksheet penyusunan laporan keuangan." };
+  if (n.includes("laba rugi"))
+    return { icon: TrendingUp, desc: "Laporan laba/rugi periode berjalan otomatis." };
+  if (n.includes("neraca perbandingan"))
+    return { icon: ArrowLeftRight, desc: "Bandingkan neraca antar-periode." };
+  if (n === "neraca")
+    return { icon: Landmark, desc: "Posisi aset, hutang, dan modal terupdate otomatis." };
   if (n.includes("arus kas")) return { icon: Wallet, desc: "Laporan arus kas masuk & keluar." };
-  if (n.includes("hutang piutang jatuh")) return { icon: CalendarClock, desc: "Peringatan tagihan mendekati jatuh tempo." };
-  if (n.includes("buku besar hutang")) return { icon: BookOpen, desc: "Detail mutasi hutang & piutang per pihak." };
+  if (n.includes("hutang piutang jatuh"))
+    return { icon: CalendarClock, desc: "Peringatan tagihan mendekati jatuh tempo." };
+  if (n.includes("buku besar hutang"))
+    return { icon: BookOpen, desc: "Detail mutasi hutang & piutang per pihak." };
   if (n.includes("daftar hutang")) return { icon: Receipt, desc: "Rekap hutang & piutang aktif." };
-  if (n.includes("laporan hutang")) return { icon: Receipt, desc: "Ringkasan posisi hutang usaha." };
-  if (n.includes("laporan piutang")) return { icon: Receipt, desc: "Ringkasan posisi piutang usaha." };
-  if (n.includes("penyusutan")) return { icon: BarChart3, desc: "Hitung penyusutan aktiva tetap otomatis." };
-  if (n.includes("rekonsiliasi")) return { icon: ArrowLeftRight, desc: "Cocokkan saldo buku dengan rekening bank." };
-  if (n.includes("harga pokok produksi")) return { icon: Building2, desc: "Perhitungan HPP produksi otomatis." };
-  if (n.includes("harga pokok penjualan") || n.includes("hpp")) return { icon: Building2, desc: "Perhitungan HPP penjualan otomatis." };
-  if (n.includes("daftar proyek")) return { icon: Building2, desc: "Kelola daftar proyek aktif Anda." };
-  if (n.includes("proyek dalam proses")) return { icon: BarChart3, desc: "Pantau progres & biaya proyek berjalan." };
+  if (n.includes("laporan hutang"))
+    return { icon: Receipt, desc: "Ringkasan posisi hutang usaha." };
+  if (n.includes("laporan piutang"))
+    return { icon: Receipt, desc: "Ringkasan posisi piutang usaha." };
+  if (n.includes("penyusutan"))
+    return { icon: BarChart3, desc: "Hitung penyusutan aktiva tetap otomatis." };
+  if (n.includes("rekonsiliasi"))
+    return { icon: ArrowLeftRight, desc: "Cocokkan saldo buku dengan rekening bank." };
+  if (n.includes("harga pokok produksi"))
+    return { icon: Building2, desc: "Perhitungan HPP produksi otomatis." };
+  if (n.includes("harga pokok penjualan") || n.includes("hpp"))
+    return { icon: Building2, desc: "Perhitungan HPP penjualan otomatis." };
+  if (n.includes("daftar proyek"))
+    return { icon: Building2, desc: "Kelola daftar proyek aktif Anda." };
+  if (n.includes("proyek dalam proses"))
+    return { icon: BarChart3, desc: "Pantau progres & biaya proyek berjalan." };
   if (n.includes("daftar produk")) return { icon: Package, desc: "Master data produk & harga." };
-  if (n.includes("kartu stok")) return { icon: Layers, desc: "Riwayat mutasi stok tiap produk otomatis." };
+  if (n.includes("kartu stok"))
+    return { icon: Layers, desc: "Riwayat mutasi stok tiap produk otomatis." };
   if (n.includes("sisa stok")) return { icon: Package, desc: "Monitor sisa stok real-time." };
-  if (n.includes("invoice")) return { icon: FileSpreadsheet, desc: "Cetak invoice & surat jalan otomatis." };
-  if (n.includes("pembelian")) return { icon: ShoppingCart, desc: "Laporan pembelian produk terperinci." };
-  if (n.includes("penjualan produk")) return { icon: TrendingUp, desc: "Laporan penjualan per produk." };
-  if (n.includes("agen") || n.includes("reseller") || n.includes("retailer") || n.includes("salesman")) {
+  if (n.includes("invoice"))
+    return { icon: FileSpreadsheet, desc: "Cetak invoice & surat jalan otomatis." };
+  if (n.includes("pembelian"))
+    return { icon: ShoppingCart, desc: "Laporan pembelian produk terperinci." };
+  if (n.includes("penjualan produk"))
+    return { icon: TrendingUp, desc: "Laporan penjualan per produk." };
+  if (
+    n.includes("agen") ||
+    n.includes("reseller") ||
+    n.includes("retailer") ||
+    n.includes("salesman")
+  ) {
     return { icon: Users, desc: "Analisis penjualan per mitra distribusi." };
   }
   if (n.includes("surat jalan")) return { icon: Truck, desc: "Cetak surat jalan pengiriman." };
@@ -96,7 +122,8 @@ function classifyFeature(name: string): FeatureGroupId {
     n.includes("jatuh tempo") ||
     n.includes("proyek dalam proses") ||
     n.includes("buku besar hutang")
-  ) return "otomatis";
+  )
+    return "otomatis";
   // Laporan
   if (
     n.includes("buku besar") ||
@@ -106,7 +133,8 @@ function classifyFeature(name: string): FeatureGroupId {
     n.includes("laporan") ||
     n.includes("kartu stok") ||
     n.includes("sisa stok")
-  ) return "laporan";
+  )
+    return "laporan";
   // Transaksi
   if (
     n.includes("home") ||
@@ -122,12 +150,18 @@ function classifyFeature(name: string): FeatureGroupId {
     n.includes("daftar salesman") ||
     n.includes("invoice") ||
     n.includes("surat jalan")
-  ) return "transaksi";
+  )
+    return "transaksi";
   return "lainnya";
 }
 
 function groupFeatures(list: string[]): { id: FeatureGroupId; items: string[] }[] {
-  const groups: Record<FeatureGroupId, string[]> = { transaksi: [], laporan: [], otomatis: [], lainnya: [] };
+  const groups: Record<FeatureGroupId, string[]> = {
+    transaksi: [],
+    laporan: [],
+    otomatis: [],
+    lainnya: [],
+  };
   for (const f of list) groups[classifyFeature(f)].push(f);
   return (["transaksi", "laporan", "otomatis", "lainnya"] as FeatureGroupId[])
     .filter((g) => groups[g].length > 0)
@@ -137,7 +171,12 @@ function groupFeatures(list: string[]): { id: FeatureGroupId; items: string[] }[
 function pickHighlights(list: string[], max: number): string[] {
   // Prioritize "otomatis" (most compelling), then "laporan", then "transaksi"
   const priority: FeatureGroupId[] = ["otomatis", "laporan", "transaksi", "lainnya"];
-  const buckets: Record<FeatureGroupId, string[]> = { transaksi: [], laporan: [], otomatis: [], lainnya: [] };
+  const buckets: Record<FeatureGroupId, string[]> = {
+    transaksi: [],
+    laporan: [],
+    otomatis: [],
+    lainnya: [],
+  };
   for (const f of list) buckets[classifyFeature(f)].push(f);
   const ordered: string[] = [];
   for (const g of priority) ordered.push(...buckets[g]);
@@ -149,7 +188,7 @@ function getDisplayFeatures(
   product: Product,
   tier: Tier,
   activeSub: SubVariant | null,
-  onlyLengkap: boolean
+  onlyLengkap: boolean,
 ): string[] {
   // For products without a Standar tier, show everything as the single offering.
   if (onlyLengkap) return [...product.baseFeatures, ...product.extraFeatures];
@@ -179,13 +218,11 @@ export function Products() {
   const variant =
     effectiveTier === "lengkap"
       ? current.variants.lengkap
-      : current.variants.standar ?? current.variants.lengkap;
+      : (current.variants.standar ?? current.variants.lengkap);
 
-  const hasSubVariants =
-    effectiveTier === "lengkap" && !!current.subVariants?.length;
+  const hasSubVariants = effectiveTier === "lengkap" && !!current.subVariants?.length;
   const activeSub = hasSubVariants
-    ? current.subVariants!.find((s) => s.id === subVariantId) ??
-      current.subVariants![0]
+    ? (current.subVariants!.find((s) => s.id === subVariantId) ?? current.subVariants![0])
     : null;
 
   // Harga selalu diambil dari database (tabel products) — tidak di-hard-code.
@@ -194,9 +231,7 @@ export function Products() {
     queryFn: () => listPublicProducts(),
     staleTime: 5 * 60_000,
   });
-  const priceById = new Map(
-    (catalog?.products ?? []).map((p) => [p.id, p.price] as const),
-  );
+  const priceById = new Map((catalog?.products ?? []).map((p) => [p.id, p.price] as const));
   const checkoutProductId = activeSub?.dbProductId ?? variant.dbProductId;
   const { data: trialData } = useQuery({
     queryKey: ["trial-products"],
@@ -208,10 +243,9 @@ export function Products() {
 
   // Harga untuk Tabel Perbandingan — dipetakan lewat dbProductId (bukan nama).
   const standarDbId = current.variants.standar?.dbProductId;
-  const lengkapDbId =
-    activeSub?.dbProductId ?? current.variants.lengkap?.dbProductId;
-  const standarTablePrice = standarDbId ? priceById.get(standarDbId) ?? null : null;
-  const lengkapTablePrice = lengkapDbId ? priceById.get(lengkapDbId) ?? null : null;
+  const lengkapDbId = activeSub?.dbProductId ?? current.variants.lengkap?.dbProductId;
+  const standarTablePrice = standarDbId ? (priceById.get(standarDbId) ?? null) : null;
+  const lengkapTablePrice = lengkapDbId ? (priceById.get(lengkapDbId) ?? null) : null;
 
   const isLengkap = effectiveTier === "lengkap";
   const showCumulativeBadge = isLengkap && !onlyLengkap;
@@ -229,8 +263,8 @@ export function Products() {
             Satu solusi untuk setiap jenis usaha
           </h2>
           <p className="mt-4 text-base text-brand-navy/80">
-            Pilih program akuntansi Excel yang paling sesuai dengan model bisnis
-            Anda — dari jasa, dagang, manufaktur, hingga buku kas pribadi.
+            Pilih program akuntansi Excel yang paling sesuai dengan model bisnis Anda — dari jasa,
+            dagang, manufaktur, hingga buku kas pribadi.
           </p>
         </div>
 
@@ -267,34 +301,38 @@ export function Products() {
         </div>
 
         {/* Product sub-tabs */}
-        <div className="mt-8 -mx-4 overflow-x-auto px-4 sm:mx-0 sm:px-0 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-          <div className="flex w-max gap-2 sm:w-auto sm:flex-wrap sm:justify-center">
-            {products.map((p) => {
-              const I = p.icon;
-              const isActive = p.id === active;
-              return (
-                <button
-                  key={p.id}
-                  onClick={() => setActive(p.id)}
-                  className={`group inline-flex shrink-0 items-center gap-2 whitespace-nowrap rounded-full px-4 py-2.5 text-sm font-semibold transition-all ${
-                    isActive
-                      ? "bg-gradient-brand text-white shadow-glow"
-                      : "bg-white text-brand-navy ring-1 ring-border hover:ring-brand-teal/50"
-                  }`}
-                >
-                  <I className="h-4 w-4" />
-                  {p.name.replace("Akuntansi ", "")}
-                </button>
-              );
-            })}
+        <div className="relative mt-8 -mx-4 sm:mx-0">
+          <div className="-mx-4 snap-x snap-mandatory overflow-x-auto px-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:mx-0 sm:px-0">
+            <div className="flex w-max gap-2 sm:w-auto sm:flex-wrap sm:justify-center">
+              {products.map((p) => {
+                const I = p.icon;
+                const isActive = p.id === active;
+                return (
+                  <button
+                    key={p.id}
+                    onClick={() => setActive(p.id)}
+                    className={`group inline-flex shrink-0 snap-start items-center gap-2 whitespace-nowrap rounded-full px-4 py-2.5 text-sm font-semibold transition-all ${
+                      isActive
+                        ? "bg-gradient-brand text-white shadow-glow"
+                        : "bg-white text-brand-navy ring-1 ring-border hover:ring-brand-teal/50"
+                    }`}
+                  >
+                    <I className="h-4 w-4" />
+                    {p.name.replace("Akuntansi ", "")}
+                  </button>
+                );
+              })}
+            </div>
           </div>
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-y-0 right-0 w-12 bg-gradient-to-l from-white to-transparent sm:hidden"
+          />
         </div>
 
         <div className="mt-10 overflow-hidden rounded-[2rem] bg-white shadow-card ring-1 ring-border">
           <div className="grid gap-0 lg:grid-cols-2">
-            <div
-              className={`relative bg-gradient-to-br ${current.accent} p-8 lg:p-10`}
-            >
+            <div className={`relative bg-gradient-to-br ${current.accent} p-8 lg:p-10`}>
               <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-white shadow-soft">
                 <Icon className="h-7 w-7 text-brand-teal" />
               </div>
@@ -384,7 +422,6 @@ export function Products() {
                   )}
                 </div>
               )}
-
             </div>
 
             <div className="flex flex-col border-t border-border bg-white p-8 lg:border-l lg:border-t-0 lg:p-10">
@@ -428,11 +465,7 @@ export function Products() {
 
               <div id="unduh-demo" className="mt-6 flex flex-wrap gap-3 scroll-mt-24">
                 {trialEnabled && (
-                  <Button
-                    variant="brand"
-                    size="pill"
-                    onClick={() => setDemoOpen(true)}
-                  >
+                  <Button variant="brand" size="pill" onClick={() => setDemoOpen(true)}>
                     <Gift className="h-4 w-4" />
                     🎁 Coba Gratis
                   </Button>

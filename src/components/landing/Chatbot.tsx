@@ -379,9 +379,16 @@ export function Chatbot() {
   const selectedLabels = selectedFields.map((f) => f.label).join(", ");
   const bundlesLoading = bundleData === undefined;
   const bundleMatches =
-    stage === "bundle" ? matchBundles(selectedFields.map((f) => f.productId), bundleData?.bundles ?? []) : [];
+    stage === "bundle"
+      ? matchBundles(
+          selectedFields.map((f) => f.productId),
+          bundleData?.bundles ?? [],
+        )
+      : [];
   const catalogReady = (catalog?.products ?? []).length > 0;
-  const visibleBundles = showMoreBundles ? bundleMatches : bundleMatches.slice(0, BUNDLES_COLLAPSED);
+  const visibleBundles = showMoreBundles
+    ? bundleMatches
+    : bundleMatches.slice(0, BUNDLES_COLLAPSED);
 
   const restart = () => {
     started.current = true;
@@ -397,7 +404,7 @@ export function Chatbot() {
           onClick={() => setOpen(true)}
           aria-label="Buka asisten rekomendasi produk"
           aria-expanded={false}
-          className="fixed bottom-4 right-4 z-40 flex h-14 items-center gap-2.5 rounded-full bg-gradient-brand px-5 text-sm font-bold text-white shadow-glow transition-transform hover:scale-105 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-brand-teal/40 motion-reduce:transition-none motion-reduce:hover:scale-100"
+          className="fixed bottom-[calc(1rem+env(safe-area-inset-bottom))] right-4 z-40 flex h-14 items-center gap-2.5 rounded-full bg-gradient-brand px-5 text-sm font-bold text-white shadow-glow transition-transform hover:scale-105 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-brand-teal/40 motion-reduce:transition-none motion-reduce:hover:scale-100"
         >
           <span className="relative flex h-6 w-6 items-center justify-center">
             <span
@@ -419,7 +426,7 @@ export function Chatbot() {
           onKeyDown={(e) => {
             if (e.key === "Escape" && modal === null && bundleCheckout === null) setOpen(false);
           }}
-          className="fixed bottom-4 right-4 z-40 flex h-[min(640px,calc(100dvh-2rem))] w-[min(400px,calc(100vw-2rem))] flex-col overflow-hidden rounded-3xl border border-brand-mint/40 bg-white shadow-glow focus:outline-none"
+          className="fixed bottom-[calc(1rem+env(safe-area-inset-bottom))] right-4 z-40 flex h-[min(640px,calc(100dvh-2rem))] w-[min(400px,calc(100vw-2rem))] flex-col overflow-hidden rounded-3xl border border-brand-mint/40 bg-white shadow-glow focus:outline-none"
         >
           <header className="relative overflow-hidden bg-gradient-brand px-5 py-4 text-white">
             <span
@@ -436,7 +443,9 @@ export function Chatbot() {
               </span>
               <div className="min-w-0 flex-1">
                 <p className="text-base font-extrabold leading-tight">Asisten Pilih Program</p>
-                <p className="text-xs font-medium text-white/90">Cari program yang pas buat usahamu</p>
+                <p className="text-xs font-medium text-white/90">
+                  Cari program yang pas buat usahamu
+                </p>
               </div>
               {messages.length > 1 && (
                 <button
@@ -571,8 +580,8 @@ export function Chatbot() {
                 ) : bundleMatches.length > 0 ? (
                   <>
                     <BotBubble>
-                      Ada paket bundling yang pas buat kombinasi <strong>{selectedLabels}</strong> 🎉
-                      Lebih hemat dibanding beli satuan.
+                      Ada paket bundling yang pas buat kombinasi <strong>{selectedLabels}</strong>{" "}
+                      🎉 Lebih hemat dibanding beli satuan.
                     </BotBubble>
 
                     {visibleBundles.map((b) => {
@@ -629,7 +638,9 @@ export function Chatbot() {
                                 )}
                               </>
                             ) : (
-                              <p className="text-sm font-semibold text-brand-navy/60">Memuat harga…</p>
+                              <p className="text-sm font-semibold text-brand-navy/60">
+                                Memuat harga…
+                              </p>
                             )}
                           </div>
                           <div className="mt-3">
@@ -667,7 +678,10 @@ export function Chatbot() {
                           ? "Ringkas"
                           : `Lihat ${bundleMatches.length - BUNDLES_COLLAPSED} paket lainnya`}
                         <ChevronDown
-                          className={"h-3.5 w-3.5 transition-transform " + (showMoreBundles ? "rotate-180" : "")}
+                          className={
+                            "h-3.5 w-3.5 transition-transform " +
+                            (showMoreBundles ? "rotate-180" : "")
+                          }
                           aria-hidden="true"
                         />
                       </button>
@@ -692,9 +706,9 @@ export function Chatbot() {
                 ) : (
                   <>
                     <BotBubble>
-                      Untuk kombinasi <strong>{selectedLabels}</strong>, belum ada paket bundling yang
-                      pas di daftar kami. Biar nggak salah pilih, yuk konsultasi dulu dengan tim kami
-                      🙌
+                      Untuk kombinasi <strong>{selectedLabels}</strong>, belum ada paket bundling
+                      yang pas di daftar kami. Biar nggak salah pilih, yuk konsultasi dulu dengan
+                      tim kami 🙌
                     </BotBubble>
                     <div className="flex flex-col gap-2 sm:pl-10">
                       <Button variant="whatsapp" size="pill" asChild>
@@ -746,7 +760,10 @@ export function Chatbot() {
 
                 <ul className="mt-3 space-y-1.5">
                   {(showAll ? resultView.features : resultView.features.slice(0, 6)).map((f) => (
-                    <li key={f} className="flex items-start gap-2 text-xs font-medium text-brand-navy">
+                    <li
+                      key={f}
+                      className="flex items-start gap-2 text-xs font-medium text-brand-navy"
+                    >
                       <span className="mt-px flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-gradient-brand text-white">
                         <Check className="h-2.5 w-2.5" strokeWidth={3} aria-hidden="true" />
                       </span>
@@ -763,7 +780,9 @@ export function Chatbot() {
                   >
                     {showAll ? "Ringkas" : `Lihat semua fitur (${resultView.features.length})`}
                     <ChevronDown
-                      className={"h-3.5 w-3.5 transition-transform " + (showAll ? "rotate-180" : "")}
+                      className={
+                        "h-3.5 w-3.5 transition-transform " + (showAll ? "rotate-180" : "")
+                      }
                       aria-hidden="true"
                     />
                   </button>

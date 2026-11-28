@@ -1,0 +1,264 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "trailingSlash": false,
+  "redirects": [
+    {
+      "source": "/free-download",
+      "destination": "/download",
+      "permanent": true
+    },
+    {
+      "source": "/video-tutorial",
+      "destination": "/download",
+      "permanent": true
+    },
+    {
+      "source": "/faq",
+      "destination": "/#faq",
+      "permanent": true
+    },
+    {
+      "source": "/blog",
+      "destination": "/#produk",
+      "permanent": true
+    },
+    {
+      "source": "/contact-us",
+      "destination": "/#kontak",
+      "permanent": true
+    },
+    {
+      "source": "/tentang-kami",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/free-download-video",
+      "destination": "/download",
+      "permanent": true
+    },
+    {
+      "source": "/solusi-accounting-untuk-bisnis-anda",
+      "destination": "/#produk",
+      "permanent": true
+    },
+    {
+      "source": "/kebijakan-kami",
+      "destination": "/kebijakan-privasi",
+      "permanent": true
+    },
+    {
+      "source": "/contoh-aplikasi-buku-kas-umum-excel",
+      "destination": "/#produk",
+      "permanent": true
+    },
+    {
+      "source": "/tentu-untuk-anda",
+      "destination": "/#produk",
+      "permanent": true
+    },
+    {
+      "source": "/contoh-format-buku-kas-umum",
+      "destination": "/#produk",
+      "permanent": true
+    },
+    {
+      "source": "/11-bonus-aplikasi-super-canggih",
+      "destination": "/#bonuses",
+      "permanent": true
+    },
+    {
+      "source": "/perkenalan",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/software-komplit-panduannya-lengkap-2",
+      "destination": "/#kontak",
+      "permanent": true
+    },
+    {
+      "source": "/tutorial-nkb",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/un-install-free-download-software",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/installasi-lisensi-copy-part-3",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/kode-bantu",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/contoh-format-buku-kas-umum-bendahara-pengeluaran",
+      "destination": "/#produk",
+      "permanent": true
+    },
+    {
+      "source": "/contoh-laporan-keuangan-perusahaan-jasa-2",
+      "destination": "/#produk",
+      "permanent": true
+    },
+    {
+      "source": "/jurnal-umum",
+      "destination": "/#produk",
+      "permanent": true
+    },
+    {
+      "source": "/laporan-keuangan",
+      "destination": "/#produk",
+      "permanent": true
+    },
+    {
+      "source": "/accex-contoh-laporan-keuangan-sederhana-download",
+      "destination": "/download",
+      "permanent": true
+    },
+    {
+      "source": "/contoh-laporan-keuangan-perusahaan-dagang-menggunakan-excel",
+      "destination": "/#produk",
+      "permanent": true
+    },
+    {
+      "source": "/belajar-membuat-laporan-keuangan-bersama-accex",
+      "destination": "/#produk",
+      "permanent": true
+    },
+    {
+      "source": "/analisis-laporan-keuangan-perusahaan-jasa",
+      "destination": "/#produk",
+      "permanent": true
+    },
+    {
+      "source": "/stok-barang-dengan-excel",
+      "destination": "/#produk",
+      "permanent": true
+    },
+    {
+      "source": "/contoh-pembukuan-usaha-kecil-yang-sederhana",
+      "destination": "/#produk",
+      "permanent": true
+    },
+    {
+      "source": "/laba-rugi-neraca",
+      "destination": "/#produk",
+      "permanent": true
+    },
+    {
+      "source": "/manfaat-dari-software-akuntansi-excel",
+      "destination": "/#produk",
+      "permanent": true
+    },
+    {
+      "source": "/contoh-program-akuntansi-perusahaan-dagang",
+      "destination": "/#produk",
+      "permanent": true
+    },
+    {
+      "source": "/free-download-software-accounting-di-indonesia",
+      "destination": "/download",
+      "permanent": true
+    },
+    {
+      "source": "/home",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/contoh-laporan-keuangan-usaha-kecil-menggunakan-excel",
+      "destination": "/#produk",
+      "permanent": true
+    },
+    {
+      "source": "/contoh-laporan-keuangan-perusahaan-jasa-menggunakan-excel",
+      "destination": "/#produk",
+      "permanent": true
+    },
+    {
+      "source": "/download-software-akuntansi-sederhana-gratis-bersama-accex",
+      "destination": "/download",
+      "permanent": true
+    },
+    {
+      "source": "/laporan-keuangan-perusahaan-kontraktor",
+      "destination": "/#produk",
+      "permanent": true
+    },
+    {
+      "source": "/software-aplikasi-buku-kas",
+      "destination": "/#produk",
+      "permanent": true
+    },
+    {
+      "source": "/cara-mendapatkan-software-accounting-terbaik",
+      "destination": "/#produk",
+      "permanent": true
+    },
+    {
+      "source": "/contoh-pembukuan-keuangan-sederhana-usaha-kecil",
+      "destination": "/#produk",
+      "permanent": true
+    },
+    {
+      "source": "/free-download/fd-6",
+      "destination": "/download",
+      "permanent": true
+    },
+    {
+      "source": "/blog/categories/investasi/page/2",
+      "destination": "/#produk",
+      "permanent": true
+    },
+    {
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "www.aplikasiakuntansiexcel.com"
+        }
+      ],
+      "destination": "https://aplikasiakuntansiexcel.com/:path*",
+      "permanent": true
+    }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "X-Frame-Options",
+          "value": "DENY"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        },
+        {
+          "key": "Content-Security-Policy-Report-Only",
+          "value": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.youtube.com https://app.midtrans.com https://app.sandbox.midtrans.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://www.google-analytics.com https://*.googletagmanager.com https://i.ytimg.com https://www.youtube.com; font-src 'self'; connect-src 'self' https://www.google-analytics.com https://*.google-analytics.com https://*.analytics.google.com https://*.supabase.co wss://*.supabase.co; frame-src 'self' https://www.youtube.com https://app.midtrans.com https://app.sandbox.midtrans.com; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'"
+        }
+      ]
+    },
+    {
+      "source": "/:file(png|jpg|jpeg|gif|ico|webp|mp4|webm)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=604800, stale-while-revalidate=86400"
+        }
+      ]
+    }
+  ]
+}
