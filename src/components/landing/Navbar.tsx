@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
-const logoIcon = { url: "/logo-icon.png" };
+const logoIcon = { url: "/logo-72.png" };
 import { Button } from "@/components/ui/button";
 
 const links = [
@@ -21,6 +21,8 @@ export function Navbar() {
           <img
             src={logoIcon.url}
             alt="AplikasiAkuntansiExcel.com"
+            width={72}
+            height={72}
             className="h-8 w-8 md:h-9 md:w-9 object-contain"
           />
           <span className="text-sm font-bold text-brand-navy sm:text-base">

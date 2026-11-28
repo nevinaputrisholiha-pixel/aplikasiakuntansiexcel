@@ -108,8 +108,8 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         content:
           "Program akuntansi berbasis Excel siap pakai untuk usaha jasa, dagang, manufaktur, stok barang & buku kas. Beli 1x, pakai seumur hidup, tanpa biaya bulanan.",
       },
-      { property: "og:image", content: "https://aplikasiakuntansiexcel.com/og-image.png" },
-      { name: "twitter:image", content: "https://aplikasiakuntansiexcel.com/og-image.png" },
+      { property: "og:image", content: "https://aplikasiakuntansiexcel.com/og-image.jpg" },
+      { name: "twitter:image", content: "https://aplikasiakuntansiexcel.com/og-image.jpg" },
       ...(GSC_TOKEN ? [{ name: "google-site-verification", content: GSC_TOKEN }] : []),
     ],
     links: [
@@ -117,16 +117,6 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       {
         rel: "stylesheet",
         href: appCss,
-      },
-      { rel: "preconnect", href: "https://fonts.googleapis.com" },
-      { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
-      {
-        rel: "stylesheet",
-        href: "https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap",
-      },
-      {
-        rel: "stylesheet",
-        href: "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap",
       },
     ],
   }),
